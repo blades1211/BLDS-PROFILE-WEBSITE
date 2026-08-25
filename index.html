@@ -109,16 +109,33 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* LOGO & BRANDING */
+    /* LOGO & CINEMATIC GLOW EFFECT */
     .logo-container {
       margin-bottom: 24px;
     }
 
     .logo-container img {
-      width: 100px;
-      height: 100px;
+      width: 110px;
+      height: 110px;
       object-fit: contain;
-      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.15));
+      /* Elegant & Subtle White Outer Glow */
+      filter: 
+        drop-shadow(0 0 4px rgba(255, 255, 255, 0.35))
+        drop-shadow(0 0 12px rgba(255, 255, 255, 0.18));
+      animation: logoSubtlePulse 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes logoSubtlePulse {
+      0% {
+        filter: 
+          drop-shadow(0 0 4px rgba(255, 255, 255, 0.30))
+          drop-shadow(0 0 10px rgba(255, 255, 255, 0.15));
+      }
+      100% {
+        filter: 
+          drop-shadow(0 0 6px rgba(255, 255, 255, 0.45))
+          drop-shadow(0 0 16px rgba(255, 255, 255, 0.22));
+      }
     }
 
     .title {
@@ -323,7 +340,7 @@
   <!-- 1. LANDING PAGE -->
   <section id="view-landing" class="view-section active">
     <div class="logo-container">
-      <img src="logo.png" alt="BLDS Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%23111\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23fff\' font-size=\'12\'>BLDS LOGO</text></svg>'">
+      <img src="logo.png" alt="BLDS Logo">
     </div>
     <h1 class="title">BLDS DOMINION</h1>
     <p class="subtitle">"Welcome, Dominioner."</p>
@@ -428,7 +445,7 @@
         <input type="text" id="adm-member-id" class="input-field" placeholder="ID (e.g. 0001)">
         <input type="text" id="adm-member-name" class="input-field" placeholder="Name">
         <input type="text" id="adm-member-joined" class="input-field" placeholder="Joined (e.g. 03 May 2023)">
-        <input type="text" id="adm-member-roles" class="input-field" placeholder="Roles (comma separated: OWNER, FOUNDER)">
+        <input type="text" id="adm-member-roles" class="input-field" placeholder="Roles (comma separated: Owner, Founder)">
         <button class="btn" onclick="saveDominioner()">SAVE / UPDATE</button>
       </div>
       <div id="admin-members-list"></div>
@@ -438,7 +455,7 @@
     <div id="admin-badges" class="admin-subpanel">
       <h3>Manage Badges</h3>
       <div style="margin: 16px 0;">
-        <input type="text" id="adm-badge-id" class="input-field" placeholder="Badge ID (e.g. VETERAN)">
+        <input type="text" id="adm-badge-id" class="input-field" placeholder="Badge ID (e.g. BLDS Founder)">
         <input type="text" id="adm-badge-name" class="input-field" placeholder="Badge Name">
         <input type="text" id="adm-badge-desc" class="input-field" placeholder="Description">
         <button class="btn" onclick="saveBadge()">CREATE BADGE</button>
@@ -504,6 +521,28 @@
     let currentActiveMember = null;
 
     // ----------------------------------------------------
+    // INITIALIZATION: SEED FIRST DOMINIONER (#0001)
+    // ----------------------------------------------------
+    function initSeedData() {
+      const initialMemberRef = db.ref('members/0001');
+      initialMemberRef.once('value').then(snapshot => {
+        if (!snapshot.exists()) {
+          initialMemberRef.set({
+            dominionerId: "0001",
+            name: "Michael",
+            joinedDate: "03 May 2023",
+            roles: ["Owner", "Founder"],
+            badges: {
+              "BLDS Founder": true
+            },
+            fragment: 0,
+            status: "active"
+          });
+        }
+      });
+    }
+
+    // ----------------------------------------------------
     // ROUTING & SPA NAVIGATION
     // ----------------------------------------------------
     function navigateTo(viewId) {
@@ -513,12 +552,22 @@
     }
 
     function checkHashRoute() {
-      if (window.location.hash === '#admin') {
+      const hash = window.location.hash;
+      if (hash === '#admin') {
         navigateTo('view-admin-auth');
+      } else if (hash.startsWith('#profile/')) {
+        const id = hash.replace('#profile/', '').trim();
+        if (id) {
+          fetchAndShowProfile(id);
+        }
       }
     }
+
     window.addEventListener('hashchange', checkHashRoute);
-    window.addEventListener('load', checkHashRoute);
+    window.addEventListener('load', () => {
+      initSeedData();
+      checkHashRoute();
+    });
 
     function showToast(msg) {
       const t = document.getElementById('toast');
@@ -533,7 +582,10 @@
     function searchProfile() {
       const id = document.getElementById('search-id-input').value.trim();
       if (!id) return showToast("Enter Dominioner ID");
+      fetchAndShowProfile(id);
+    }
 
+    function fetchAndShowProfile(id) {
       db.ref('members/' + id).once('value').then(snapshot => {
         if (!snapshot.exists() || snapshot.val().status === 'disabled') {
           showToast("Dominioner not found or disabled.");
@@ -689,11 +741,10 @@
     }
 
     // ----------------------------------------------------
-    // ADMIN PANEL: AUTH & CONTROLE
+    // ADMIN PANEL: AUTH & CONTROL
     // ----------------------------------------------------
     function authAdmin() {
       const code = document.getElementById('admin-pass-input').value;
-      // Access code validation
       if (code === "BLDS-STAFF-ONLY-PANEL-0000") {
         navigateTo('view-admin-panel');
         loadAdminData();
@@ -808,7 +859,6 @@
 
         db.ref('members/' + id).update({ fragment: updated });
 
-        // Add to history & send notification
         const notifKey = db.ref('notifications').push().key;
         db.ref('notifications/' + notifKey).set({
           dominionerId: id,
