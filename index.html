@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BLDS DOMINION SYSTEM</title>
+  
+  <!-- CSS STYLES -->
+  <style>
+    :root {
+      --bg-color: #000000;
+      --surface-color: rgba(18, 18, 18, 0.75);
+      --border-color: rgba(255, 255, 255, 0.15);
+      --text-main: #ffffff;
+      --text-muted: #888888;
+      --glow-color: rgba(255, 255, 255, 0.25);
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 10px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo {
+      width: 90px;
+      height: auto;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+    }
+
+    .nav-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #fff;
+    }
+
+    .card {
+      width: 100%;
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(12px);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 25px var(--glow-color);
+    }
+
+    .page-view {
+      display: none;
+      width: 100%;
+    }
+
+    .page-view.active {
+      display: block;
+    }
+
+    h1, h2, h3 {
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .title-primary {
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .roles-container {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .role-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border: 1px solid var(--text-main);
+      border-radius: 4px;
+      letter-spacing: 1px;
+    }
+
+    .info-group {
+      margin-top: 16px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 16px;
+    }
+
+    .info-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .badges-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .badge-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .fragment-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+
+    .fragment-value {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: rgba(0, 0, 0, 0.6);
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--text-main);
+      box-shadow: 0 0 10px var(--glow-color);
+    }
+
+    button.btn-primary {
+      background: var(--text-main);
+      color: var(--bg-color);
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      margin-top: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: opacity 0.2s;
+    }
+
+    button.btn-primary:hover {
+      opacity: 0.85;
+    }
+
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer a:hover {
+      color: var(--text-main);
+    }
+
+    /* Notification Drawer */
+    .notification-panel {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 100%;
+      max-width: 360px;
+      height: 100%;
+      background: var(--bg-color);
+      border-left: 1px solid var(--border-color);
+      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.8);
+      transition: right 0.3s ease;
+      z-index: 1000;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .notification-panel.active {
+      right: 0;
+    }
+
+    .notif-item {
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 0;
+    }
+
+    .notif-item.unread {
+      border-left: 2px solid var(--text-main);
+      padding-left: 8px;
+    }
+
+    .notif-title {
+      font-weight: bold;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .notif-msg {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .notif-time {
+      font-size: 10px;
+      color: #555;
+      margin-top: 4px;
+    }
+
+    .badge-count {
+      background: #ff3333;
+      color: #fff;
+      font-size: 10px;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-weight: bold;
+      margin-left: 4px;
+    }
+
+    /* Admin Sub-Tabs */
+    .admin-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+    }
+
+    .admin-tabs button {
+      width: auto;
+      padding: 6px 12px;
+      font-size: 11px;
+      white-space: nowrap;
+      margin-top: 0;
+    }
+
+    .admin-subpanel {
+      display: none;
+    }
+
+    .admin-subpanel.active {
+      display: block;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 11px;
+    }
+
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- NAVIGATION BAR -->
+    <div class="nav-bar">
+      <img src="assets/logo.png" alt="BLDS Logo" style="height: 30px; cursor: pointer;" onclick="navigate('home')">
+      <div>
+        <button class="nav-btn" onclick="navigate('home')">Home</button>
+        <button class="nav-btn" onclick="navigate('redeem')">Redeem</button>
+        <button class="nav-btn" onclick="navigate('admin')">Admin</button>
+      </div>
+    </div>
+
+    <!-- 1. HOME VIEW -->
+    <div id="viewHome" class="page-view active">
+      <div class="card" style="text-align: center;">
+        <img src="assets/logo.png" alt="BLDS Logo" class="logo">
+        <h1 class="title-primary">BLDS DOMINION SYSTEM</h1>
+        <p class="subtitle">Official Dominioner Directory & Portal</p>
+        
+        <form id="searchForm">
+          <input type="text" id="searchId" placeholder="Masukkan ID Dominioner (Contoh: 0001)" required>
+          <button type="submit" class="btn-primary">CARI PROFILE</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 2. PUBLIC PROFILE VIEW -->
+    <div id="viewProfile" class="page-view">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <h1 class="title-primary" id="pName" style="text-align: left;">MICHAEL</h1>
+            <p class="subtitle" id="pId" style="text-align: left; margin-bottom: 12px;">Dominioner #0001</p>
+          </div>
+          <button class="nav-btn" id="notifBtn">
+            🔔<span class="badge-count" id="notifBadge" style="display:none;">0</span>
+          </button>
+        </div>
+
+        <div class="roles-container" id="pRoles" style="justify-content: flex-start;"></div>
+
+        <div class="info-group">
+          <div class="info-label">Joined</div>
+          <div id="pJoined" style="font-size: 13px;">-</div>
+        </div>
+
+        <div class="info-group">
+          <div class="info-label">Badges</div>
+          <div class="badges-list" id="pBadges"></div>
+        </div>
+
+        <div class="info-group">
+          <div class="info-label">Fragment</div>
+          <div class="fragment-box">
+            <span>💠 TOTAL</span>
+            <span class="fragment-value" id="pFragment">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. SECRET CODE REDEEM VIEW -->
+    <div id="viewRedeem" class="page-view">
+      <div class="card">
+        <img src="assets/logo.png" alt="BLDS Logo" class="logo" style="display: block; margin: 0 auto 16px auto;">
+        <h1 class="title-primary">BLDS SECRET</h1>
+        <p class="subtitle">Enter Secret Code Redemption</p>
+
+        <form id="redeemForm">
+          <div class="info-label">Dominioner ID</div>
+          <input type="text" id="rDomId" placeholder="Masukkan ID (Contoh: 0001)" required>
+
+          <div class="info-label" style="margin-top: 12px;">Secret Code</div>
+          <input type="text" id="rCode" placeholder="Enter Secret Code" style="text-transform: uppercase;" required>
+
+          <button type="submit" class="btn-primary" id="rSubmit">REDEEM</button>
+        </form>
+
+        <div id="rMessage" style="margin-top: 16px; font-size: 12px; text-align: center;"></div>
+      </div>
+    </div>
+
+    <!-- 4. ADMIN PANEL VIEW -->
+    <div id="viewAdmin" class="page-view">
+      
+      <!-- LOGIN ADMIN -->
+      <div class="card" id="adminLoginCard">
+        <img src="assets/logo.png" alt="BLDS Logo" class="logo" style="display: block; margin: 0 auto 16px auto;">
+        <h1 class="title-primary">BLDS STAFF ONLY</h1>
+        <p class="subtitle">Enter Access Code to Continue</p>
+        
+        <input type="password" id="adminAccessCode" placeholder="Access Code">
+        <button class="btn-primary" id="adminLoginBtn">ENTER</button>
+        <div id="adminLoginError" style="color: #ff3333; font-size: 12px; margin-top: 10px; text-align: center;"></div>
+      </div>
+
+      <!-- ADMIN DASHBOARD -->
+      <div id="adminDashboardCard" style="display: none; width: 100%;">
+        <div class="card">
+          <h2 class="title-primary" style="text-align: left; font-size: 16px; margin-bottom: 12px;">BLDS ADMIN PANEL</h2>
+          
+          <div class="admin-tabs">
+            <button class="nav-btn" onclick="switchAdminTab('tabMembers')">Dominioners</button>
+            <button class="nav-btn" onclick="switchAdminTab('tabBadges')">Badges</button>
+            <button class="nav-btn" onclick="switchAdminTab('tabFragments')">Fragments</button>
+            <button class="nav-btn" onclick="switchAdminTab('tabCodes')">Secret Codes</button>
+            <button class="nav-btn" onclick="switchAdminTab('tabHistory')">Redemptions</button>
+          </div>
+
+          <!-- TAB 1: DOMINIONERS -->
+          <div id="tabMembers" class="admin-subpanel active">
+            <h3>Manage Dominioners</h3>
+            <form id="addMemberForm">
+              <input type="text" id="mName" placeholder="Name" required>
+              <input type="text" id="mId" placeholder="Dominioner ID (Unique)" required>
+              <input type="text" id="mRoles" placeholder="Roles (pisahkan koma: Owner, Founder)" required>
+              <button class="btn-primary" type="submit">SAVE DOMINIONER</button>
+            </form>
+            <div id="memberListTable"></div>
+          </div>
+
+          <!-- TAB 2: BADGES -->
+          <div id="tabBadges" class="admin-subpanel">
+            <h3>Create Badge</h3>
+            <form id="addBadgeForm">
+              <input type="text" id="bName" placeholder="Badge Name" required>
+              <input type="text" id="bDesc" placeholder="Description" required>
+              <button class="btn-primary" type="submit">CREATE BADGE</button>
+            </form>
+            <div id="badgeListTable"></div>
+          </div>
+
+          <!-- TAB 3: FRAGMENTS -->
+          <div id="tabFragments" class="admin-subpanel">
+            <h3>Manual Fragment Adjustment</h3>
+            <form id="adjFragForm">
+              <input type="text" id="fId" placeholder="Dominioner ID" required>
+              <input type="number" id="fAmount" placeholder="Amount" required>
+              <input type="text" id="fReason" placeholder="Reason (e.g. Event Reward)" required>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn-primary" type="button" id="btnFragAdd">ADD</button>
+                <button class="btn-primary" type="button" id="btnFragRemove" style="background:#444; color:#fff;">REMOVE</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- TAB 4: SECRET CODES -->
+          <div id="tabCodes" class="admin-subpanel">
+            <h3>Create Secret Code</h3>
+            <form id="addCodeForm">
+              <input type="text" id="cCode" placeholder="Code (e.g. BLACK-001)" style="text-transform:uppercase;" required>
+              <input type="number" id="cFrag" placeholder="Reward Fragment Amount (Optional)">
+              <select id="cBadgeSelect">
+                <option value="">-- Reward Badge (Optional) --</option>
+              </select>
+              <input type="text" id="cReason" placeholder="Reason / Event Source" required>
+              <input type="number" id="cMax" placeholder="Max Redemption Limit (e.g. 100)" required>
+              <input type="date" id="cExp" required>
+              <button class="btn-primary" type="submit">CREATE SECRET CODE</button>
+            </form>
+            <div id="codeListTable"></div>
+          </div>
+
+          <!-- TAB 5: REDEMPTION LOG -->
+          <div id="tabHistory" class="admin-subpanel">
+            <h3>Redemption History</h3>
+            <div id="redemptionLogTable"></div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- NOTIFICATION PANEL -->
+  <div class="notification-panel" id="notifPanel">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h3>NOTIFIKASI</h3>
+      <button class="nav-btn" id="closeNotifBtn" style="padding: 2px 8px;">✕</button>
+    </div>
+    <div id="notifList"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <a href="https://discord.gg/r4dM4QFteV" target="_blank">Discord Community</a>
+    <a href="https://chat.whatsapp.com/LYhSQn3vXhO6qpVWyoJEoR?s=cl&p=a&ilr=1" target="_blank">WhatsApp Group</a>
+  </footer>
+
+  <!-- FIREBASE & JAVASCRIPT LOGIC -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue, set, update, push, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    // FIREBASE REALTIME DATABASE CONFIGURATION
+    const firebaseConfig = {
+      databaseURL: "https://blds-profile-default-rtdb.asia-southeast1.firebasedatabase.app/",
+      projectId: "blds-profile"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // SYSTEM STATE
+    let currentProfileId = null;
+
+    // NAVIGATION SYSTEM
+    window.navigate = function(pageId, param = null) {
+      document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+      
+      if (pageId === 'home') {
+        document.getElementById('viewHome').classList.add('active');
+      } else if (pageId === 'profile') {
+        document.getElementById('viewProfile').classList.add('active');
+        if (param) loadProfile(param);
+      } else if (pageId === 'redeem') {
+        document.getElementById('viewRedeem').classList.add('active');
+      } else if (pageId === 'admin') {
+        document.getElementById('viewAdmin').classList.add('active');
+      }
+    };
+
+    // SEARCH PROFILE FORM
+    document.getElementById('searchForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const id = document.getElementById('searchId').value.trim();
+      if (id) navigate('profile', id);
+    });
+
+    // LOAD PROFILE LOGIC
+    function loadProfile(id) {
+      currentProfileId = id;
+      const memberRef = ref(db, `members/${id}`);
+      
+      onValue(memberRef, (snapshot) => {
+        const data = snapshot.val();
+        if (!data || data.status !== 'active') {
+          document.getElementById('pName').textContent = "TIDAK DITEMUKAN";
+          document.getElementById('pId').textContent = `Dominioner #${id}`;
+          document.getElementById('pRoles').innerHTML = '';
+          document.getElementById('pJoined').textContent = "-";
+          document.getElementById('pBadges').innerHTML = `<div style="font-size:12px; color:#666;">Profile tidak aktif atau belum terdaftar.</div>`;
+          document.getElementById('pFragment').textContent = "0";
+          return;
+        }
+
+        document.getElementById('pName').textContent = data.name.toUpperCase();
+        document.getElementById('pId').textContent = `Dominioner #${data.dominionerId}`;
+        document.getElementById('pJoined').textContent = data.joinedDate || "-";
+        document.getElementById('pFragment').textContent = (data.fragment || 0).toLocaleString();
+
+        // Roles
+        const rolesDiv = document.getElementById('pRoles');
+        rolesDiv.innerHTML = '';
+        if (data.roles) {
+          data.roles.forEach(r => {
+            const span = document.createElement('span');
+            span.className = 'role-tag';
+            span.textContent = `[ ${r.toUpperCase()} ]`;
+            rolesDiv.appendChild(span);
+          });
+        }
+
+        // Badges
+        const badgesDiv = document.getElementById('pBadges');
+        badgesDiv.innerHTML = '';
+        if (data.badges && data.badges.length > 0) {
+          data.badges.forEach(b => {
+            const item = document.createElement('div');
+            item.className = 'badge-item';
+            item.textContent = `[ ${b} ]`;
+            badgesDiv.appendChild(item);
+          });
+        } else {
+          badgesDiv.innerHTML = `<div style="font-size:12px; color:#666;">Tidak ada badge</div>`;
+        }
+      });
+
+      // Notifications Listener
+      const notifRef = ref(db, `notifications/${id}`);
+      onValue(notifRef, (snapshot) => {
+        const notifs = snapshot.val();
+        const notifList = document.getElementById('notifList');
+        const notifBadge = document.getElementById('notifBadge');
+        notifList.innerHTML = '';
+        let unreadCount = 0;
+
+        if (notifs) {
+          const sorted = Object.values(notifs).sort((a,b) => b.timestamp - a.timestamp);
+          sorted.forEach(n => {
+            if (!n.read) unreadCount++;
+            const div = document.createElement('div');
+            div.className = `notif-item ${!n.read ? 'unread' : ''}`;
+            div.innerHTML = `
+              <div class="notif-title">${n.title}</div>
+              <div class="notif-msg">${n.message}</div>
+              <div class="notif-time">${new Date(n.timestamp).toLocaleString('id-ID')}</div>
+            `;
+            notifList.appendChild(div);
+          });
+        } else {
+          notifList.innerHTML = `<div style="font-size:12px; color:#666;">Belum ada notifikasi</div>`;
+        }
+
+        if (unreadCount > 0) {
+          notifBadge.textContent = unreadCount;
+          notifBadge.style.display = 'inline-block';
+        } else {
+          notifBadge.style.display = 'none';
+        }
+      });
+    }
+
+    // NOTIFICATION PANEL TOGGLE
+    document.getElementById('notifBtn').addEventListener('click', () => {
+      document.getElementById('notifPanel').classList.add('active');
+      if (currentProfileId) {
+        const notifRef = ref(db, `notifications/${currentProfileId}`);
+        get(notifRef).then(snap => {
+          const data = snap.val();
+          if (data) {
+            Object.keys(data).forEach(k => {
+              update(ref(db, `notifications/${currentProfileId}/${k}`), { read: true });
+            });
+          }
+        });
+      }
+    });
+
+    document.getElementById('closeNotifBtn').addEventListener('click', () => {
+      document.getElementById('notifPanel').classList.remove('active');
+    });
+
+    // SECRET CODE REDEMPTION LOGIC
+    document.getElementById('redeemForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const domId = document.getElementById('rDomId').value.trim();
+      const codeInput = document.getElementById('rCode').value.trim().toUpperCase();
+      const msgDiv = document.getElementById('rMessage');
+      const submitBtn = document.getElementById('rSubmit');
+
+      msgDiv.textContent = 'Memproses redemption...';
+      msgDiv.style.color = '#fff';
+      submitBtn.disabled = true;
+
+      try {
+        // 1. Check Member
+        const mSnap = await get(ref(db, `members/${domId}`));
+        if (!mSnap.exists()) {
+          throw new Error('Invalid Secret Code.'); // Keamanan: tidak membedakan error ID/Code
+        }
+        const memberData = mSnap.val();
+
+        // 2. Check Code
+        const cSnap = await get(ref(db, `secretCodes/${codeInput}`));
+        if (!cSnap.exists()) {
+          throw new Error('Invalid Secret Code.');
+        }
+        const codeData = cSnap.val();
+
+        if (!codeData.active) throw new Error('Invalid Secret Code.');
+
+        // Expiration Check
+        const today = new Date().toISOString().split('T')[0];
+        if (codeData.expiration && codeData.expiration < today) {
+          throw new Error('This Secret Code has expired.');
+        }
+
+        // Limit Check
+        if (codeData.currentRedemptions >= codeData.maxRedemptions) {
+          throw new Error('Invalid Secret Code.');
+        }
+
+        // Redemption Check
+        const rSnap = await get(ref(db, 'redemptions'));
+        const redemptions = rSnap.val() || {};
+        const alreadyRedeemed = Object.values(redemptions).some(r => r.code === codeInput && r.dominionerId === domId);
+        
+        if (alreadyRedeemed) {
+          throw new Error('Code already redeemed.');
+        }
+
+        // 3. Process Rewards
+        let newFrag = memberData.fragment || 0;
+        let newBadges = memberData.badges || [];
+        let notifMsg = "";
+
+        if (codeData.fragmentAmount && codeData.fragmentAmount > 0) {
+          newFrag += codeData.fragmentAmount;
+          notifMsg += `+${codeData.fragmentAmount} Fragment. `;
+        }
+
+        if (codeData.badgeName && !newBadges.includes(codeData.badgeName)) {
+          newBadges.push(codeData.badgeName);
+          notifMsg += `Badge: ${codeData.badgeName}. `;
+        }
+
+        // Updates
+        await update(ref(db, `members/${domId}`), { fragment: newFrag, badges: newBadges });
+        await update(ref(db, `secretCodes/${codeInput}`), { currentRedemptions: codeData.currentRedemptions + 1 });
+        await push(ref(db, 'redemptions'), { code: codeInput, dominionerId: domId, timestamp: Date.now() });
+        
+        // Push Notif
+        await push(ref(db, `notifications/${domId}`), {
+          title: '🎉 REWARD RECEIVED',
+          message: notifMsg.trim() || 'Berhasil redeem code.',
+          timestamp: Date.now(),
+          read: false
+        });
+
+        msgDiv.style.color = '#00ff66';
+        msgDiv.textContent = `Sukses! Hadiah didapatkan: ${notifMsg}`;
+        document.getElementById('rCode').value = '';
+
+      } catch (err) {
+        msgDiv.style.color = '#ff3333';
+        msgDiv.textContent = err.message;
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    // ADMIN PANEL LOGIC
+    document.getElementById('adminLoginBtn').addEventListener('click', () => {
+      const code = document.getElementById('adminAccessCode').value.trim();
+      const errDiv = document.getElementById('adminLoginError');
+
+      // Akses Kode Admin Sesuai Ketentuan
+      if (code === "BLDS-STAFF-ONLY-PANEL-0000") {
+        document.getElementById('adminLoginCard').style.display = 'none';
+        document.getElementById('adminDashboardCard').style.display = 'block';
+        initAdminDashboard();
+      } else {
+        errDiv.textContent = "Access Code Salah!";
+      }
+    });
+
+    window.switchAdminTab = function(tabId) {
+      document.querySelectorAll('.admin-subpanel').forEach(p => p.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+    };
+
+    function initAdminDashboard() {
+      // Sync Members
+      onValue(ref(db, 'members'), (snap) => {
+        const data = snap.val() || {};
+        let html = '<table><tr><th>ID</th><th>Name</th><th>Roles</th><th>Frag</th></tr>';
+        Object.values(data).forEach(m => {
+          html += `<tr><td>${m.dominionerId}</td><td>${m.name}</td><td>${m.roles ? m.roles.join(', ') : ''}</td><td>${m.fragment}</td></tr>`;
+        });
+        html += '</table>';
+        document.getElementById('memberListTable').innerHTML = html;
+      });
+
+      // Sync Badges
+      onValue(ref(db, 'badges'), (snap) => {
+        const data = snap.val() || {};
+        let html = '<table><tr><th>Badge</th><th>Description</th></tr>';
+        const select = document.getElementById('cBadgeSelect');
+        select.innerHTML = '<option value="">-- Reward Badge (Optional) --</option>';
+
+        Object.values(data).forEach(b => {
+          html += `<tr><td>${b.name}</td><td>${b.description}</td></tr>`;
+          select.innerHTML += `<option value="${b.name}">${b.name}</option>`;
+        });
+        html += '</table>';
+        document.getElementById('badgeListTable').innerHTML = html;
+      });
+
+      // Sync Codes
+      onValue(ref(db, 'secretCodes'), (snap) => {
+        const data = snap.val() || {};
+        let html = '<table><tr><th>Code</th><th>Limit</th><th>Exp</th></tr>';
+        Object.values(data).forEach(c => {
+          html += `<tr><td>${c.code}</td><td>${c.currentRedemptions}/${c.maxRedemptions}</td><td>${c.expiration}</td></tr>`;
+        });
+        html += '</table>';
+        document.getElementById('codeListTable').innerHTML = html;
+      });
+
+      // Sync Redemptions Log
+      onValue(ref(db, 'redemptions'), (snap) => {
+        const data = snap.val() || {};
+        let html = '<table><tr><th>User ID</th><th>Code</th><th>Date</th></tr>';
+        Object.values(data).forEach(r => {
+          html += `<tr><td>${r.dominionerId}</td><td>${r.code}</td><td>${new Date(r.timestamp).toLocaleDateString()}</td></tr>`;
+        });
+        html += '</table>';
+        document.getElementById('redemptionLogTable').innerHTML = html;
+      });
+    }
+
+    // CREATE MEMBER
+    document.getElementById('addMemberForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('mId').value.trim();
+      const name = document.getElementById('mName').value.trim();
+      const roles = document.getElementById('mRoles').value.split(',').map(s => s.trim());
+
+      await set(ref(db, `members/${id}`), {
+        name: name,
+        dominionerId: id,
+        roles: roles,
+        joinedDate: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+        badges: [],
+        fragment: 0,
+        status: 'active'
+      });
+
+      alert('Dominioner berhasil dibuat!');
+      document.getElementById('addMemberForm').reset();
+    });
+
+    // CREATE BADGE
+    document.getElementById('addBadgeForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const bName = document.getElementById('bName').value.trim();
+      const bDesc = document.getElementById('bDesc').value.trim();
+      const bId = bName.toLowerCase().replace(/\s+/g, '-');
+
+      await set(ref(db, `badges/${bId}`), {
+        name: bName,
+        description: bDesc,
+        createdAt: Date.now()
+      });
+
+      alert('Badge berhasil dibuat!');
+      document.getElementById('addBadgeForm').reset();
+    });
+
+    // FRAGMENT ADJUSTMENT
+    async function adjustFragment(type) {
+      const id = document.getElementById('fId').value.trim();
+      const amount = parseInt(document.getElementById('fAmount').value);
+      const reason = document.getElementById('fReason').value.trim();
+
+      const mSnap = await get(ref(db, `members/${id}`));
+      if (!mSnap.exists()) {
+        alert('Dominioner ID tidak ditemukan!');
+        return;
+      }
+
+      let current = mSnap.val().fragment || 0;
+      let newTotal = type === 'ADD' ? current + amount : current - amount;
+      if (newTotal < 0) newTotal = 0;
+
+      await update(ref(db, `members/${id}`), { fragment: newTotal });
+
+      // Record History
+      await push(ref(db, 'fragmentHistory'), {
+        dominionerId: id,
+        amount: amount,
+        type: type,
+        reason: reason,
+        timestamp: Date.now(),
+        admin: 'OWNER'
+      });
+
+      // Record Notification
+      await push(ref(db, `notifications/${id}`), {
+        title: type === 'ADD' ? '💠 FRAGMENT RECEIVED' : '💠 FRAGMENT DEDUCTED',
+        message: `${type === 'ADD' ? '+' : '-'}${amount} Fragment. Reason: ${reason}`,
+        timestamp: Date.now(),
+        read: false
+      });
+
+      alert(`Fragment berhasil diperbarui! Total: ${newTotal}`);
+      document.getElementById('adjFragForm').reset();
+    }
+
+    document.getElementById('btnFragAdd').addEventListener('click', () => adjustFragment('ADD'));
+    document.getElementById('btnFragRemove').addEventListener('click', () => adjustFragment('REMOVE'));
+
+    // CREATE SECRET CODE
+    document.getElementById('addCodeForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const code = document.getElementById('cCode').value.trim().toUpperCase();
+      const frag = parseInt(document.getElementById('cFrag').value) || 0;
+      const badge = document.getElementById('cBadgeSelect').value || null;
+      const reason = document.getElementById('cReason').value.trim();
+      const max = parseInt(document.getElementById('cMax').value);
+      const exp = document.getElementById('cExp').value;
+
+      await set(ref(db, `secretCodes/${code}`), {
+        code: code,
+        fragmentAmount: frag,
+        badgeName: badge,
+        reason: reason,
+        maxRedemptions: max,
+        currentRedemptions: 0,
+        expiration: exp,
+        active: true,
+        createdAt: Date.now()
+      });
+
+      alert('Secret Code berhasil dibuat!');
+      document.getElementById('addCodeForm').reset();
+    });
+
+  </script>
+</body>
+</html>
