@@ -61,13 +61,25 @@
     }
 
     .btn-secondary {
-      border-color: #222;
+      border-color: #333;
       color: #888;
+      font-size: 11px;
+      padding: 8px 16px;
     }
 
     .btn-secondary:hover {
       background: #222;
       color: #fff;
+    }
+
+    .btn-danger {
+      border-color: #551111;
+      color: #ff6666;
+    }
+
+    .btn-danger:hover {
+      background: #551111;
+      color: #ffffff;
     }
 
     .input-field {
@@ -86,6 +98,11 @@
 
     .input-field:focus {
       border-color: #ffffff;
+    }
+
+    .input-field-left {
+      text-align: left;
+      max-width: 100%;
     }
 
     /* CONTAINER LAYOUT */
@@ -242,6 +259,24 @@
       margin-top: 4px;
     }
 
+    /* ADMIN PANEL STYLING */
+    .admin-card {
+      width: 100%;
+      background: #0a0a0a;
+      border: 1px solid #222;
+      padding: 16px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .admin-card h3 {
+      font-size: 14px;
+      margin-bottom: 12px;
+      color: #fff;
+      border-bottom: 1px solid #222;
+      padding-bottom: 8px;
+    }
+
     .toast {
       position: fixed;
       bottom: 20px;
@@ -261,18 +296,18 @@
   <!-- TOAST NOTIFICATION -->
   <div id="toast" class="toast"></div>
 
-  <!-- TAMPILAN 1: TAMPILAN AWAL MEMASUKKAN NAMA -->
+  <!-- TAMPILAN 1: MASUKAN NAMA -->
   <section id="view-enter-name" class="view-section active">
     <div class="logo-container">
       <img src="logo.png" alt="BLDS Logo">
     </div>
     <h1 class="title">JOIN DOMINION</h1>
     <p class="subtitle">Enter Your Name</p>
-    <input type="text" id="user-name-input" class="input-field" placeholder="Enter Name (e.g. Michael)">
+    <input type="text" id="user-name-input" class="input-field" placeholder="Dominioners">
     <button class="btn" onclick="registerUser()">CONTINUE</button>
   </section>
 
-  <!-- TAMPILAN 2: TAMPILAN KEDUA (MAIN MENU) -->
+  <!-- TAMPILAN 2: MAIN MENU -->
   <section id="view-main-menu" class="view-section">
     <div class="logo-container">
       <img src="logo.png" alt="BLDS Logo">
@@ -282,6 +317,7 @@
     
     <button class="btn" onclick="openProfileView()">PROFILE</button>
     <button class="btn" onclick="navigateTo('view-secret-code')">SECRET CODE</button>
+    <button class="btn btn-secondary" style="margin-top: 24px;" onclick="navigateTo('view-admin-login')">ADMIN PANEL</button>
   </section>
 
   <!-- TAMPILAN 3: PROFILE DISPLAY -->
@@ -296,9 +332,7 @@
         </div>
       </div>
 
-      <div class="roles-list" id="prof-roles">
-        <span class="role-badge">[ MEMBER ]</span>
-      </div>
+      <div class="roles-list" id="prof-roles"></div>
 
       <div class="profile-info">
         Joined:<br>
@@ -306,9 +340,7 @@
       </div>
 
       <div class="section-title">BADGES</div>
-      <div class="badges-grid" id="prof-badges">
-        <div class="badge-item">[ NEW DOMINIONER ]</div>
-      </div>
+      <div class="badges-grid" id="prof-badges"></div>
 
       <div class="section-title">FRAGMENT</div>
       <div class="fragment-box" id="prof-fragment">0</div>
@@ -325,7 +357,63 @@
     <button class="btn" onclick="redeemCode()">REDEEM</button>
   </section>
 
-  <!-- FIREBASE REALTIME DATABASE SDK (COMPAT MODULES) -->
+  <!-- TAMPILAN 5: ADMIN LOGIN -->
+  <section id="view-admin-login" class="view-section">
+    <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
+    <h2 class="title">STAFF ACCESS</h2>
+    <p class="subtitle">Enter Admin Passcode</p>
+    
+    <input type="password" id="admin-pass-input" class="input-field" placeholder="Passcode">
+    <button class="btn" onclick="verifyAdminPass()">LOGIN</button>
+  </section>
+
+  <!-- TAMPILAN 6: ADMIN PANEL MAIN -->
+  <section id="view-admin-panel" class="view-section" style="max-width: 600px;">
+    <button class="back-btn" onclick="navigateTo('view-main-menu')">← LOGOUT ADMIN</button>
+    <h2 class="title" style="margin-bottom: 20px;">BLDS ADMIN PANEL</h2>
+
+    <!-- ADMIN 1: CARI PLAYER LEWAT URUTAN -->
+    <div class="admin-card">
+      <h3>1. SEARCH PLAYER BY ORDER (#0000)</h3>
+      <div style="display: flex; gap: 8px;">
+        <input type="text" id="adm-search-seq" class="input-field input-field-left" placeholder="Enter number (e.g. #0001 or 0001)">
+        <button class="btn" style="width: 120px; margin: 8px 0;" onclick="adminSearchPlayer()">SEARCH</button>
+      </div>
+    </div>
+
+    <!-- ADMIN 2: EDIT PLAYER DATA (HANYA MUNCUL JIKA PLAYER DITEMUKAN) -->
+    <div class="admin-card" id="adm-edit-section" style="display: none;">
+      <h3>2. EDIT PLAYER: <span id="adm-target-id" style="color: #66ff66;">-</span></h3>
+      
+      <label style="font-size: 11px; color: #888;">Title / Rank / Roles (Commas separated):</label>
+      <input type="text" id="adm-edit-roles" class="input-field input-field-left" placeholder="e.g. Owner, Founder, VIP">
+
+      <label style="font-size: 11px; color: #888; margin-top: 8px; display: block;">Joined Date:</label>
+      <input type="text" id="adm-edit-joined" class="input-field input-field-left" placeholder="e.g. 25 August 2026">
+
+      <label style="font-size: 11px; color: #888; margin-top: 8px; display: block;">Current Fragment:</label>
+      <input type="number" id="adm-edit-fragment" class="input-field input-field-left" placeholder="Fragment amount">
+
+      <button class="btn" onclick="adminSavePlayerData()">UPDATE PLAYER DATA</button>
+    </div>
+
+    <!-- ADMIN 3: BUAT SECRET CODE BARU -->
+    <div class="admin-card">
+      <h3>3. CREATE NEW SECRET CODE</h3>
+      <input type="text" id="adm-code-name" class="input-field input-field-left" placeholder="Code String (e.g. REWARD-2026)">
+      
+      <label style="font-size: 11px; color: #888; margin-top: 8px; display: block;">Fragment Reward (0 if none):</label>
+      <input type="number" id="adm-code-frag" class="input-field input-field-left" placeholder="0" value="0">
+
+      <label style="font-size: 11px; color: #888; margin-top: 8px; display: block;">Badge Reward Name (Blank if none):</label>
+      <input type="text" id="adm-code-badge" class="input-field input-field-left" placeholder="e.g. Event Winner Badge">
+
+      <button class="btn" onclick="adminCreateSecretCode()">CREATE CODE</button>
+    </div>
+
+  </section>
+
+  <!-- FIREBASE SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -339,8 +427,9 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // STATE LOKAL USER
+    // STATE MANAGEMENT
     let currentUser = null;
+    let selectedAdminPlayer = null;
 
     // Helper: Formatter Angka ke 4 Digit (1 -> 0001)
     function padFourDigits(num) {
@@ -363,7 +452,7 @@
     }
 
     // ----------------------------------------------------
-    // PROCESS 1: PROSES PENDAFTARAN & FORMAT ID (Nama-0001)
+    // 1. REGISTRATION SYSTEM (Nama-0001)
     // ----------------------------------------------------
     function registerUser() {
       const inputName = document.getElementById('user-name-input').value.trim();
@@ -371,7 +460,6 @@
 
       const counterRef = db.ref('counters/lastDominionerNumber');
       
-      // Ambil urutan nomor secara otomatis & terstruktur
       counterRef.transaction((currentVal) => {
         return (currentVal || 0) + 1;
       }, (error, committed, snapshot) => {
@@ -379,8 +467,8 @@
           showToast("Terjadi kesalahan sistem.");
         } else if (committed) {
           const numberSeq = snapshot.val();
-          const formattedNumber = padFourDigits(numberSeq); // 0001, 0002, dst
-          const fullDominionerId = `${inputName}-${formattedNumber}`; // Format: Michael-0001
+          const formattedNumber = padFourDigits(numberSeq); // 0001, 0002...
+          const fullDominionerId = `${inputName}-${formattedNumber}`;
 
           const nowStr = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
@@ -394,32 +482,62 @@
             badges: { "New Dominioner": true }
           };
 
-          // Simpan ke Realtime Database
           db.ref('members/' + fullDominionerId).set(userData).then(() => {
             currentUser = userData;
             document.getElementById('welcome-user-text').innerText = `Welcome, ${fullDominionerId}`;
-            navigateTo('view-main-menu'); // Buka Tampilan Kedua
+            navigateTo('view-main-menu');
           });
         }
       });
     }
 
     // ----------------------------------------------------
-    // PROCESS 2: PROFILE DISPLAY
+    // 2. PROFILE VIEW
     // ----------------------------------------------------
     function openProfileView() {
       if (!currentUser) return navigateTo('view-enter-name');
 
-      document.getElementById('prof-name').innerText = currentUser.name;
-      document.getElementById('prof-id').innerText = currentUser.dominionerId;
-      document.getElementById('prof-joined').innerText = currentUser.joinedDate;
-      document.getElementById('prof-fragment').innerText = currentUser.fragment;
+      // Ambil data terbaru dari db
+      db.ref('members/' + currentUser.dominionerId).once('value').then(snap => {
+        if (snap.exists()) {
+          currentUser = snap.val();
+        }
 
-      navigateTo('view-profile');
+        document.getElementById('prof-name').innerText = currentUser.name;
+        document.getElementById('prof-id').innerText = `ID: ${currentUser.dominionerId}`;
+        document.getElementById('prof-joined').innerText = currentUser.joinedDate || '-';
+        document.getElementById('prof-fragment').innerText = (currentUser.fragment || 0).toLocaleString();
+
+        // Render Roles
+        const rolesContainer = document.getElementById('prof-roles');
+        rolesContainer.innerHTML = '';
+        if (currentUser.roles) {
+          currentUser.roles.forEach(role => {
+            const span = document.createElement('span');
+            span.className = 'role-badge';
+            span.innerText = `[ ${role.toUpperCase()} ]`;
+            rolesContainer.appendChild(span);
+          });
+        }
+
+        // Render Badges
+        const badgesContainer = document.getElementById('prof-badges');
+        badgesContainer.innerHTML = '';
+        if (currentUser.badges) {
+          Object.keys(currentUser.badges).forEach(b => {
+            const div = document.createElement('div');
+            div.className = 'badge-item';
+            div.innerText = `[ ${b.toUpperCase()} ]`;
+            badgesContainer.appendChild(div);
+          });
+        }
+
+        navigateTo('view-profile');
+      });
     }
 
     // ----------------------------------------------------
-    // PROCESS 3: SECRET CODE REDEEM
+    // 3. SECRET CODE REDEEM
     // ----------------------------------------------------
     function redeemCode() {
       if (!currentUser) return showToast("Silakan daftar terlebih dahulu.");
@@ -432,7 +550,6 @@
 
         const codeData = cSnap.val();
 
-        // Cek apakah user sudah pernah klaim
         db.ref('redemptions').orderByChild('dominionerId').equalTo(currentUser.dominionerId).once('value', rSnap => {
           let alreadyClaimed = false;
           rSnap.forEach(r => {
@@ -447,6 +564,10 @@
           const updates = {};
           updates[`members/${currentUser.dominionerId}/fragment`] = newFrag;
 
+          if (codeData.badgeReward) {
+            updates[`members/${currentUser.dominionerId}/badges/${codeData.badgeReward}`] = true;
+          }
+
           const redKey = db.ref('redemptions').push().key;
           updates[`redemptions/${redKey}`] = {
             dominionerId: currentUser.dominionerId,
@@ -459,6 +580,96 @@
             document.getElementById('redeem-code-input').value = '';
           });
         });
+      });
+    }
+
+    // ----------------------------------------------------
+    // 4. ADMIN PANEL FUNCTIONS
+    // ----------------------------------------------------
+    function verifyAdminPass() {
+      const pass = document.getElementById('admin-pass-input').value.trim();
+      if (pass === "BLDS-STAFF-ONLY-PANEL-0000") {
+        document.getElementById('admin-pass-input').value = '';
+        navigateTo('view-admin-panel');
+      } else {
+        showToast("Passcode Admin Salah!");
+      }
+    }
+
+    // Cari Player Berdasarkan Nomor Urut (#0001)
+    function adminSearchPlayer() {
+      let query = document.getElementById('adm-search-seq').value.trim().replace('#', '');
+      if (/^\d+$/.test(query)) {
+        query = padFourDigits(parseInt(query));
+      }
+
+      if (!query) return showToast("Masukkan nomor urut player!");
+
+      db.ref('members').once('value').then(snap => {
+        let found = null;
+        snap.forEach(child => {
+          const p = child.val();
+          if (p.numberSeq === query || p.dominionerId.endsWith(`-${query}`)) {
+            found = p;
+          }
+        });
+
+        if (found) {
+          selectedAdminPlayer = found;
+          document.getElementById('adm-target-id').innerText = found.dominionerId;
+          document.getElementById('adm-edit-roles').value = found.roles ? found.roles.join(', ') : '';
+          document.getElementById('adm-edit-joined').value = found.joinedDate || '';
+          document.getElementById('adm-edit-fragment').value = found.fragment || 0;
+          document.getElementById('adm-edit-section').style.display = 'block';
+          showToast("Player ditemukan!");
+        } else {
+          document.getElementById('adm-edit-section').style.display = 'none';
+          showToast("Player tidak ditemukan!");
+        }
+      });
+    }
+
+    // Edit Data Player (Roles, Joined Date, Fragment)
+    function adminSavePlayerData() {
+      if (!selectedAdminPlayer) return;
+
+      const rolesInput = document.getElementById('adm-edit-roles').value.trim();
+      const joinedInput = document.getElementById('adm-edit-joined').value.trim();
+      const fragInput = parseInt(document.getElementById('adm-edit-fragment').value) || 0;
+
+      const updatedRoles = rolesInput ? rolesInput.split(',').map(r => r.trim()) : ["Member"];
+
+      const updates = {
+        roles: updatedRoles,
+        joinedDate: joinedInput,
+        fragment: fragInput
+      };
+
+      db.ref('members/' + selectedAdminPlayer.dominionerId).update(updates).then(() => {
+        showToast("Data Player Berhasil Diperbarui!");
+      });
+    }
+
+    // Buat Secret Code Baru (Badge / Fragment / Kombinasi)
+    function adminCreateSecretCode() {
+      const codeName = document.getElementById('adm-code-name').value.trim();
+      const fragReward = parseInt(document.getElementById('adm-code-frag').value) || 0;
+      const badgeReward = document.getElementById('adm-code-badge').value.trim();
+
+      if (!codeName) return showToast("Masukkan String Kode!");
+      if (fragReward <= 0 && !badgeReward) return showToast("Isi Fragment atau Badge Reward!");
+
+      const codeData = {
+        code: codeName,
+        fragmentReward: fragReward,
+        badgeReward: badgeReward || null
+      };
+
+      db.ref('secretCodes/' + codeName).set(codeData).then(() => {
+        showToast(`Secret Code '${codeName}' Dibuat!`);
+        document.getElementById('adm-code-name').value = '';
+        document.getElementById('adm-code-frag').value = '0';
+        document.getElementById('adm-code-badge').value = '';
       });
     }
   </script>
