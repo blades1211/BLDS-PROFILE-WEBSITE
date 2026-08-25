@@ -50,7 +50,7 @@
       transition: all 0.3s ease;
       text-transform: uppercase;
       width: 100%;
-      max-width: 300px;
+      max-width: 320px;
       margin: 8px 0;
     }
 
@@ -72,7 +72,7 @@
 
     .input-field {
       width: 100%;
-      max-width: 300px;
+      max-width: 320px;
       background: #0d0d0d;
       border: 1px solid #222222;
       color: #ffffff;
@@ -118,23 +118,23 @@
       width: 110px;
       height: 110px;
       object-fit: contain;
-      /* Elegant & Subtle White Outer Glow */
+      /* Soft Subtle Outer Glow Filter */
       filter: 
-        drop-shadow(0 0 4px rgba(255, 255, 255, 0.35))
-        drop-shadow(0 0 12px rgba(255, 255, 255, 0.18));
-      animation: logoSubtlePulse 4s ease-in-out infinite alternate;
+        drop-shadow(0 0 8px rgba(255, 255, 255, 0.25))
+        drop-shadow(0 0 18px rgba(255, 255, 255, 0.10));
+      animation: logoBreathingGlow 5s ease-in-out infinite alternate;
     }
 
-    @keyframes logoSubtlePulse {
+    @keyframes logoBreathingGlow {
       0% {
         filter: 
-          drop-shadow(0 0 4px rgba(255, 255, 255, 0.30))
-          drop-shadow(0 0 10px rgba(255, 255, 255, 0.15));
+          drop-shadow(0 0 6px rgba(255, 255, 255, 0.20))
+          drop-shadow(0 0 14px rgba(255, 255, 255, 0.08));
       }
       100% {
         filter: 
-          drop-shadow(0 0 6px rgba(255, 255, 255, 0.45))
-          drop-shadow(0 0 16px rgba(255, 255, 255, 0.22));
+          drop-shadow(0 0 10px rgba(255, 255, 255, 0.30))
+          drop-shadow(0 0 22px rgba(255, 255, 255, 0.14));
       }
     }
 
@@ -440,14 +440,17 @@
 
     <!-- ADMIN: DOMINIONERS -->
     <div id="admin-dominioners" class="admin-subpanel active">
-      <h3>Manage Dominioners</h3>
-      <div style="margin: 16px 0;">
-        <input type="text" id="adm-member-id" class="input-field" placeholder="ID (e.g. 0001)">
-        <input type="text" id="adm-member-name" class="input-field" placeholder="Name">
-        <input type="text" id="adm-member-joined" class="input-field" placeholder="Joined (e.g. 03 May 2023)">
-        <input type="text" id="adm-member-roles" class="input-field" placeholder="Roles (comma separated: Owner, Founder)">
-        <button class="btn" onclick="saveDominioner()">SAVE / UPDATE</button>
+      <h3>Add Dominioner</h3>
+      <div style="margin: 16px 0; display: flex; flex-direction: column; align-items: flex-start;">
+        <input type="text" id="adm-member-name" class="input-field" placeholder="Name (e.g. Michael)" style="text-align: left;">
+        <input type="text" id="adm-member-joined" class="input-field" placeholder="Joined Date (e.g. 25 August 2026)" style="text-align: left;">
+        <input type="text" id="adm-member-roles" class="input-field" placeholder="Roles (comma separated: Owner, Founder)" style="text-align: left;">
+        <input type="text" id="adm-member-badges" class="input-field" placeholder="Badges (comma separated: BLDS Founder)" style="text-align: left;">
+        <input type="number" id="adm-member-fragment" class="input-field" placeholder="Initial Fragment (e.g. 0)" value="0" style="text-align: left;">
+        <button class="btn" onclick="createDominionerAuto()">CREATE DOMINIONER</button>
       </div>
+      
+      <h3 style="margin-top: 24px;">Dominioner List</h3>
       <div id="admin-members-list"></div>
     </div>
 
@@ -480,7 +483,7 @@
     <div id="admin-fragment" class="admin-subpanel">
       <h3>Manage Fragment</h3>
       <div style="margin: 16px 0;">
-        <input type="text" id="adm-frag-id" class="input-field" placeholder="Dominioner ID">
+        <input type="text" id="adm-frag-id" class="input-field" placeholder="Dominioner ID (e.g. 0001)">
         <input type="number" id="adm-frag-amount" class="input-field" placeholder="Amount">
         <input type="text" id="adm-frag-reason" class="input-field" placeholder="Reason (e.g. Event Reward)">
         <div style="display: flex; gap: 8px;">
@@ -520,23 +523,39 @@
     // GLOBAL STATE
     let currentActiveMember = null;
 
+    // Helper: Formatter untuk ID 4 Digit (contoh: 1 -> 0001)
+    function padFourDigits(num) {
+      return String(num).padStart(4, '0');
+    }
+
     // ----------------------------------------------------
     // INITIALIZATION: SEED FIRST DOMINIONER (#0001)
     // ----------------------------------------------------
     function initSeedData() {
-      const initialMemberRef = db.ref('members/0001');
-      initialMemberRef.once('value').then(snapshot => {
-        if (!snapshot.exists()) {
-          initialMemberRef.set({
-            dominionerId: "0001",
-            name: "Michael",
-            joinedDate: "03 May 2023",
-            roles: ["Owner", "Founder"],
-            badges: {
-              "BLDS Founder": true
-            },
-            fragment: 0,
-            status: "active"
+      const counterRef = db.ref('counters/lastDominionerId');
+      counterRef.transaction((currentValue) => {
+        if (currentValue === null) {
+          return 1; // Set ke 1 jika counter belum ada
+        }
+        return; // Jangan ubah jika sudah ada
+      }, (error, committed, snapshot) => {
+        if (committed || snapshot.exists()) {
+          // Buat data default #0001 jika belum ada di database
+          const initialMemberRef = db.ref('members/0001');
+          initialMemberRef.once('value').then(mSnap => {
+            if (!mSnap.exists()) {
+              initialMemberRef.set({
+                dominionerId: "0001",
+                name: "Michael",
+                joinedDate: "03 May 2023",
+                roles: ["Owner", "Founder"],
+                badges: {
+                  "BLDS Founder": true
+                },
+                fragment: 0,
+                status: "active"
+              });
+            }
           });
         }
       });
@@ -580,9 +599,16 @@
     // PUBLIC: PROFILE SEARCH & DISPLAY
     // ----------------------------------------------------
     function searchProfile() {
-      const id = document.getElementById('search-id-input').value.trim();
-      if (!id) return showToast("Enter Dominioner ID");
-      fetchAndShowProfile(id);
+      let rawInput = document.getElementById('search-id-input').value.trim();
+      if (!rawInput) return showToast("Enter Dominioner ID");
+      
+      // Hapus simbol # jika dimasukkan user
+      let formattedId = rawInput.replace('#', '');
+      if (/^\d+$/.test(formattedId)) {
+        formattedId = padFourDigits(formattedId);
+      }
+      
+      fetchAndShowProfile(formattedId);
     }
 
     function fetchAndShowProfile(id) {
@@ -671,7 +697,10 @@
     // PUBLIC: SECRET CODE REDEEM
     // ----------------------------------------------------
     function redeemCode() {
-      const memberId = document.getElementById('redeem-id-input').value.trim();
+      let memberId = document.getElementById('redeem-id-input').value.trim().replace('#', '');
+      if (/^\d+$/.test(memberId)) {
+        memberId = padFourDigits(memberId);
+      }
       const codeStr = document.getElementById('redeem-code-input').value.trim();
 
       if (!memberId || !codeStr) return showToast("Fill all fields.");
@@ -684,7 +713,6 @@
 
           const codeData = cSnap.val();
 
-          // Check redemption history
           db.ref('redemptions').orderByChild('dominionerId').equalTo(memberId).once('value', rSnap => {
             let alreadyClaimed = false;
             rSnap.forEach(r => {
@@ -693,7 +721,6 @@
 
             if (alreadyClaimed) return showToast("Code already used.");
 
-            // Process Rewards
             const updates = {};
             const memberData = mSnap.val();
             let newFrag = memberData.fragment || 0;
@@ -710,7 +737,6 @@
               rewardsLog.push(`Badge: ${codeData.badgeReward}`);
             }
 
-            // Create Redemption Record
             const redKey = db.ref('redemptions').push().key;
             const nowStr = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
             
@@ -721,7 +747,6 @@
               timestamp: nowStr
             };
 
-            // Create Notification
             const notifKey = db.ref('notifications').push().key;
             updates[`notifications/${notifKey}`] = {
               dominionerId: memberId,
@@ -741,7 +766,7 @@
     }
 
     // ----------------------------------------------------
-    // ADMIN PANEL: AUTH & CONTROL
+    // ADMIN PANEL: AUTH & AUTOMATIC DOMINIONER REGISTRATION
     // ----------------------------------------------------
     function authAdmin() {
       const code = document.getElementById('admin-pass-input').value;
@@ -761,28 +786,24 @@
     }
 
     function loadAdminData() {
-      // Load Members
       db.ref('members').on('value', snap => {
         const container = document.getElementById('admin-members-list');
-        container.innerHTML = '<table class="data-table"><tr><th>ID</th><th>Name</th><th>Frag</th></tr>' +
-          Object.values(snap.val() || {}).map(m => `<tr><td>#${m.dominionerId}</td><td>${m.name}</td><td>${m.fragment || 0}</td></tr>`).join('') + '</table>';
+        container.innerHTML = '<table class="data-table"><tr><th>ID</th><th>Name</th><th>Joined</th><th>Frag</th></tr>' +
+          Object.values(snap.val() || {}).map(m => `<tr><td>Dominioner #${m.dominionerId}</td><td>${m.name}</td><td>${m.joinedDate || '-'}</td><td>${m.fragment || 0}</td></tr>`).join('') + '</table>';
       });
 
-      // Load Badges
       db.ref('badges').on('value', snap => {
         const container = document.getElementById('admin-badges-list');
         container.innerHTML = '<table class="data-table"><tr><th>ID</th><th>Name</th></tr>' +
           Object.values(snap.val() || {}).map(b => `<tr><td>${b.badgeId}</td><td>${b.name}</td></tr>`).join('') + '</table>';
       });
 
-      // Load Codes
       db.ref('secretCodes').on('value', snap => {
         const container = document.getElementById('admin-codes-list');
         container.innerHTML = '<table class="data-table"><tr><th>Code</th><th>Frag</th><th>Badge</th></tr>' +
           Object.values(snap.val() || {}).map(c => `<tr><td>${c.code}</td><td>${c.fragmentReward}</td><td>${c.badgeReward || '-'}</td></tr>`).join('') + '</table>';
       });
 
-      // Load Redemptions
       db.ref('redemptions').on('value', snap => {
         const container = document.getElementById('admin-redemptions-list');
         container.innerHTML = '<table class="data-table"><tr><th>User</th><th>Code</th><th>Reward</th></tr>' +
@@ -790,24 +811,56 @@
       });
     }
 
-    // ADMIN ACTIONS
-    function saveDominioner() {
-      const id = document.getElementById('adm-member-id').value.trim();
+    // CREATE DOMINIONER DENGAN AUTOMATIC SEQUENTIAL ID & FIREBASE TRANSACTION
+    function createDominionerAuto() {
       const name = document.getElementById('adm-member-name').value.trim();
-      const joined = document.getElementById('adm-member-joined').value.trim();
+      const joinedDate = document.getElementById('adm-member-joined').value.trim() || "25 August 2026";
       const rolesStr = document.getElementById('adm-member-roles').value.trim();
+      const badgesStr = document.getElementById('adm-member-badges').value.trim();
+      const initialFragment = parseInt(document.getElementById('adm-member-fragment').value) || 0;
 
-      if (!id || !name) return showToast("ID & Name required");
+      if (!name) return showToast("Name is required!");
 
       const roles = rolesStr ? rolesStr.split(',').map(r => r.trim()) : [];
+      const badgeList = badgesStr ? badgesStr.split(',').map(b => b.trim()) : [];
+      
+      const badgeObj = {};
+      badgeList.forEach(b => { if (b) badgeObj[b] = true; });
 
-      db.ref('members/' + id).update({
-        dominionerId: id,
-        name: name,
-        joinedDate: joined || '01 Jan 2026',
-        roles: roles,
-        status: 'active'
-      }).then(() => showToast("Dominioner Saved"));
+      // Transaksi aman untuk increment counter ID
+      const counterRef = db.ref('counters/lastDominionerId');
+      
+      counterRef.transaction((currentValue) => {
+        // Jika counter belum ada, mulai dari 1. Jika ada, increment + 1
+        return (currentValue || 0) + 1;
+      }, (error, committed, snapshot) => {
+        if (error) {
+          showToast("Failed to generate Dominioner ID");
+        } else if (committed) {
+          const nextNumericId = snapshot.val();
+          const autoId = padFourDigits(nextNumericId);
+
+          // Simpan data member baru ke Firebase
+          db.ref('members/' + autoId).set({
+            dominionerId: autoId,
+            name: name,
+            joinedDate: joinedDate,
+            roles: roles,
+            badges: badgeObj,
+            fragment: initialFragment,
+            status: 'active'
+          }).then(() => {
+            showToast(`✓ DOMINIONER CREATED\n${name}\nDominioner #${autoId}`);
+            
+            // Reset input form
+            document.getElementById('adm-member-name').value = '';
+            document.getElementById('adm-member-joined').value = '';
+            document.getElementById('adm-member-roles').value = '';
+            document.getElementById('adm-member-badges').value = '';
+            document.getElementById('adm-member-fragment').value = '0';
+          });
+        }
+      });
     }
 
     function saveBadge() {
@@ -842,7 +895,10 @@
     }
 
     function modifyFragment(type) {
-      const id = document.getElementById('adm-frag-id').value.trim();
+      let id = document.getElementById('adm-frag-id').value.trim().replace('#', '');
+      if (/^\d+$/.test(id)) {
+        id = padFourDigits(id);
+      }
       const amount = parseInt(document.getElementById('adm-frag-amount').value) || 0;
       const reason = document.getElementById('adm-frag-reason').value.trim();
 
