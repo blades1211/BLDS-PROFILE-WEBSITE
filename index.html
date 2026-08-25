@@ -72,16 +72,6 @@
       color: #fff;
     }
 
-    .btn-danger {
-      border-color: #551111;
-      color: #ff6666;
-    }
-
-    .btn-danger:hover {
-      background: #551111;
-      color: #ffffff;
-    }
-
     .input-field {
       width: 100%;
       max-width: 320px;
@@ -296,8 +286,8 @@
   <!-- TOAST NOTIFICATION -->
   <div id="toast" class="toast"></div>
 
-  <!-- TAMPILAN 1: MASUKAN NAMA -->
-  <section id="view-enter-name" class="view-section active">
+  <!-- TAMPILAN 1: MASUKAN NAMA (Sembunyi secara default, dicek lewat JS) -->
+  <section id="view-enter-name" class="view-section">
     <div class="logo-container">
       <img src="logo.png" alt="BLDS Logo">
     </div>
@@ -381,7 +371,7 @@
       </div>
     </div>
 
-    <!-- ADMIN 2: EDIT PLAYER DATA (HANYA MUNCUL JIKA PLAYER DITEMUKAN) -->
+    <!-- ADMIN 2: EDIT PLAYER DATA -->
     <div class="admin-card" id="adm-edit-section" style="display: none;">
       <h3>2. EDIT PLAYER: <span id="adm-target-id" style="color: #66ff66;">-</span></h3>
       
@@ -452,6 +442,31 @@
     }
 
     // ----------------------------------------------------
+    // CHECK LOCAL STORAGE SAAT HALAMAN DIMUAT (REFRESH PROOF)
+    // ----------------------------------------------------
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedDominionerId = localStorage.getItem('blds_dominioner_id');
+
+      if (savedDominionerId) {
+        // Ambil data user terbaru dari Firebase berdasarkan ID yang tersimpan
+        db.ref('members/' + savedDominionerId).once('value').then(snap => {
+          if (snap.exists()) {
+            currentUser = snap.val();
+            document.getElementById('welcome-user-text').innerText = `Welcome, ${currentUser.dominionerId}`;
+            navigateTo('view-main-menu');
+          } else {
+            // Jika ID lokal tidak ditemukan di DB, bersihkan & minta daftar ulang
+            localStorage.removeItem('blds_dominioner_id');
+            navigateTo('view-enter-name');
+          }
+        });
+      } else {
+        // Belum pernah mendaftar
+        navigateTo('view-enter-name');
+      }
+    });
+
+    // ----------------------------------------------------
     // 1. REGISTRATION SYSTEM (Nama-0001)
     // ----------------------------------------------------
     function registerUser() {
@@ -484,6 +499,10 @@
 
           db.ref('members/' + fullDominionerId).set(userData).then(() => {
             currentUser = userData;
+            
+            // SIMPAN KE BROWSER SUPAYA SAAT REFRESH TIDAK PERLU DAFTAR LAGI
+            localStorage.setItem('blds_dominioner_id', fullDominionerId);
+
             document.getElementById('welcome-user-text').innerText = `Welcome, ${fullDominionerId}`;
             navigateTo('view-main-menu');
           });
@@ -497,7 +516,6 @@
     function openProfileView() {
       if (!currentUser) return navigateTo('view-enter-name');
 
-      // Ambil data terbaru dari db
       db.ref('members/' + currentUser.dominionerId).once('value').then(snap => {
         if (snap.exists()) {
           currentUser = snap.val();
@@ -596,7 +614,6 @@
       }
     }
 
-    // Cari Player Berdasarkan Nomor Urut (#0001)
     function adminSearchPlayer() {
       let query = document.getElementById('adm-search-seq').value.trim().replace('#', '');
       if (/^\d+$/.test(query)) {
@@ -629,7 +646,6 @@
       });
     }
 
-    // Edit Data Player (Roles, Joined Date, Fragment)
     function adminSavePlayerData() {
       if (!selectedAdminPlayer) return;
 
@@ -650,7 +666,6 @@
       });
     }
 
-    // Buat Secret Code Baru (Badge / Fragment / Kombinasi)
     function adminCreateSecretCode() {
       const codeName = document.getElementById('adm-code-name').value.trim();
       const fragReward = parseInt(document.getElementById('adm-code-frag').value) || 0;
