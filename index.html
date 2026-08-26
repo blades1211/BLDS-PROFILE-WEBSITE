@@ -8,7 +8,7 @@
   <!-- Inter Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     /* RESET & BASE STYLES */
@@ -39,55 +39,70 @@
     }
 
     .btn {
-      background: transparent;
+      background: rgba(255, 255, 255, 0.03);
       color: #ffffff;
       border: 1px solid #333333;
-      padding: 12px 24px;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 1px;
+      padding: 14px 24px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
       cursor: pointer;
       transition: all 0.3s ease;
       text-transform: uppercase;
       width: 100%;
-      max-width: 320px;
+      max-width: 340px;
       margin: 8px 0;
+      border-radius: 4px;
     }
 
     .btn:hover, .btn:active {
       background: #ffffff;
       color: #000000;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
     }
 
     .btn-secondary {
-      border-color: #333;
-      color: #888;
+      border-color: #222;
+      color: #666;
       font-size: 11px;
-      padding: 8px 16px;
+      padding: 10px 16px;
     }
 
     .btn-secondary:hover {
-      background: #222;
+      background: #111;
       color: #fff;
+    }
+
+    .btn-danger {
+      border-color: #661111;
+      color: #ff4444;
+      background: rgba(255, 0, 0, 0.05);
+    }
+
+    .btn-danger:hover {
+      background: #ff4444;
+      color: #ffffff;
+      box-shadow: 0 0 15px rgba(255, 68, 68, 0.4);
     }
 
     .input-field {
       width: 100%;
-      max-width: 320px;
-      background: #0d0d0d;
+      max-width: 340px;
+      background: #0a0a0a;
       border: 1px solid #222222;
       color: #ffffff;
-      padding: 12px;
+      padding: 14px;
       font-size: 14px;
       text-align: center;
       margin: 8px 0;
+      border-radius: 4px;
       outline: none;
-      transition: border-color 0.3s;
+      transition: all 0.3s;
     }
 
     .input-field:focus {
       border-color: #ffffff;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     }
 
     .input-field-left {
@@ -161,72 +176,99 @@
       background: none;
       border: none;
       color: #666;
-      font-size: 12px;
+      font-size: 11px;
       cursor: pointer;
       margin-bottom: 24px;
       align-self: flex-start;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: color 0.3s;
     }
 
     .back-btn:hover {
       color: #fff;
     }
 
-    /* PROFILE STYLING */
+    /* MODERN PROFILE STYLING */
     .profile-card {
       width: 100%;
-      border-top: 1px solid #222;
-      border-bottom: 1px solid #222;
-      padding: 24px 0;
+      background: linear-gradient(145deg, #0d0d0d 0%, #050505 100%);
+      border: 1px solid #222222;
+      border-radius: 8px;
+      padding: 28px 20px;
       margin: 16px 0;
       text-align: left;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
     }
 
     .profile-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #1a1a1a;
+      padding-bottom: 16px;
     }
 
     .profile-name {
-      font-size: 22px;
-      font-weight: 700;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #ffffff;
     }
 
     .profile-id {
       font-size: 12px;
       color: #888;
-      margin-top: 2px;
-      letter-spacing: 1px;
+      margin-top: 4px;
+      letter-spacing: 1.5px;
+      font-weight: 600;
     }
 
     .roles-list {
       display: flex;
-      gap: 6px;
-      margin: 12px 0;
+      gap: 8px;
+      margin: 16px 0;
       flex-wrap: wrap;
     }
 
     .role-badge {
-      border: 1px solid #444;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid #333;
       font-size: 10px;
-      padding: 3px 8px;
-      letter-spacing: 1px;
+      padding: 5px 12px;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      border-radius: 3px;
+      color: #ddd;
     }
 
     .profile-info {
       font-size: 12px;
-      color: #888;
+      color: #666;
       margin: 16px 0;
+      line-height: 1.6;
     }
 
     .section-title {
-      font-size: 11px;
-      color: #555;
-      letter-spacing: 1.5px;
-      margin-top: 20px;
-      margin-bottom: 10px;
+      font-size: 10px;
+      color: #444;
+      letter-spacing: 2px;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
     }
 
     .badges-grid {
@@ -236,17 +278,23 @@
     }
 
     .badge-item {
-      background: #0d0d0d;
-      border: 1px solid #222;
-      padding: 8px 12px;
+      background: #000;
+      border: 1px solid #2a2a2a;
+      padding: 8px 14px;
       font-size: 11px;
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
+      font-weight: 600;
+      border-radius: 4px;
+      color: #fff;
+      box-shadow: inset 0 0 10px rgba(255,255,255,0.02);
     }
 
     .fragment-box {
-      font-size: 20px;
-      font-weight: 700;
+      font-size: 26px;
+      font-weight: 800;
       margin-top: 4px;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
     }
 
     /* ADMIN PANEL STYLING */
@@ -254,30 +302,33 @@
       width: 100%;
       background: #0a0a0a;
       border: 1px solid #222;
-      padding: 16px;
+      border-radius: 6px;
+      padding: 18px;
       margin-bottom: 20px;
       text-align: left;
     }
 
     .admin-card h3 {
-      font-size: 14px;
-      margin-bottom: 12px;
+      font-size: 13px;
+      margin-bottom: 14px;
       color: #fff;
-      border-bottom: 1px solid #222;
+      border-bottom: 1px solid #1f1f1f;
       padding-bottom: 8px;
     }
 
     .toast {
       position: fixed;
-      bottom: 20px;
+      bottom: 24px;
       background: #ffffff;
       color: #000000;
       padding: 12px 24px;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       display: none;
-      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+      box-shadow: 0 0 25px rgba(255,255,255,0.3);
       z-index: 1000;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
     }
   </style>
 </head>
@@ -286,7 +337,7 @@
   <!-- TOAST NOTIFICATION -->
   <div id="toast" class="toast"></div>
 
-  <!-- TAMPILAN 1: MASUKAN NAMA (Sembunyi secara default, dicek lewat JS) -->
+  <!-- TAMPILAN 1: MASUKAN NAMA -->
   <section id="view-enter-name" class="view-section">
     <div class="logo-container">
       <img src="logo.png" alt="BLDS Logo">
@@ -326,7 +377,7 @@
 
       <div class="profile-info">
         Joined:<br>
-        <span id="prof-joined" style="color: #fff;">-</span>
+        <span id="prof-joined" style="color: #fff; font-weight: 600;">-</span>
       </div>
 
       <div class="section-title">BADGES</div>
@@ -371,7 +422,7 @@
       </div>
     </div>
 
-    <!-- ADMIN 2: EDIT PLAYER DATA -->
+    <!-- ADMIN 2: EDIT / HAPUS PLAYER DATA -->
     <div class="admin-card" id="adm-edit-section" style="display: none;">
       <h3>2. EDIT PLAYER: <span id="adm-target-id" style="color: #66ff66;">-</span></h3>
       
@@ -385,6 +436,7 @@
       <input type="number" id="adm-edit-fragment" class="input-field input-field-left" placeholder="Fragment amount">
 
       <button class="btn" onclick="adminSavePlayerData()">UPDATE PLAYER DATA</button>
+      <button class="btn btn-danger" style="margin-top: 12px;" onclick="adminDeletePlayer()">DELETE ACCOUNT</button>
     </div>
 
     <!-- ADMIN 3: BUAT SECRET CODE BARU -->
@@ -448,26 +500,23 @@
       const savedDominionerId = localStorage.getItem('blds_dominioner_id');
 
       if (savedDominionerId) {
-        // Ambil data user terbaru dari Firebase berdasarkan ID yang tersimpan
         db.ref('members/' + savedDominionerId).once('value').then(snap => {
           if (snap.exists()) {
             currentUser = snap.val();
             document.getElementById('welcome-user-text').innerText = `Welcome, ${currentUser.dominionerId}`;
             navigateTo('view-main-menu');
           } else {
-            // Jika ID lokal tidak ditemukan di DB, bersihkan & minta daftar ulang
             localStorage.removeItem('blds_dominioner_id');
             navigateTo('view-enter-name');
           }
         });
       } else {
-        // Belum pernah mendaftar
         navigateTo('view-enter-name');
       }
     });
 
     // ----------------------------------------------------
-    // 1. REGISTRATION SYSTEM (Nama-0001)
+    // 1. REGISTRATION SYSTEM (Nama-0001 & BADGE "DOMINIONER")
     // ----------------------------------------------------
     function registerUser() {
       const inputName = document.getElementById('user-name-input').value.trim();
@@ -482,7 +531,7 @@
           showToast("Terjadi kesalahan sistem.");
         } else if (committed) {
           const numberSeq = snapshot.val();
-          const formattedNumber = padFourDigits(numberSeq); // 0001, 0002...
+          const formattedNumber = padFourDigits(numberSeq);
           const fullDominionerId = `${inputName}-${formattedNumber}`;
 
           const nowStr = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -494,15 +543,12 @@
             joinedDate: nowStr,
             fragment: 0,
             roles: ["Member"],
-            badges: { "New Dominioner": true }
+            badges: { "Dominioner": true }
           };
 
           db.ref('members/' + fullDominionerId).set(userData).then(() => {
             currentUser = userData;
-            
-            // SIMPAN KE BROWSER SUPAYA SAAT REFRESH TIDAK PERLU DAFTAR LAGI
             localStorage.setItem('blds_dominioner_id', fullDominionerId);
-
             document.getElementById('welcome-user-text').innerText = `Welcome, ${fullDominionerId}`;
             navigateTo('view-main-menu');
           });
@@ -533,7 +579,7 @@
           currentUser.roles.forEach(role => {
             const span = document.createElement('span');
             span.className = 'role-badge';
-            span.innerText = `[ ${role.toUpperCase()} ]`;
+            span.innerText = role.toUpperCase();
             rolesContainer.appendChild(span);
           });
         }
@@ -545,7 +591,7 @@
           Object.keys(currentUser.badges).forEach(b => {
             const div = document.createElement('div');
             div.className = 'badge-item';
-            div.innerText = `[ ${b.toUpperCase()} ]`;
+            div.innerText = b.toUpperCase();
             badgesContainer.appendChild(div);
           });
         }
@@ -602,7 +648,7 @@
     }
 
     // ----------------------------------------------------
-    // 4. ADMIN PANEL FUNCTIONS
+    // 4. ADMIN PANEL FUNCTIONS (EDIT & DELETE PLAYER)
     // ----------------------------------------------------
     function verifyAdminPass() {
       const pass = document.getElementById('admin-pass-input').value.trim();
@@ -663,6 +709,27 @@
 
       db.ref('members/' + selectedAdminPlayer.dominionerId).update(updates).then(() => {
         showToast("Data Player Berhasil Diperbarui!");
+      });
+    }
+
+    // Hapus Akun Player oleh Admin
+    function adminDeletePlayer() {
+      if (!selectedAdminPlayer) return;
+
+      const confirmDelete = confirm(`Apakah Anda yakin ingin menghapus akun '${selectedAdminPlayer.dominionerId}' secara permanen?`);
+      if (!confirmDelete) return;
+
+      db.ref('members/' + selectedAdminPlayer.dominionerId).remove().then(() => {
+        showToast("Akun Player Berhasil Dihapus!");
+        
+        // Jika player yang dihapus adalah akun yang sedang login di HP ini, hapus sesi lokal
+        if (currentUser && currentUser.dominionerId === selectedAdminPlayer.dominionerId) {
+          localStorage.removeItem('blds_dominioner_id');
+          currentUser = null;
+        }
+
+        selectedAdminPlayer = null;
+        document.getElementById('adm-edit-section').style.display = 'none';
       });
     }
 
