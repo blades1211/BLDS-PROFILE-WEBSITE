@@ -5,13 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BLDS DOMINION</title>
   
-  <!-- Inter Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    /* RESET & BASE STYLES */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -73,6 +71,27 @@
       color: #fff;
     }
 
+    .btn-like {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid #ef4444;
+      color: #ef4444;
+      padding: 8px 16px;
+      font-size: 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+
+    .btn-like:hover, .btn-like.liked {
+      background: #ef4444;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+    }
+
     .btn-danger {
       border-color: #661111;
       color: #ff4444;
@@ -111,7 +130,6 @@
       max-width: 100%;
     }
 
-    /* CONTAINER LAYOUT */
     .view-section {
       display: none;
       width: 100%;
@@ -132,7 +150,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* LOGO & GLOW EFFECT */
     .logo-container {
       margin-bottom: 24px;
     }
@@ -141,9 +158,7 @@
       width: 110px;
       height: 110px;
       object-fit: contain;
-      filter: 
-        drop-shadow(0 0 8px rgba(255, 255, 255, 0.25))
-        drop-shadow(0 0 18px rgba(255, 255, 255, 0.10));
+      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.25));
     }
 
     .title {
@@ -158,7 +173,6 @@
       font-weight: 300;
     }
 
-    /* BACK BUTTON */
     .back-btn {
       background: none;
       border: none;
@@ -176,7 +190,7 @@
       color: #fff;
     }
 
-    /* MODERN PROFILE STYLING */
+    /* PROFILE CARD STYLING */
     .profile-card {
       width: 100%;
       background: linear-gradient(145deg, #0d0d0d 0%, #050505 100%);
@@ -189,16 +203,36 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.8);
       overflow: hidden;
       min-height: 380px;
+      transition: all 0.4s ease;
     }
 
-    .profile-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    /* TOP 1 - 3 & CUSTOM BORDER EFFECTS */
+    .profile-card.effect-top1 {
+      border: 2px solid #ffd700;
+      animation: glowGold 3s infinite ease-in-out;
+      background: linear-gradient(145deg, rgba(255, 215, 0, 0.08) 0%, #050505 100%);
+    }
+
+    .profile-card.effect-top2 {
+      border: 2px solid #c0c0c0;
+      animation: glowSilver 3s infinite ease-in-out;
+      background: linear-gradient(145deg, rgba(192, 192, 192, 0.08) 0%, #050505 100%);
+    }
+
+    .profile-card.effect-top3 {
+      border: 2px solid #cd7f32;
+      animation: glowBronze 3s infinite ease-in-out;
+      background: linear-gradient(145deg, rgba(205, 127, 50, 0.08) 0%, #050505 100%);
+    }
+
+    .profile-card.effect-purple {
+      border: 2px solid #a855f7;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+    }
+
+    .profile-card.effect-cyan {
+      border: 2px solid #06b6d4;
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
     }
 
     .profile-header {
@@ -254,6 +288,13 @@
       box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
     }
 
+    .role-badge.top1-role {
+      border-color: #ffd700;
+      background: rgba(255, 215, 0, 0.15);
+      color: #ffd700;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+    }
+
     .profile-info {
       font-size: 12px;
       color: #666;
@@ -294,7 +335,6 @@
       color: #fff;
     }
 
-    /* KARTU FRAGMENT KREATIF MONOKROM */
     .fragment-container {
       display: flex;
       align-items: center;
@@ -313,36 +353,20 @@
       font-size: 22px;
       color: #ffffff;
       display: inline-block;
-      text-shadow: 
-        0 0 8px rgba(255, 255, 255, 0.9), 
-        0 0 20px rgba(255, 255, 255, 0.6),
-        0 0 35px rgba(255, 255, 255, 0.3);
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
       animation: pulseDiamond 2.5s ease-in-out infinite alternate;
     }
 
     @keyframes pulseDiamond {
-      0% { 
-        transform: scale(0.92); 
-        opacity: 0.75; 
-        filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
-      }
-      50% {
-        transform: scale(1.15) rotate(3deg);
-        opacity: 1;
-        filter: drop-shadow(0 0 12px rgba(255, 255, 255, 1));
-      }
-      100% { 
-        transform: scale(0.98); 
-        opacity: 0.85; 
-        filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
-      }
+      0% { transform: scale(0.92); opacity: 0.75; }
+      50% { transform: scale(1.15) rotate(3deg); opacity: 1; }
+      100% { transform: scale(0.98); opacity: 0.85; }
     }
 
     .fragment-box {
       font-size: 22px;
       font-weight: 800;
       color: #ffffff;
-      letter-spacing: 1px;
     }
 
     /* LEADERBOARD STYLING */
@@ -365,6 +389,7 @@
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      cursor: pointer;
     }
 
     .lb-card:hover {
@@ -427,7 +452,6 @@
       display: inline-block;
     }
 
-    /* GLOW ANIMATIONS FOR TIER BORDERS */
     @keyframes glowGold {
       0% { border-color: rgba(255, 215, 0, 0.4); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
       50% { border-color: rgba(255, 215, 0, 0.9); box-shadow: 0 0 22px rgba(255, 215, 0, 0.6); }
@@ -446,119 +470,35 @@
       100% { border-color: rgba(205, 127, 50, 0.4); box-shadow: 0 0 10px rgba(205, 127, 50, 0.2); }
     }
 
-    /* RANKING SPECIAL GLOWS & NAME EFFECTS */
     .lb-card.rank-1 {
       animation: glowGold 3s infinite ease-in-out;
       background: linear-gradient(90deg, rgba(255, 215, 0, 0.08) 0%, #0a0a0a 100%);
     }
-    .lb-card.rank-1 .lb-rank {
-      background: #ffd700;
-      color: #000;
-      border: none;
-      box-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
-    }
-    .lb-card.rank-1 .lb-top-badge {
-      background: #ffd700;
-      color: #000;
-    }
-    .name-glow-1 {
-      color: #ffe600 !important;
-      text-shadow: 0 0 8px rgba(255, 215, 0, 0.8), 0 0 18px rgba(255, 215, 0, 0.4);
-    }
+    .lb-card.rank-1 .lb-rank { background: #ffd700; color: #000; border: none; }
+    .lb-card.rank-1 .lb-top-badge { background: #ffd700; color: #000; }
+    .name-glow-1 { color: #ffe600 !important; text-shadow: 0 0 8px rgba(255, 215, 0, 0.8); }
 
     .lb-card.rank-2 {
       animation: glowSilver 3s infinite ease-in-out;
       background: linear-gradient(90deg, rgba(192, 192, 192, 0.08) 0%, #0a0a0a 100%);
     }
-    .lb-card.rank-2 .lb-rank {
-      background: #c0c0c0;
-      color: #000;
-      border: none;
-      box-shadow: 0 0 10px rgba(192, 192, 192, 0.6);
-    }
-    .lb-card.rank-2 .lb-top-badge {
-      background: #c0c0c0;
-      color: #000;
-    }
-    .name-glow-2 {
-      color: #e2e8f0 !important;
-      text-shadow: 0 0 8px rgba(226, 232, 240, 0.8), 0 0 16px rgba(192, 192, 192, 0.4);
-    }
+    .lb-card.rank-2 .lb-rank { background: #c0c0c0; color: #000; border: none; }
+    .lb-card.rank-2 .lb-top-badge { background: #c0c0c0; color: #000; }
+    .name-glow-2 { color: #e2e8f0 !important; text-shadow: 0 0 8px rgba(226, 232, 240, 0.8); }
 
     .lb-card.rank-3 {
       animation: glowBronze 3s infinite ease-in-out;
       background: linear-gradient(90deg, rgba(205, 127, 50, 0.08) 0%, #0a0a0a 100%);
     }
-    .lb-card.rank-3 .lb-rank {
-      background: #cd7f32;
-      color: #000;
-      border: none;
-      box-shadow: 0 0 10px rgba(205, 127, 50, 0.6);
-    }
-    .lb-card.rank-3 .lb-top-badge {
-      background: #cd7f32;
-      color: #000;
-    }
-    .name-glow-3 {
-      color: #f97316 !important;
-      text-shadow: 0 0 8px rgba(249, 115, 22, 0.8), 0 0 16px rgba(205, 127, 50, 0.4);
-    }
+    .lb-card.rank-3 .lb-rank { background: #cd7f32; color: #000; border: none; }
+    .lb-card.rank-3 .lb-top-badge { background: #cd7f32; color: #000; }
+    .name-glow-3 { color: #f97316 !important; text-shadow: 0 0 8px rgba(249, 115, 22, 0.8); }
 
-    /* SPECIAL ADMIN NAME GLOW EFFECT */
     .name-glow-admin {
       color: #c084fc !important;
-      text-shadow: 0 0 8px rgba(192, 132, 252, 0.9), 0 0 20px rgba(168, 85, 247, 0.6);
+      text-shadow: 0 0 8px rgba(192, 132, 252, 0.9);
     }
 
-    /* GIFT HISTORY LIST STYLING */
-    .history-list {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .history-card {
-      background: #0a0a0a;
-      border: 1px solid #1c1c1c;
-      border-radius: 6px;
-      padding: 12px 14px;
-      text-align: left;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-    }
-
-    .history-type-sent {
-      border-left: 3px solid #ef4444;
-    }
-
-    .history-type-received {
-      border-left: 3px solid #22c55e;
-    }
-
-    .history-user {
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .history-time {
-      font-size: 10px;
-      color: #666;
-      margin-top: 2px;
-    }
-
-    .history-amount {
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .history-amount.sent { color: #ef4444; }
-    .history-amount.received { color: #22c55e; }
-
-    /* EMOJI DECORATOR STYLES */
     .sticker {
       position: absolute;
       font-size: 32px;
@@ -569,9 +509,7 @@
       transform-origin: center center;
     }
 
-    .sticker.selected {
-      outline: 1px dashed rgba(255, 255, 255, 0.5);
-    }
+    .sticker.selected { outline: 1px dashed rgba(255, 255, 255, 0.5); }
 
     .sticker-controls {
       display: flex;
@@ -581,14 +519,8 @@
       flex-wrap: wrap;
     }
 
-    .btn-mini {
-      padding: 6px 12px;
-      font-size: 10px;
-      width: auto;
-      margin: 0;
-    }
+    .btn-mini { padding: 6px 12px; font-size: 10px; width: auto; margin: 0; }
 
-    /* ADMIN PANEL STYLING */
     .admin-card {
       width: 100%;
       background: #0a0a0a;
@@ -625,10 +557,9 @@
 </head>
 <body>
 
-  <!-- TOAST NOTIFICATION -->
   <div id="toast" class="toast"></div>
 
-  <!-- TAMPILAN 1: MASUKAN NAMA -->
+  <!-- TAMPILAN 1: REGISTER -->
   <section id="view-enter-name" class="view-section">
     <div class="logo-container">
       <img src="logo.png" alt="BLDS Logo">
@@ -647,7 +578,7 @@
     <h1 class="title">MAIN MENU</h1>
     <p class="subtitle" id="welcome-user-text">Welcome, Dominioner</p>
     
-    <button class="btn" onclick="openProfileView()">PROFILE</button>
+    <button class="btn" onclick="openProfileView()">MY PROFILE</button>
     <button class="btn" onclick="openLeaderboardView()">LEADERBOARD</button>
     <button class="btn" onclick="navigateTo('view-send-gift')">GIFT FRAGMENT</button>
     <button class="btn" onclick="openGiftHistoryView()">GIFT HISTORY</button>
@@ -659,14 +590,14 @@
   <section id="view-leaderboard" class="view-section">
     <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
     <h2 class="title">FRAGMENT LEADERBOARD</h2>
-    <p class="subtitle">Top Dominioners Ranked by Fragment</p>
+    <p class="subtitle">Click player card to inspect profile</p>
 
     <div class="leaderboard-list" id="leaderboard-container">
       <div style="font-size: 12px; color: #666; margin-top: 20px;">Loading Rankings...</div>
     </div>
   </section>
 
-  <!-- TAMPILAN 3: PROFILE DISPLAY & CUSTOMIZER -->
+  <!-- TAMPILAN 3: PROFILE DISPLAY (MY PROFILE & OTHER PLAYER PROFILE) -->
   <section id="view-profile" class="view-section">
     <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
     
@@ -685,6 +616,13 @@
         <span id="prof-joined" style="color: #fff; font-weight: 600;">-</span>
       </div>
 
+      <!-- LIKE BUTTON & COUNT -->
+      <div style="margin: 10px 0; position: relative; z-index: 2;">
+        <button id="like-btn" class="btn-like" onclick="toggleLikeCurrentProfile()">
+          <span id="like-icon">❤️</span> <span id="like-count">0</span> Likes
+        </button>
+      </div>
+
       <div class="section-title">BADGES</div>
       <div class="badges-grid" id="prof-badges"></div>
 
@@ -695,11 +633,11 @@
       </div>
     </div>
 
-    <!-- EMOJI STICKER CUSTOMIZER -->
-    <div style="width: 100%; margin-top: 10px;">
+    <!-- EMOJI DECORATOR PANEL (HANYA UNTUK PROFILE SENDIRI) -->
+    <div id="profile-editor-controls" style="width: 100%; margin-top: 10px; display: none;">
       <div class="section-title" style="text-align: center;">DECORATE PROFILE (EMOJI)</div>
       <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 10px;">
-        <input type="text" id="emoji-picker-input" class="input-field" placeholder="Paste Emoji (e.g. 👑🔥⚔️)" style="width: 200px; padding: 8px;">
+        <input type="text" id="emoji-picker-input" class="input-field" placeholder="Paste Emoji (👑🔥⚔️)" style="width: 200px; padding: 8px;">
         <button class="btn btn-mini" style="margin-top: 8px;" onclick="addStickerFromInput()">ADD EMOJI</button>
       </div>
 
@@ -720,7 +658,7 @@
     <h2 class="title">GIFT FRAGMENT</h2>
     <p class="subtitle">Send Fragments to Other Dominioners</p>
     
-    <input type="text" id="gift-target-id" class="input-field" placeholder="Target Dominioner ID (e.g. Player-0001)">
+    <input type="text" id="gift-target-id" class="input-field" placeholder="Target Dominioner ID">
     <input type="number" id="gift-amount" class="input-field" placeholder="Fragment Amount">
     <button class="btn" onclick="sendGiftFragment()">SEND GIFT</button>
   </section>
@@ -730,18 +668,14 @@
     <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
     <h2 class="title">GIFT HISTORY</h2>
     <p class="subtitle">Sent & Received Gift Transactions</p>
-
-    <div class="history-list" id="gift-history-container">
-      <div style="font-size: 12px; color: #666; margin-top: 20px;">Loading History...</div>
-    </div>
+    <div class="history-list" id="gift-history-container"></div>
   </section>
 
-  <!-- TAMPILAN 6: SECRET CODE REDEEM -->
+  <!-- TAMPILAN 6: SECRET CODE -->
   <section id="view-secret-code" class="view-section">
     <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
     <h2 class="title">SECRET CODE</h2>
     <p class="subtitle">Claim Dominion Rewards</p>
-    
     <input type="text" id="redeem-code-input" class="input-field" placeholder="Enter Secret Code">
     <button class="btn" onclick="redeemCode()">REDEEM</button>
   </section>
@@ -751,7 +685,6 @@
     <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
     <h2 class="title">STAFF ACCESS</h2>
     <p class="subtitle">Enter Admin Passcode</p>
-    
     <input type="password" id="admin-pass-input" class="input-field" placeholder="Passcode">
     <button class="btn" onclick="verifyAdminPass()">LOGIN</button>
   </section>
@@ -761,46 +694,47 @@
     <button class="back-btn" onclick="navigateTo('view-main-menu')">← LOGOUT ADMIN</button>
     <h2 class="title" style="margin-bottom: 20px;">BLDS ADMIN PANEL</h2>
 
-    <!-- ADMIN 1: CARI PLAYER LEWAT URUTAN -->
     <div class="admin-card">
       <h3>1. SEARCH PLAYER BY ORDER (#0000)</h3>
       <div style="display: flex; gap: 8px;">
-        <input type="text" id="adm-search-seq" class="input-field input-field-left" placeholder="Enter number (e.g. #0001 or 0001)">
+        <input type="text" id="adm-search-seq" class="input-field input-field-left" placeholder="e.g. #0001 or 0001">
         <button class="btn" style="width: 120px; margin: 8px 0;" onclick="adminSearchPlayer()">SEARCH</button>
       </div>
     </div>
 
-    <!-- ADMIN 2: EDIT / HAPUS PLAYER DATA -->
     <div class="admin-card" id="adm-edit-section" style="display: none;">
       <h3>2. EDIT PLAYER: <span id="adm-target-id" style="color: #66ff66;">-</span></h3>
       
-      <label style="font-size: 11px; color: #888;">Title / Rank / Roles (Commas separated):</label>
-      <input type="text" id="adm-edit-roles" class="input-field input-field-left" placeholder="e.g. Owner, Admin, VIP">
+      <label style="font-size: 11px; color: #888;">Roles (Commas separated):</label>
+      <input type="text" id="adm-edit-roles" class="input-field input-field-left" placeholder="Owner, Admin, VIP">
+
+      <label style="font-size: 11px; color: #888; margin-top: 8px; display: block;">Custom Card Border Effect:</label>
+      <select id="adm-edit-effect" class="input-field input-field-left" style="background: #000;">
+        <option value="">Default (Auto Top Rank / Normal)</option>
+        <option value="effect-top1">Gold Glowing (Top 1 Effect)</option>
+        <option value="effect-top2">Silver Glowing (Top 2 Effect)</option>
+        <option value="effect-top3">Bronze Glowing (Top 3 Effect)</option>
+        <option value="effect-purple">Admin Purple Aura</option>
+        <option value="effect-cyan">Neon Cyan Aura</option>
+      </select>
 
       <label style="font-size: 11px; color: #888; margin-top: 8px; display: block;">Joined Date:</label>
-      <input type="text" id="adm-edit-joined" class="input-field input-field-left" placeholder="e.g. 25 August 2026">
+      <input type="text" id="adm-edit-joined" class="input-field input-field-left">
 
       <label style="font-size: 11px; color: #888; margin-top: 8px; display: block;">Current Fragment:</label>
-      <input type="number" id="adm-edit-fragment" class="input-field input-field-left" placeholder="Fragment amount">
+      <input type="number" id="adm-edit-fragment" class="input-field input-field-left">
 
       <button class="btn" onclick="adminSavePlayerData()">UPDATE PLAYER DATA</button>
       <button class="btn btn-danger" style="margin-top: 12px;" onclick="adminDeletePlayerAndReorder()">DELETE ACCOUNT & SHIFT NUMBERS</button>
     </div>
 
-    <!-- ADMIN 3: BUAT SECRET CODE BARU -->
     <div class="admin-card">
       <h3>3. CREATE NEW SECRET CODE</h3>
-      <input type="text" id="adm-code-name" class="input-field input-field-left" placeholder="Code String (e.g. REWARD-2026)">
-      
-      <label style="font-size: 11px; color: #888; margin-top: 8px; display: block;">Fragment Reward (0 if none):</label>
-      <input type="number" id="adm-code-frag" class="input-field input-field-left" placeholder="0" value="0">
-
-      <label style="font-size: 11px; color: #888; margin-top: 8px; display: block;">Badge Reward Name (Blank if none):</label>
-      <input type="text" id="adm-code-badge" class="input-field input-field-left" placeholder="e.g. Event Winner Badge">
-
+      <input type="text" id="adm-code-name" class="input-field input-field-left" placeholder="Code String">
+      <input type="number" id="adm-code-frag" class="input-field input-field-left" placeholder="Fragment Reward" value="0">
+      <input type="text" id="adm-code-badge" class="input-field input-field-left" placeholder="Badge Reward Name">
       <button class="btn" onclick="adminCreateSecretCode()">CREATE CODE</button>
     </div>
-
   </section>
 
   <!-- FIREBASE SDK -->
@@ -808,27 +742,21 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
   <script>
-    // ----------------------------------------------------
-    // FIREBASE INITIALIZATION
-    // ----------------------------------------------------
     const firebaseConfig = {
       databaseURL: "https://blds-profile-default-rtdb.asia-southeast1.firebasedatabase.app/"
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // STATE MANAGEMENT
     let currentUser = null;
+    let viewingUser = null; // Menyimpan data user yang sedang dilihat profilnya
     let selectedAdminPlayer = null;
     let activeSticker = null;
     let stickersData = [];
+    let topRanksMap = {}; // Cache untuk top 1-3 ranking
 
-    // Helper: Formatter Angka ke 4 Digit (1 -> 0001)
-    function padFourDigits(num) {
-      return String(num).padStart(4, '0');
-    }
+    function padFourDigits(num) { return String(num).padStart(4, '0'); }
 
-    // Helper: Toast Alert
     function showToast(msg) {
       const t = document.getElementById('toast');
       t.innerText = msg;
@@ -836,26 +764,36 @@
       setTimeout(() => { t.style.display = 'none'; }, 3000);
     }
 
-    // Navigation Helper
     function navigateTo(viewId) {
       document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
       const target = document.getElementById(viewId);
       if (target) target.classList.add('active');
     }
 
-    // Helper: Cek Role Staff/Admin
     function isStaffRole(roles) {
       if (!roles || !Array.isArray(roles)) return false;
       const lower = roles.map(r => r.toLowerCase());
       return lower.includes('admin') || lower.includes('owner') || lower.includes('staff') || lower.includes('founder');
     }
 
-    // ----------------------------------------------------
-    // CHECK LOCAL STORAGE SAAT HALAMAN DIMUAT (REFRESH PROOF)
-    // ----------------------------------------------------
-    window.addEventListener('DOMContentLoaded', () => {
-      const savedDominionerId = localStorage.getItem('blds_dominioner_id');
+    // UPDATE CACHE RANKING TOP 1 - 3
+    function fetchTopRanks() {
+      db.ref('members').orderByChild('fragment').once('value', snap => {
+        topRanksMap = {};
+        if (!snap.exists()) return;
+        let list = [];
+        snap.forEach(c => list.push(c.val()));
+        list.reverse();
+        
+        list.slice(0, 3).forEach((player, idx) => {
+          topRanksMap[player.dominionerId] = idx + 1;
+        });
+      });
+    }
 
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchTopRanks();
+      const savedDominionerId = localStorage.getItem('blds_dominioner_id');
       if (savedDominionerId) {
         db.ref('members/' + savedDominionerId).once('value').then(snap => {
           if (snap.exists()) {
@@ -872,25 +810,19 @@
       }
     });
 
-    // ----------------------------------------------------
-    // 1. REGISTRATION SYSTEM
-    // ----------------------------------------------------
+    // 1. REGISTER USER
     function registerUser() {
       const inputName = document.getElementById('user-name-input').value.trim();
       if (!inputName) return showToast("Silakan masukkan nama Anda!");
 
       const counterRef = db.ref('counters/lastDominionerNumber');
-      
       counterRef.transaction((currentVal) => {
         return (currentVal || 0) + 1;
       }, (error, committed, snapshot) => {
-        if (error) {
-          showToast("Terjadi kesalahan sistem.");
-        } else if (committed) {
+        if (committed) {
           const numberSeq = snapshot.val();
           const formattedNumber = padFourDigits(numberSeq);
           const fullDominionerId = `${inputName}-${formattedNumber}`;
-
           const nowStr = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
           const userData = {
@@ -901,7 +833,8 @@
             fragment: 0,
             roles: ["Member"],
             badges: { "Dominioner": true },
-            stickers: []
+            stickers: [],
+            likes: {}
           };
 
           db.ref('members/' + fullDominionerId).set(userData).then(() => {
@@ -914,51 +847,71 @@
       });
     }
 
-    // ----------------------------------------------------
-    // 2. PROFILE VIEW & STICKER SYSTEM
-    // ----------------------------------------------------
-    function openProfileView() {
-      if (!currentUser) return navigateTo('view-enter-name');
+    // 2. OPEN PROFILE (BISA PROFILE SENDIRI / ORANG LAIN)
+    function openProfileView(targetId = null) {
+      fetchTopRanks();
+      const targetDominionerId = targetId || (currentUser ? currentUser.dominionerId : null);
+      if (!targetDominionerId) return navigateTo('view-enter-name');
 
-      db.ref('members/' + currentUser.dominionerId).once('value').then(snap => {
-        if (snap.exists()) {
-          currentUser = snap.val();
+      const isMyOwnProfile = currentUser && (targetDominionerId === currentUser.dominionerId);
+
+      db.ref('members/' + targetDominionerId).once('value').then(snap => {
+        if (!snap.exists()) return showToast("Profile tidak ditemukan!");
+        
+        viewingUser = snap.val();
+
+        const card = document.getElementById('profile-card-element');
+        card.className = 'profile-card';
+
+        // SET EFFECT BORDER (CUSTOM FROM ADMIN OR AUTO RANK TOP 1-3)
+        const rank = topRanksMap[viewingUser.dominionerId];
+        if (viewingUser.customEffect) {
+          card.classList.add(viewingUser.customEffect);
+        } else if (rank === 1) {
+          card.classList.add('effect-top1');
+        } else if (rank === 2) {
+          card.classList.add('effect-top2');
+        } else if (rank === 3) {
+          card.classList.add('effect-top3');
         }
 
+        // PROFILE NAME & GLOW
         const nameEl = document.getElementById('prof-name');
-        nameEl.innerText = currentUser.name;
+        nameEl.innerText = viewingUser.name;
+        nameEl.className = 'profile-name';
+        
+        if (rank === 1) nameEl.classList.add('name-glow-1');
+        else if (rank === 2) nameEl.classList.add('name-glow-2');
+        else if (rank === 3) nameEl.classList.add('name-glow-3');
+        else if (isStaffRole(viewingUser.roles)) nameEl.classList.add('name-glow-admin');
 
-        // Visual Name Glow di Profile untuk Admin
-        if (isStaffRole(currentUser.roles)) {
-          nameEl.className = 'profile-name name-glow-admin';
-        } else {
-          nameEl.className = 'profile-name';
-        }
+        document.getElementById('prof-id').innerText = `ID: ${viewingUser.dominionerId}`;
+        document.getElementById('prof-joined').innerText = viewingUser.joinedDate || '-';
+        document.getElementById('prof-fragment').innerText = (viewingUser.fragment || 0).toLocaleString();
 
-        document.getElementById('prof-id').innerText = `ID: ${currentUser.dominionerId}`;
-        document.getElementById('prof-joined').innerText = currentUser.joinedDate || '-';
-        document.getElementById('prof-fragment').innerText = (currentUser.fragment || 0).toLocaleString();
-
-        // Render Roles
+        // ROLES BADGES
         const rolesContainer = document.getElementById('prof-roles');
         rolesContainer.innerHTML = '';
-        if (currentUser.roles) {
-          currentUser.roles.forEach(role => {
-            const span = document.createElement('span');
-            const rLower = role.toLowerCase();
-            const isAdmin = rLower === 'admin' || rLower === 'owner' || rLower === 'staff' || rLower === 'founder';
-            
-            span.className = `role-badge ${isAdmin ? 'admin-role' : ''}`;
-            span.innerText = role.toUpperCase();
-            rolesContainer.appendChild(span);
-          });
-        }
+        
+        let displayRoles = [...(viewingUser.roles || [])];
+        if (rank === 1 && !displayRoles.includes('👑 Top 1 Dominion')) displayRoles.unshift('👑 Top 1 Dominion');
 
-        // Render Badges
+        displayRoles.forEach(role => {
+          const span = document.createElement('span');
+          const rLower = role.toLowerCase();
+          const isAdmin = rLower.includes('admin') || rLower.includes('owner') || rLower.includes('staff');
+          const isTop1 = rLower.includes('top 1');
+          
+          span.className = `role-badge ${isAdmin ? 'admin-role' : ''} ${isTop1 ? 'top1-role' : ''}`;
+          span.innerText = role.toUpperCase();
+          rolesContainer.appendChild(span);
+        });
+
+        // BADGES
         const badgesContainer = document.getElementById('prof-badges');
         badgesContainer.innerHTML = '';
-        if (currentUser.badges) {
-          Object.keys(currentUser.badges).forEach(b => {
+        if (viewingUser.badges) {
+          Object.keys(viewingUser.badges).forEach(b => {
             const div = document.createElement('div');
             div.className = 'badge-item';
             div.innerText = b.toUpperCase();
@@ -966,16 +919,56 @@
           });
         }
 
-        // Render Stickers
-        stickersData = currentUser.stickers || [];
-        renderAllStickers();
+        // LIKES SYSTEM
+        const likes = viewingUser.likes || {};
+        const likeCount = Object.keys(likes).length;
+        document.getElementById('like-count').innerText = likeCount;
+
+        const likeBtn = document.getElementById('like-btn');
+        if (currentUser && likes[currentUser.dominionerId]) {
+          likeBtn.classList.add('liked');
+        } else {
+          likeBtn.classList.remove('liked');
+        }
+
+        // STICKERS
+        stickersData = viewingUser.stickers || [];
+        renderAllStickers(isMyOwnProfile);
+
+        // EDITOR CONTROL HANYA UNTUK PROFIL SENDIRI
+        document.getElementById('profile-editor-controls').style.display = isMyOwnProfile ? 'block' : 'none';
 
         navigateTo('view-profile');
       });
     }
 
-    // STICKER ENGINE
-    function renderAllStickers() {
+    // 3. LIKE SYSTEM (1 ORANG 1 LIKE)
+    function toggleLikeCurrentProfile() {
+      if (!currentUser || !viewingUser) return showToast("Silakan login dahulu!");
+
+      const targetId = viewingUser.dominionerId;
+      const myId = currentUser.dominionerId;
+      const likeRef = db.ref(`members/${targetId}/likes/${myId}`);
+
+      likeRef.once('value').then(snap => {
+        if (snap.exists()) {
+          // UNLIKE
+          likeRef.remove().then(() => {
+            showToast("Like dibatalkan!");
+            openProfileView(targetId);
+          });
+        } else {
+          // LIKE
+          likeRef.set(true).then(() => {
+            showToast("Profile disukai! ❤️");
+            openProfileView(targetId);
+          });
+        }
+      });
+    }
+
+    // 4. STICKER SYSTEM
+    function renderAllStickers(isEditable) {
       const card = document.getElementById('profile-card-element');
       card.querySelectorAll('.sticker').forEach(st => st.remove());
 
@@ -989,7 +982,7 @@
         el.style.transform = `rotate(${stData.rotation || 0}deg)`;
         el.dataset.index = index;
 
-        makeElementDraggable(el);
+        if (isEditable) makeElementDraggable(el);
         card.appendChild(el);
       });
     }
@@ -999,34 +992,22 @@
       const emoji = input.value.trim();
       if (!emoji) return;
 
-      stickersData.push({
-        emoji: emoji,
-        x: 40,
-        y: 60,
-        size: 36,
-        rotation: 0
-      });
-
+      stickersData.push({ emoji: emoji, x: 40, y: 60, size: 36, rotation: 0 });
       input.value = '';
-      renderAllStickers();
+      renderAllStickers(true);
     }
 
     function makeElementDraggable(elmnt) {
       let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-      
       elmnt.onmousedown = dragMouseDown;
       elmnt.ontouchstart = dragMouseDown;
 
       function dragMouseDown(e) {
-        e = e || window.event;
         selectSticker(elmnt);
-        
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
         const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
         pos3 = clientX;
         pos4 = clientY;
-
         document.onmouseup = closeDragElement;
         document.ontouchend = closeDragElement;
         document.onmousemove = elementDrag;
@@ -1034,10 +1015,8 @@
       }
 
       function elementDrag(e) {
-        e = e || window.event;
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
         const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
         pos1 = pos3 - clientX;
         pos2 = pos4 - clientY;
         pos3 = clientX;
@@ -1045,7 +1024,6 @@
 
         let newY = elmnt.offsetTop - pos2;
         let newX = elmnt.offsetLeft - pos1;
-
         elmnt.style.top = newY + "px";
         elmnt.style.left = newX + "px";
 
@@ -1094,71 +1072,50 @@
       stickersData.splice(idx, 1);
       activeSticker = null;
       document.getElementById('sticker-control-panel').style.display = 'none';
-      renderAllStickers();
+      renderAllStickers(true);
     }
 
     function saveStickersToDatabase() {
       if (!currentUser) return;
       db.ref(`members/${currentUser.dominionerId}/stickers`).set(stickersData).then(() => {
-        showToast("Hiasan profil berhasil disimpan!");
+        showToast("Hiasan profil disimpan!");
       });
     }
 
-    // ----------------------------------------------------
-    // 3. REALTIME LEADERBOARD SYSTEM (GLOW BORDER & NAME EFFECT)
-    // ----------------------------------------------------
+    // 5. LEADERBOARD DISPLAY
     function openLeaderboardView() {
       navigateTo('view-leaderboard');
-      
       db.ref('members').orderByChild('fragment').on('value', snap => {
         const lbContainer = document.getElementById('leaderboard-container');
         lbContainer.innerHTML = '';
-
-        if (!snap.exists()) {
-          lbContainer.innerHTML = '<div style="font-size: 12px; color: #666;">Belum ada player terdaftar.</div>';
-          return;
-        }
+        if (!snap.exists()) return lbContainer.innerHTML = '<div>Belum ada data.</div>';
 
         let players = [];
-        snap.forEach(child => {
-          players.push(child.val());
-        });
-
+        snap.forEach(child => players.push(child.val()));
         players.reverse();
 
         players.forEach((player, index) => {
           const rank = index + 1;
           const card = document.createElement('div');
           
-          let rankClass = '';
-          let badgeLabel = '';
-          let iconCrown = '';
-          let nameGlowClass = '';
+          let rankClass = '', badgeLabel = '', iconCrown = '', nameGlowClass = '';
 
-          // Visual Glowing Name & Border Tier Logic
           if (rank === 1) {
-            rankClass = 'rank-1';
-            badgeLabel = '<span class="lb-top-badge">👑 TOP 1 DOMINION</span>';
-            iconCrown = '👑 ';
-            nameGlowClass = 'name-glow-1';
+            rankClass = 'rank-1'; badgeLabel = '<span class="lb-top-badge">👑 TOP 1 DOMINION</span>';
+            iconCrown = '👑 '; nameGlowClass = 'name-glow-1';
           } else if (rank === 2) {
-            rankClass = 'rank-2';
-            badgeLabel = '<span class="lb-top-badge">🥈 TOP 2 DOMINION</span>';
-            iconCrown = '🥈 ';
-            nameGlowClass = 'name-glow-2';
+            rankClass = 'rank-2'; badgeLabel = '<span class="lb-top-badge">🥈 TOP 2 DOMINION</span>';
+            iconCrown = '🥈 '; nameGlowClass = 'name-glow-2';
           } else if (rank === 3) {
-            rankClass = 'rank-3';
-            badgeLabel = '<span class="lb-top-badge">🥉 TOP 3 DOMINION</span>';
-            iconCrown = '🥉 ';
-            nameGlowClass = 'name-glow-3';
+            rankClass = 'rank-3'; badgeLabel = '<span class="lb-top-badge">🥉 TOP 3 DOMINION</span>';
+            iconCrown = '🥉 '; nameGlowClass = 'name-glow-3';
           }
 
-          // Override Glow Name untuk Admin/Staff jika bukan Top 3
-          if (isStaffRole(player.roles) && rank > 3) {
-            nameGlowClass = 'name-glow-admin';
-          }
+          if (isStaffRole(player.roles) && rank > 3) nameGlowClass = 'name-glow-admin';
 
           card.className = `lb-card ${rankClass}`;
+          card.onclick = () => openProfileView(player.dominionerId); // BISA INSPECT PROFILE LAIN
+
           card.innerHTML = `
             <div class="lb-rank">${rank}</div>
             <div class="lb-info">
@@ -1171,57 +1128,42 @@
               <span>${(player.fragment || 0).toLocaleString()}</span>
             </div>
           `;
-
           lbContainer.appendChild(card);
         });
       });
     }
 
-    // ----------------------------------------------------
-    // 4. GIFT FRAGMENT & HISTORY SYSTEM
-    // ----------------------------------------------------
+    // 6. GIFT & HISTORY
     function sendGiftFragment() {
       if (!currentUser) return showToast("Silakan daftar terlebih dahulu.");
-
       const targetId = document.getElementById('gift-target-id').value.trim();
       const amount = parseInt(document.getElementById('gift-amount').value);
 
-      if (!targetId) return showToast("Masukkan ID Target!");
-      if (isNaN(amount) || amount <= 0) return showToast("Jumlah Fragment tidak valid!");
-      if (targetId === currentUser.dominionerId) return showToast("Tidak bisa mengirim ke diri sendiri!");
+      if (!targetId || isNaN(amount) || amount <= 0) return showToast("Input tidak valid!");
+      if (targetId === currentUser.dominionerId) return showToast("Tidak bisa kirim ke diri sendiri!");
 
-      // Refresh current user fragment balance
       db.ref(`members/${currentUser.dominionerId}`).once('value').then(senderSnap => {
-        if (!senderSnap.exists()) return;
         currentUser = senderSnap.val();
-
-        if ((currentUser.fragment || 0) < amount) {
-          return showToast("Fragment Anda tidak cukup!");
-        }
+        if ((currentUser.fragment || 0) < amount) return showToast("Fragment tidak cukup!");
 
         db.ref(`members/${targetId}`).once('value').then(targetSnap => {
-          if (!targetSnap.exists()) return showToast("ID Target tidak ditemukan!");
+          if (!targetSnap.exists()) return showToast("Target ID tidak ditemukan!");
 
           const targetUser = targetSnap.val();
-          const newSenderFrag = currentUser.fragment - amount;
-          const newTargetFrag = (targetUser.fragment || 0) + amount;
-
-          const now = new Date().toLocaleString('en-GB');
-          const giftKey = db.ref('giftHistory').push().key;
-
           const updates = {};
-          updates[`members/${currentUser.dominionerId}/fragment`] = newSenderFrag;
-          updates[`members/${targetId}/fragment`] = newTargetFrag;
+          updates[`members/${currentUser.dominionerId}/fragment`] = currentUser.fragment - amount;
+          updates[`members/${targetId}/fragment`] = (targetUser.fragment || 0) + amount;
+          
+          const giftKey = db.ref('giftHistory').push().key;
           updates[`giftHistory/${giftKey}`] = {
             from: currentUser.dominionerId,
             to: targetId,
             amount: amount,
-            timestamp: now
+            timestamp: new Date().toLocaleString('en-GB')
           };
 
           db.ref().update(updates).then(() => {
-            currentUser.fragment = newSenderFrag;
-            showToast(`Berhasil mengirim ${amount} Fragment ke ${targetId}!`);
+            showToast(`Terkirim ${amount} Fragment ke ${targetId}!`);
             document.getElementById('gift-target-id').value = '';
             document.getElementById('gift-amount').value = '';
           });
@@ -1236,11 +1178,7 @@
       db.ref('giftHistory').on('value', snap => {
         const container = document.getElementById('gift-history-container');
         container.innerHTML = '';
-
-        if (!snap.exists()) {
-          container.innerHTML = '<div style="font-size: 12px; color: #666;">Belum ada riwayat gift.</div>';
-          return;
-        }
+        if (!snap.exists()) return container.innerHTML = '<div>Belum ada riwayat.</div>';
 
         let historyArr = [];
         snap.forEach(child => {
@@ -1250,199 +1188,130 @@
           }
         });
 
-        if (historyArr.length === 0) {
-          container.innerHTML = '<div style="font-size: 12px; color: #666;">Belum ada riwayat gift Anda.</div>';
-          return;
-        }
-
-        historyArr.reverse(); // Terbaru di atas
-
-        historyArr.forEach(h => {
+        historyArr.reverse().forEach(h => {
           const isSent = h.from === currentUser.dominionerId;
           const card = document.createElement('div');
           card.className = `history-card ${isSent ? 'history-type-sent' : 'history-type-received'}`;
-
-          const typeTitle = isSent ? `Sent to ${h.to}` : `Received from ${h.from}`;
-          const sign = isSent ? '-' : '+';
-          const amountClass = isSent ? 'sent' : 'received';
-
           card.innerHTML = `
             <div>
-              <div class="history-user">${typeTitle}</div>
+              <div class="history-user">${isSent ? 'Sent to ' + h.to : 'Received from ' + h.from}</div>
               <div class="history-time">${h.timestamp}</div>
             </div>
-            <div class="history-amount ${amountClass}">${sign}${h.amount} ♦</div>
+            <div class="history-amount ${isSent ? 'sent' : 'received'}">${isSent ? '-' : '+'}${h.amount} ♦</div>
           `;
-
           container.appendChild(card);
         });
       });
     }
 
-    // ----------------------------------------------------
-    // 5. SECRET CODE REDEEM
-    // ----------------------------------------------------
+    // 7. SECRET CODE
     function redeemCode() {
-      if (!currentUser) return showToast("Silakan daftar terlebih dahulu.");
-      
+      if (!currentUser) return;
       const codeStr = document.getElementById('redeem-code-input').value.trim();
-      if (!codeStr) return showToast("Masukkan Secret Code!");
+      if (!codeStr) return;
 
       db.ref('secretCodes/' + codeStr).once('value').then(cSnap => {
         if (!cSnap.exists()) return showToast("Kode tidak valid!");
 
         const codeData = cSnap.val();
-
         db.ref('redemptions').orderByChild('dominionerId').equalTo(currentUser.dominionerId).once('value', rSnap => {
-          let alreadyClaimed = false;
-          rSnap.forEach(r => {
-            if (r.val().codeId === codeStr) alreadyClaimed = true;
-          });
+          let claimed = false;
+          rSnap.forEach(r => { if (r.val().codeId === codeStr) claimed = true; });
 
-          if (alreadyClaimed) return showToast("Kode sudah pernah digunakan!");
+          if (claimed) return showToast("Kode sudah pernah diklaim!");
 
           let newFrag = (currentUser.fragment || 0) + (codeData.fragmentReward || 0);
-          currentUser.fragment = newFrag;
-
           const updates = {};
           updates[`members/${currentUser.dominionerId}/fragment`] = newFrag;
-
-          if (codeData.badgeReward) {
-            updates[`members/${currentUser.dominionerId}/badges/${codeData.badgeReward}`] = true;
-          }
+          if (codeData.badgeReward) updates[`members/${currentUser.dominionerId}/badges/${codeData.badgeReward}`] = true;
 
           const redKey = db.ref('redemptions').push().key;
-          updates[`redemptions/${redKey}`] = {
-            dominionerId: currentUser.dominionerId,
-            codeId: codeStr,
-            timestamp: new Date().toLocaleDateString('en-GB')
-          };
+          updates[`redemptions/${redKey}`] = { dominionerId: currentUser.dominionerId, codeId: codeStr };
 
           db.ref().update(updates).then(() => {
-            showToast("Kode Berhasil Diklaim!");
+            showToast("Berhasil redeem code!");
             document.getElementById('redeem-code-input').value = '';
           });
         });
       });
     }
 
-    // ----------------------------------------------------
-    // 6. ADMIN PANEL & DYNAMIC SHIFT RE-ORDERING (#0000)
-    // ----------------------------------------------------
+    // 8. ADMIN PANEL
     function verifyAdminPass() {
       const pass = document.getElementById('admin-pass-input').value.trim();
       if (pass === "BLDS-STAFF-ONLY-PANEL-0000") {
         document.getElementById('admin-pass-input').value = '';
         navigateTo('view-admin-panel');
-      } else {
-        showToast("Passcode Admin Salah!");
-      }
+      } else showToast("Passcode Admin Salah!");
     }
 
     function adminSearchPlayer() {
       let query = document.getElementById('adm-search-seq').value.trim().replace('#', '');
-      if (/^\d+$/.test(query)) {
-        query = padFourDigits(parseInt(query));
-      }
-
-      if (!query) return showToast("Masukkan nomor urut player!");
+      if (/^\d+$/.test(query)) query = padFourDigits(parseInt(query));
 
       db.ref('members').once('value').then(snap => {
         let found = null;
         snap.forEach(child => {
           const p = child.val();
-          if (p.numberSeq === query || p.dominionerId.endsWith(`-${query}`)) {
-            found = p;
-          }
+          if (p.numberSeq === query || p.dominionerId.endsWith(`-${query}`)) found = p;
         });
 
         if (found) {
           selectedAdminPlayer = found;
           document.getElementById('adm-target-id').innerText = found.dominionerId;
           document.getElementById('adm-edit-roles').value = found.roles ? found.roles.join(', ') : '';
+          document.getElementById('adm-edit-effect').value = found.customEffect || '';
           document.getElementById('adm-edit-joined').value = found.joinedDate || '';
           document.getElementById('adm-edit-fragment').value = found.fragment || 0;
           document.getElementById('adm-edit-section').style.display = 'block';
           showToast("Player ditemukan!");
-        } else {
-          document.getElementById('adm-edit-section').style.display = 'none';
-          showToast("Player tidak ditemukan!");
-        }
+        } else showToast("Player tidak ditemukan!");
       });
     }
 
     function adminSavePlayerData() {
       if (!selectedAdminPlayer) return;
-
       const rolesInput = document.getElementById('adm-edit-roles').value.trim();
+      const effectInput = document.getElementById('adm-edit-effect').value;
       const joinedInput = document.getElementById('adm-edit-joined').value.trim();
       const fragInput = parseInt(document.getElementById('adm-edit-fragment').value) || 0;
 
-      const updatedRoles = rolesInput ? rolesInput.split(',').map(r => r.trim()) : ["Member"];
-
       const updates = {
-        roles: updatedRoles,
+        roles: rolesInput ? rolesInput.split(',').map(r => r.trim()) : ["Member"],
+        customEffect: effectInput || null,
         joinedDate: joinedInput,
         fragment: fragInput
       };
 
       db.ref('members/' + selectedAdminPlayer.dominionerId).update(updates).then(() => {
-        showToast("Data Player Berhasil Diperbarui!");
+        showToast("Data & Efek Player Berhasil Diperbarui!");
       });
     }
 
-    // HAPUS PLAYER + AUTOMATIC SHIFT/RE-ORDER SYSTEM
     function adminDeletePlayerAndReorder() {
       if (!selectedAdminPlayer) return;
-
       const deletedSeqNum = parseInt(selectedAdminPlayer.numberSeq);
-      const confirmDelete = confirm(`Hapus permanently '${selectedAdminPlayer.dominionerId}'? Nomor urut di atasnya akan diturunkan 1 level secara otomatis.`);
-      
-      if (!confirmDelete) return;
+
+      if (!confirm(`Hapus ${selectedAdminPlayer.dominionerId}?`)) return;
 
       db.ref('members').once('value').then(snap => {
         const updates = {};
-        
         updates[`members/${selectedAdminPlayer.dominionerId}`] = null;
 
         snap.forEach(child => {
           const p = child.val();
           const pSeq = parseInt(p.numberSeq);
-
           if (pSeq > deletedSeqNum) {
-            const newSeqNum = pSeq - 1;
-            const newSeqStr = padFourDigits(newSeqNum);
+            const newSeqStr = padFourDigits(pSeq - 1);
             const newDominionerId = `${p.name}-${newSeqStr}`;
-
             updates[`members/${p.dominionerId}`] = null;
-
-            const updatedProfile = {
-              ...p,
-              numberSeq: newSeqStr,
-              dominionerId: newDominionerId
-            };
-            updates[`members/${newDominionerId}`] = updatedProfile;
-
-            if (currentUser && currentUser.dominionerId === p.dominionerId) {
-              localStorage.setItem('blds_dominioner_id', newDominionerId);
-              currentUser = updatedProfile;
-            }
+            updates[`members/${newDominionerId}`] = { ...p, numberSeq: newSeqStr, dominionerId: newDominionerId };
           }
         });
 
-        db.ref('counters/lastDominionerNumber').transaction((val) => {
-          return Math.max(0, (val || 1) - 1);
-        });
-
+        db.ref('counters/lastDominionerNumber').transaction((val) => Math.max(0, (val || 1) - 1));
         db.ref().update(updates).then(() => {
-          showToast("Player dihapus & Nomor Urut Berhasil Diurutkan Kembali!");
-
-          if (currentUser && currentUser.dominionerId === selectedAdminPlayer.dominionerId) {
-            localStorage.removeItem('blds_dominioner_id');
-            currentUser = null;
-          }
-
-          selectedAdminPlayer = null;
+          showToast("Player dihapus!");
           document.getElementById('adm-edit-section').style.display = 'none';
         });
       });
@@ -1454,19 +1323,12 @@
       const badgeReward = document.getElementById('adm-code-badge').value.trim();
 
       if (!codeName) return showToast("Masukkan String Kode!");
-      if (fragReward <= 0 && !badgeReward) return showToast("Isi Fragment atau Badge Reward!");
 
-      const codeData = {
-        code: codeName,
-        fragmentReward: fragReward,
-        badgeReward: badgeReward || null
-      };
-
-      db.ref('secretCodes/' + codeName).set(codeData).then(() => {
-        showToast(`Secret Code '${codeName}' Dibuat!`);
+      db.ref('secretCodes/' + codeName).set({
+        code: codeName, fragmentReward: fragReward, badgeReward: badgeReward || null
+      }).then(() => {
+        showToast(`Secret Code Created!`);
         document.getElementById('adm-code-name').value = '';
-        document.getElementById('adm-code-frag').value = '0';
-        document.getElementById('adm-code-badge').value = '';
       });
     }
   </script>
