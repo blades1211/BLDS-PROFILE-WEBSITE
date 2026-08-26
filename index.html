@@ -302,16 +302,34 @@
       z-index: 2;
     }
 
+    /* DIAMOND LOGO FRAGMENT BERSINAR & HIDUP */
     .fragment-diamond {
       font-size: 22px;
       color: #ffffff;
-      text-shadow: 0 0 12px rgba(255, 255, 255, 0.8), 0 0 24px rgba(255, 255, 255, 0.4);
-      animation: pulseDiamond 3s ease-in-out infinite alternate;
+      display: inline-block;
+      text-shadow: 
+        0 0 8px rgba(255, 255, 255, 0.9), 
+        0 0 20px rgba(255, 255, 255, 0.6),
+        0 0 35px rgba(255, 255, 255, 0.3);
+      animation: pulseDiamond 2.5s ease-in-out infinite alternate;
     }
 
     @keyframes pulseDiamond {
-      0% { transform: scale(0.95); opacity: 0.8; }
-      100% { transform: scale(1.1); opacity: 1; }
+      0% { 
+        transform: scale(0.92); 
+        opacity: 0.75; 
+        filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+      }
+      50% {
+        transform: scale(1.15) rotate(3deg);
+        opacity: 1;
+        filter: drop-shadow(0 0 12px rgba(255, 255, 255, 1));
+      }
+      100% { 
+        transform: scale(0.98); 
+        opacity: 0.85; 
+        filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+      }
     }
 
     .fragment-box {
@@ -319,6 +337,133 @@
       font-weight: 800;
       color: #ffffff;
       letter-spacing: 1px;
+    }
+
+    /* LEADERBOARD STYLING */
+    .leaderboard-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .lb-card {
+      background: #0a0a0a;
+      border: 1px solid #1f1f1f;
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lb-card:hover {
+      border-color: #444;
+      transform: translateX(3px);
+    }
+
+    .lb-rank {
+      font-size: 16px;
+      font-weight: 800;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #111;
+      border: 1px solid #222;
+      color: #888;
+    }
+
+    .lb-info {
+      text-align: left;
+      flex-grow: 1;
+      margin-left: 14px;
+    }
+
+    .lb-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .lb-id {
+      font-size: 10px;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .lb-fragment {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .lb-top-badge {
+      font-size: 9px;
+      font-weight: 800;
+      padding: 3px 7px;
+      border-radius: 3px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 4px;
+      display: inline-block;
+    }
+
+    /* RANKING SPECIAL GLOWS & BADGES */
+    .lb-card.rank-1 {
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      background: linear-gradient(90deg, rgba(255, 215, 0, 0.05) 0%, #0a0a0a 100%);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+    }
+    .lb-card.rank-1 .lb-rank {
+      background: #ffd700;
+      color: #000;
+      border: none;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+    .lb-card.rank-1 .lb-top-badge {
+      background: #ffd700;
+      color: #000;
+    }
+
+    .lb-card.rank-2 {
+      border: 1px solid rgba(192, 192, 192, 0.4);
+      background: linear-gradient(90deg, rgba(192, 192, 192, 0.05) 0%, #0a0a0a 100%);
+    }
+    .lb-card.rank-2 .lb-rank {
+      background: #c0c0c0;
+      color: #000;
+      border: none;
+    }
+    .lb-card.rank-2 .lb-top-badge {
+      background: #c0c0c0;
+      color: #000;
+    }
+
+    .lb-card.rank-3 {
+      border: 1px solid rgba(205, 127, 50, 0.4);
+      background: linear-gradient(90deg, rgba(205, 127, 50, 0.05) 0%, #0a0a0a 100%);
+    }
+    .lb-card.rank-3 .lb-rank {
+      background: #cd7f32;
+      color: #000;
+      border: none;
+    }
+    .lb-card.rank-3 .lb-top-badge {
+      background: #cd7f32;
+      color: #000;
     }
 
     /* EMOJI DECORATOR STYLES */
@@ -411,8 +556,20 @@
     <p class="subtitle" id="welcome-user-text">Welcome, Dominioner</p>
     
     <button class="btn" onclick="openProfileView()">PROFILE</button>
+    <button class="btn" onclick="openLeaderboardView()">LEADERBOARD</button>
     <button class="btn" onclick="navigateTo('view-secret-code')">SECRET CODE</button>
     <button class="btn btn-secondary" style="margin-top: 24px;" onclick="navigateTo('view-admin-login')">ADMIN PANEL</button>
+  </section>
+
+  <!-- TAMPILAN LEADERBOARD -->
+  <section id="view-leaderboard" class="view-section">
+    <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
+    <h2 class="title">FRAGMENT LEADERBOARD</h2>
+    <p class="subtitle">Top Dominioners Ranked by Fragment</p>
+
+    <div class="leaderboard-list" id="leaderboard-container">
+      <div style="font-size: 12px; color: #666; margin-top: 20px;">Loading Rankings...</div>
+    </div>
   </section>
 
   <!-- TAMPILAN 3: PROFILE DISPLAY & CUSTOMIZER -->
@@ -813,7 +970,72 @@
     }
 
     // ----------------------------------------------------
-    // 3. SECRET CODE REDEEM
+    // 3. REALTIME LEADERBOARD SYSTEM
+    // ----------------------------------------------------
+    function openLeaderboardView() {
+      navigateTo('view-leaderboard');
+      
+      // Listen secara realtime ke node members
+      db.ref('members').orderByChild('fragment').on('value', snap => {
+        const lbContainer = document.getElementById('leaderboard-container');
+        lbContainer.innerHTML = '';
+
+        if (!snap.exists()) {
+          lbContainer.innerHTML = '<div style="font-size: 12px; color: #666;">Belum ada player terdaftar.</div>';
+          return;
+        }
+
+        let players = [];
+        snap.forEach(child => {
+          players.push(child.val());
+        });
+
+        // Firebase orderByChild mengurutkan ASCENDING (terkecil ke terbesar), jadi dibalik ke DESCENDING
+        players.reverse();
+
+        players.forEach((player, index) => {
+          const rank = index + 1;
+          const card = document.createElement('div');
+          
+          let rankClass = '';
+          let badgeLabel = '';
+          let iconCrown = '';
+
+          if (rank === 1) {
+            rankClass = 'rank-1';
+            badgeLabel = '<span class="lb-top-badge">👑 TOP 1 DOMINION</span>';
+            iconCrown = '👑 ';
+          } else if (rank === 2) {
+            rankClass = 'rank-2';
+            badgeLabel = '<span class="lb-top-badge">🥈 TOP 2 DOMINION</span>';
+            iconCrown = '🥈 ';
+          } else if (rank === 3) {
+            rankClass = 'rank-3';
+            badgeLabel = '<span class="lb-top-badge">🥉 TOP 3 DOMINION</span>';
+            iconCrown = '🥉 ';
+          }
+
+          card.className = `lb-card ${rankClass}`;
+          card.innerHTML = `
+            <div class="lb-rank">${rank}</div>
+            <div class="lb-info">
+              <div class="lb-name">${iconCrown}${player.name}</div>
+              <div class="lb-id">${player.dominionerId}</div>
+              ${badgeLabel}
+            </div>
+            <div class="lb-fragment">
+              <span class="fragment-diamond">♦</span>
+              <span>${(player.fragment || 0).toLocaleString()}</span>
+            </div>
+          `;
+
+          lbContainer.appendChild(card);
+        });
+      });
+    }
+
+    // ----------------------------------------------------
+    // 4. SECRET CODE REDEEM
     // ----------------------------------------------------
     function redeemCode() {
       if (!currentUser) return showToast("Silakan daftar terlebih dahulu.");
@@ -860,7 +1082,7 @@
     }
 
     // ----------------------------------------------------
-    // 4. ADMIN PANEL & DYNAMIC SHIFT RE-ORDERING (#0000)
+    // 5. ADMIN PANEL & DYNAMIC SHIFT RE-ORDERING (#0000)
     // ----------------------------------------------------
     function verifyAdminPass() {
       const pass = document.getElementById('admin-pass-input').value.trim();
