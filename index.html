@@ -1,83 +1,1336 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dominion Leaderboard & Profile</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BLDS DOMINION</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background-color: #050505;
+      color: #eaeaea;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+    }
+
+    .btn {
+      background: rgba(255, 255, 255, 0.03);
+      color: #ffffff;
+      border: 1px solid #333333;
+      padding: 14px 24px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      width: 100%;
+      max-width: 340px;
+      margin: 8px 0;
+      border-radius: 4px;
+    }
+
+    .btn:hover, .btn:active {
+      background: #ffffff;
+      color: #000000;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-secondary {
+      border-color: #222;
+      color: #666;
+      font-size: 11px;
+      padding: 10px 16px;
+    }
+
+    .btn-secondary:hover {
+      background: #111;
+      color: #fff;
+    }
+
+    .btn-like {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid #ef4444;
+      color: #ef4444;
+      padding: 8px 16px;
+      font-size: 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+
+    .btn-like:hover, .btn-like.liked {
+      background: #ef4444;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+    }
+
+    .btn-danger {
+      border-color: #661111;
+      color: #ff4444;
+      background: rgba(255, 0, 0, 0.05);
+    }
+
+    .btn-danger:hover {
+      background: #ff4444;
+      color: #ffffff;
+      box-shadow: 0 0 15px rgba(255, 68, 68, 0.4);
+    }
+
+    .input-field {
+      width: 100%;
+      max-width: 340px;
+      background: #0a0a0a;
+      border: 1px solid #222222;
+      color: #ffffff;
+      padding: 14px;
+      font-size: 14px;
+      text-align: center;
+      margin: 8px 0;
+      border-radius: 4px;
+      outline: none;
+      transition: all 0.3s;
+      user-select: text;
+    }
+
+    .input-field:focus {
+      border-color: #ffffff;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    .input-field-left {
+      text-align: left;
+      max-width: 100%;
+    }
+
+    .view-section {
+      display: none;
+      width: 100%;
+      max-width: 480px;
+      padding: 24px 16px;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .view-section.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo-container {
+      margin-bottom: 24px;
+    }
+
+    .logo-container img {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.25));
+    }
+
+    .title {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #666666;
+      margin-bottom: 32px;
+      font-weight: 300;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: #666;
+      font-size: 11px;
+      cursor: pointer;
+      margin-bottom: 24px;
+      align-self: flex-start;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .back-btn:hover {
+      color: #fff;
+    }
+
+    /* PROFILE CARD STYLING */
+    .profile-card {
+      width: 100%;
+      background: linear-gradient(145deg, #0d0d0d 0%, #050505 100%);
+      border: 1px solid #222222;
+      border-radius: 12px;
+      padding: 28px 20px;
+      margin: 16px 0;
+      text-align: left;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      overflow: hidden;
+      min-height: 380px;
+      transition: all 0.4s ease;
+    }
+
+    /* TOP 1 - 3 & CUSTOM BORDER EFFECTS */
+    .profile-card.effect-top1 {
+      border: 2px solid #ffd700;
+      animation: glowGold 3s infinite ease-in-out;
+      background: linear-gradient(145deg, rgba(255, 215, 0, 0.08) 0%, #050505 100%);
+    }
+
+    .profile-card.effect-top2 {
+      border: 2px solid #c0c0c0;
+      animation: glowSilver 3s infinite ease-in-out;
+      background: linear-gradient(145deg, rgba(192, 192, 192, 0.08) 0%, #050505 100%);
+    }
+
+    .profile-card.effect-top3 {
+      border: 2px solid #cd7f32;
+      animation: glowBronze 3s infinite ease-in-out;
+      background: linear-gradient(145deg, rgba(205, 127, 50, 0.08) 0%, #050505 100%);
+    }
+
+    .profile-card.effect-purple {
+      border: 2px solid #a855f7;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+    }
+
+    .profile-card.effect-cyan {
+      border: 2px solid #06b6d4;
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+    }
+
+    .profile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #1a1a1a;
+      padding-bottom: 14px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .profile-name {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+
+    .profile-id {
+      font-size: 12px;
+      color: #888;
+      margin-top: 4px;
+      letter-spacing: 1.5px;
+      font-weight: 600;
+    }
+
+    .roles-list {
+      display: flex;
+      gap: 8px;
+      margin: 16px 0;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
+    }
+
+    .role-badge {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid #333;
+      font-size: 10px;
+      padding: 5px 12px;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      border-radius: 3px;
+      color: #ddd;
+    }
+
+    .role-badge.admin-role {
+      border-color: #a855f7;
+      background: rgba(168, 85, 247, 0.15);
+      color: #d8b4fe;
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+    }
+
+    .role-badge.top1-role {
+      border-color: #ffd700;
+      background: rgba(255, 215, 0, 0.15);
+      color: #ffd700;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+    }
+
+    .profile-info {
+      font-size: 12px;
+      color: #666;
+      margin: 16px 0;
+      line-height: 1.6;
+      position: relative;
+      z-index: 2;
+    }
+
+    .section-title {
+      font-size: 10px;
+      color: #555;
+      letter-spacing: 2px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 2;
+    }
+
+    .badges-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .badge-item {
+      background: #000;
+      border: 1px solid #2a2a2a;
+      padding: 8px 14px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      font-weight: 600;
+      border-radius: 4px;
+      color: #fff;
+    }
+
+    .fragment-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid #222;
+      padding: 10px 16px;
+      border-radius: 8px;
+      width: fit-content;
+      margin-top: 8px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .fragment-diamond {
+      font-size: 22px;
+      color: #ffffff;
+      display: inline-block;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+      animation: pulseDiamond 2.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseDiamond {
+      0% { transform: scale(0.92); opacity: 0.75; }
+      50% { transform: scale(1.15) rotate(3deg); opacity: 1; }
+      100% { transform: scale(0.98); opacity: 0.85; }
+    }
+
+    .fragment-box {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    /* LEADERBOARD STYLING */
+    .leaderboard-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .lb-card {
+      background: #0a0a0a;
+      border: 1px solid #1f1f1f;
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .lb-card:hover {
+      border-color: #444;
+      transform: translateX(3px);
+    }
+
+    .lb-rank {
+      font-size: 16px;
+      font-weight: 800;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #111;
+      border: 1px solid #222;
+      color: #888;
+    }
+
+    .lb-info {
+      text-align: left;
+      flex-grow: 1;
+      margin-left: 14px;
+    }
+
+    .lb-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .lb-id {
+      font-size: 10px;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .lb-fragment {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .lb-top-badge {
+      font-size: 9px;
+      font-weight: 800;
+      padding: 3px 7px;
+      border-radius: 3px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 4px;
+      display: inline-block;
+    }
+
+    @keyframes glowGold {
+      0% { border-color: rgba(255, 215, 0, 0.4); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
+      50% { border-color: rgba(255, 215, 0, 0.9); box-shadow: 0 0 22px rgba(255, 215, 0, 0.6); }
+      100% { border-color: rgba(255, 215, 0, 0.4); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
+    }
+
+    @keyframes glowSilver {
+      0% { border-color: rgba(192, 192, 192, 0.4); box-shadow: 0 0 10px rgba(192, 192, 192, 0.2); }
+      50% { border-color: rgba(220, 220, 220, 0.9); box-shadow: 0 0 20px rgba(220, 220, 220, 0.5); }
+      100% { border-color: rgba(192, 192, 192, 0.4); box-shadow: 0 0 10px rgba(192, 192, 192, 0.2); }
+    }
+
+    @keyframes glowBronze {
+      0% { border-color: rgba(205, 127, 50, 0.4); box-shadow: 0 0 10px rgba(205, 127, 50, 0.2); }
+      50% { border-color: rgba(235, 150, 70, 0.8); box-shadow: 0 0 18px rgba(205, 127, 50, 0.5); }
+      100% { border-color: rgba(205, 127, 50, 0.4); box-shadow: 0 0 10px rgba(205, 127, 50, 0.2); }
+    }
+
+    .lb-card.rank-1 {
+      animation: glowGold 3s infinite ease-in-out;
+      background: linear-gradient(90deg, rgba(255, 215, 0, 0.08) 0%, #0a0a0a 100%);
+    }
+    .lb-card.rank-1 .lb-rank { background: #ffd700; color: #000; border: none; }
+    .lb-card.rank-1 .lb-top-badge { background: #ffd700; color: #000; }
+    .name-glow-1 { color: #ffe600 !important; text-shadow: 0 0 8px rgba(255, 215, 0, 0.8); }
+
+    .lb-card.rank-2 {
+      animation: glowSilver 3s infinite ease-in-out;
+      background: linear-gradient(90deg, rgba(192, 192, 192, 0.08) 0%, #0a0a0a 100%);
+    }
+    .lb-card.rank-2 .lb-rank { background: #c0c0c0; color: #000; border: none; }
+    .lb-card.rank-2 .lb-top-badge { background: #c0c0c0; color: #000; }
+    .name-glow-2 { color: #e2e8f0 !important; text-shadow: 0 0 8px rgba(226, 232, 240, 0.8); }
+
+    .lb-card.rank-3 {
+      animation: glowBronze 3s infinite ease-in-out;
+      background: linear-gradient(90deg, rgba(205, 127, 50, 0.08) 0%, #0a0a0a 100%);
+    }
+    .lb-card.rank-3 .lb-rank { background: #cd7f32; color: #000; border: none; }
+    .lb-card.rank-3 .lb-top-badge { background: #cd7f32; color: #000; }
+    .name-glow-3 { color: #f97316 !important; text-shadow: 0 0 8px rgba(249, 115, 22, 0.8); }
+
+    .name-glow-admin {
+      color: #c084fc !important;
+      text-shadow: 0 0 8px rgba(192, 132, 252, 0.9);
+    }
+
+    .sticker {
+      position: absolute;
+      font-size: 32px;
+      cursor: move;
+      touch-action: none;
+      z-index: 10;
+      display: inline-block;
+      transform-origin: center center;
+    }
+
+    .sticker.selected { outline: 1px dashed rgba(255, 255, 255, 0.5); }
+
+    .sticker-controls {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-mini { padding: 6px 12px; font-size: 10px; width: auto; margin: 0; }
+
+    .admin-card {
+      width: 100%;
+      background: #0a0a0a;
+      border: 1px solid #222;
+      border-radius: 6px;
+      padding: 18px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .admin-card h3 {
+      font-size: 13px;
+      margin-bottom: 14px;
+      color: #fff;
+      border-bottom: 1px solid #1f1f1f;
+      padding-bottom: 8px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      background: #ffffff;
+      color: #000000;
+      padding: 12px 24px;
+      font-size: 12px;
+      font-weight: 700;
+      display: none;
+      box-shadow: 0 0 25px rgba(255,255,255,0.3);
+      z-index: 1000;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+    }
+  </style>
 </head>
 <body>
-  <div class="app-container">
-    <!-- LEADERBOARD SECTION -->
-    <section class="leaderboard-section">
-      <h1>🏆 Dominion Leaderboard</h1>
-      <p class="subtitle">Klik kartu pemain mana saja untuk inspect profil!</p>
-      <div id="leaderboardList" class="leaderboard-grid"></div>
-    </section>
 
-    <!-- INSPECT / PROFILE MODAL -->
-    <div id="profileModal" class="modal hidden">
-      <div class="modal-overlay" onclick="closeProfileView()"></div>
-      <div class="modal-content">
-        <button class="close-btn" onclick="closeProfileView()">&times;</button>
-        
-        <!-- DYNAMIC PROFILE CARD -->
-        <div id="profileCard" class="profile-card">
-          <!-- Canvas Sticker Overlay -->
-          <div id="stickerLayer" class="sticker-layer"></div>
-          
-          <div class="profile-header">
-            <div class="avatar-wrapper">
-              <img id="viewAvatar" src="" alt="Avatar" />
-              <span id="viewRankBadge" class="rank-badge">#1</span>
-            </div>
-            <div class="user-info">
-              <h2 id="viewUsername">Username</h2>
-              <span id="viewDominionId" class="dominion-id">ID: DOM-0000</span>
-              <div id="viewRoleBadges" class="badge-container"></div>
-            </div>
-          </div>
+  <div id="toast" class="toast"></div>
 
-          <div class="profile-body">
-            <div class="stat-box">
-              <span class="stat-label">Total Points</span>
-              <span id="viewPoints" class="stat-value">0</span>
-            </div>
-            <div class="stat-box">
-              <span class="stat-label">Dominion Level</span>
-              <span id="viewLevel" class="stat-value">Lv. 1</span>
-            </div>
-            <div class="stat-box">
-              <span class="stat-label">Likes</span>
-              <span id="viewLikes" class="stat-value">❤️ 0</span>
-            </div>
-          </div>
+  <!-- TAMPILAN 1: REGISTER -->
+  <section id="view-enter-name" class="view-section">
+    <div class="logo-container">
+      <img src="logo.png" alt="BLDS Logo">
+    </div>
+    <h1 class="title">JOIN DOMINION</h1>
+    <p class="subtitle">Enter Your Name</p>
+    <input type="text" id="user-name-input" class="input-field" placeholder="Dominioners">
+    <button class="btn" onclick="registerUser()">CONTINUE</button>
+  </section>
 
-          <!-- PUBLIC ACTIONS (Like Button) -->
-          <div id="publicActions" class="actions-container hidden">
-            <button id="likeBtn" class="btn btn-like" onclick="handleLike()">
-              ❤️ Give Like
-            </button>
-          </div>
+  <!-- TAMPILAN 2: MAIN MENU -->
+  <section id="view-main-menu" class="view-section">
+    <div class="logo-container">
+      <img src="logo.png" alt="BLDS Logo">
+    </div>
+    <h1 class="title">MAIN MENU</h1>
+    <p class="subtitle" id="welcome-user-text">Welcome, Dominioner</p>
+    
+    <button class="btn" onclick="openProfileView()">MY PROFILE</button>
+    <button class="btn" onclick="openLeaderboardView()">LEADERBOARD</button>
+    <button class="btn" onclick="navigateTo('view-send-gift')">GIFT FRAGMENT</button>
+    <button class="btn" onclick="openGiftHistoryView()">GIFT HISTORY</button>
+    <button class="btn" onclick="navigateTo('view-secret-code')">SECRET CODE</button>
+    <button class="btn btn-secondary" style="margin-top: 24px;" onclick="navigateTo('view-admin-login')">ADMIN PANEL</button>
+  </section>
 
-          <!-- OWNER ACTIONS (Sticker/Deco Editor) -->
-          <div id="ownerActions" class="actions-container hidden">
-            <h3>🎨 Edit Stiker Profil Saya</h3>
-            <div class="sticker-picker">
-              <button onclick="addSticker('👑')">👑</button>
-              <button onclick="addSticker('🔥')">🔥</button>
-              <button onclick="addSticker('⭐')">⭐</button>
-              <button onclick="addSticker('💎')">💎</button>
-              <button onclick="addSticker('⚡')">⚡</button>
-              <button onclick="clearStickers()" class="btn-danger">Hapus Semua</button>
-            </div>
-          </div>
+  <!-- TAMPILAN LEADERBOARD -->
+  <section id="view-leaderboard" class="view-section">
+    <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
+    <h2 class="title">FRAGMENT LEADERBOARD</h2>
+    <p class="subtitle">Click player card to inspect profile</p>
+
+    <div class="leaderboard-list" id="leaderboard-container">
+      <div style="font-size: 12px; color: #666; margin-top: 20px;">Loading Rankings...</div>
+    </div>
+  </section>
+
+  <!-- TAMPILAN 3: PROFILE DISPLAY (MY PROFILE & OTHER PLAYER PROFILE) -->
+  <section id="view-profile" class="view-section">
+    <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
+    
+    <div class="profile-card" id="profile-card-element">
+      <div class="profile-header">
+        <div>
+          <div class="profile-name" id="prof-name">-</div>
+          <div class="profile-id" id="prof-id">ID: -</div>
         </div>
+      </div>
 
+      <div class="roles-list" id="prof-roles"></div>
+
+      <div class="profile-info">
+        Joined:<br>
+        <span id="prof-joined" style="color: #fff; font-weight: 600;">-</span>
+      </div>
+
+      <!-- LIKE BUTTON & COUNT -->
+      <div style="margin: 10px 0; position: relative; z-index: 2;">
+        <button id="like-btn" class="btn-like" onclick="toggleLikeCurrentProfile()">
+          <span id="like-icon">❤️</span> <span id="like-count">0</span> Likes
+        </button>
+      </div>
+
+      <div class="section-title">BADGES</div>
+      <div class="badges-grid" id="prof-badges"></div>
+
+      <div class="section-title">FRAGMENT</div>
+      <div class="fragment-container">
+        <span class="fragment-diamond">♦</span>
+        <div class="fragment-box" id="prof-fragment">0</div>
       </div>
     </div>
-  </div>
 
-  <script src="app.js"></script>
+    <!-- EMOJI DECORATOR PANEL (HANYA UNTUK PROFILE SENDIRI) -->
+    <div id="profile-editor-controls" style="width: 100%; margin-top: 10px; display: none;">
+      <div class="section-title" style="text-align: center;">DECORATE PROFILE (EMOJI)</div>
+      <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 10px;">
+        <input type="text" id="emoji-picker-input" class="input-field" placeholder="Paste Emoji (👑🔥⚔️)" style="width: 200px; padding: 8px;">
+        <button class="btn btn-mini" style="margin-top: 8px;" onclick="addStickerFromInput()">ADD EMOJI</button>
+      </div>
+
+      <div class="sticker-controls" id="sticker-control-panel" style="display: none;">
+        <button class="btn btn-mini" onclick="adjustStickerSize(1.2)">➕ Size</button>
+        <button class="btn btn-mini" onclick="adjustStickerSize(0.8)">➖ Size</button>
+        <button class="btn btn-mini" onclick="rotateSticker(15)">↻ Rotate</button>
+        <button class="btn btn-mini btn-danger" onclick="removeSelectedSticker()">🗑️ Delete</button>
+      </div>
+
+      <button class="btn btn-secondary" style="margin-top: 12px;" onclick="saveStickersToDatabase()">SAVE PROFILE DECORATION</button>
+    </div>
+  </section>
+
+  <!-- TAMPILAN 4: SEND GIFT FRAGMENT -->
+  <section id="view-send-gift" class="view-section">
+    <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
+    <h2 class="title">GIFT FRAGMENT</h2>
+    <p class="subtitle">Send Fragments to Other Dominioners</p>
+    
+    <input type="text" id="gift-target-id" class="input-field" placeholder="Target Dominioner ID">
+    <input type="number" id="gift-amount" class="input-field" placeholder="Fragment Amount">
+    <button class="btn" onclick="sendGiftFragment()">SEND GIFT</button>
+  </section>
+
+  <!-- TAMPILAN 5: GIFT HISTORY -->
+  <section id="view-gift-history" class="view-section">
+    <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
+    <h2 class="title">GIFT HISTORY</h2>
+    <p class="subtitle">Sent & Received Gift Transactions</p>
+    <div class="history-list" id="gift-history-container"></div>
+  </section>
+
+  <!-- TAMPILAN 6: SECRET CODE -->
+  <section id="view-secret-code" class="view-section">
+    <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
+    <h2 class="title">SECRET CODE</h2>
+    <p class="subtitle">Claim Dominion Rewards</p>
+    <input type="text" id="redeem-code-input" class="input-field" placeholder="Enter Secret Code">
+    <button class="btn" onclick="redeemCode()">REDEEM</button>
+  </section>
+
+  <!-- TAMPILAN 7: ADMIN LOGIN -->
+  <section id="view-admin-login" class="view-section">
+    <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
+    <h2 class="title">STAFF ACCESS</h2>
+    <p class="subtitle">Enter Admin Passcode</p>
+    <input type="password" id="admin-pass-input" class="input-field" placeholder="Passcode">
+    <button class="btn" onclick="verifyAdminPass()">LOGIN</button>
+  </section>
+
+  <!-- TAMPILAN 8: ADMIN PANEL MAIN -->
+  <section id="view-admin-panel" class="view-section" style="max-width: 600px;">
+    <button class="back-btn" onclick="navigateTo('view-main-menu')">← LOGOUT ADMIN</button>
+    <h2 class="title" style="margin-bottom: 20px;">BLDS ADMIN PANEL</h2>
+
+    <div class="admin-card">
+      <h3>1. SEARCH PLAYER BY ORDER (#0000)</h3>
+      <div style="display: flex; gap: 8px;">
+        <input type="text" id="adm-search-seq" class="input-field input-field-left" placeholder="e.g. #0001 or 0001">
+        <button class="btn" style="width: 120px; margin: 8px 0;" onclick="adminSearchPlayer()">SEARCH</button>
+      </div>
+    </div>
+
+    <div class="admin-card" id="adm-edit-section" style="display: none;">
+      <h3>2. EDIT PLAYER: <span id="adm-target-id" style="color: #66ff66;">-</span></h3>
+      
+      <label style="font-size: 11px; color: #888;">Roles (Commas separated):</label>
+      <input type="text" id="adm-edit-roles" class="input-field input-field-left" placeholder="Owner, Admin, VIP">
+
+      <label style="font-size: 11px; color: #888; margin-top: 8px; display: block;">Custom Card Border Effect:</label>
+      <select id="adm-edit-effect" class="input-field input-field-left" style="background: #000;">
+        <option value="">Default (Auto Top Rank / Normal)</option>
+        <option value="effect-top1">Gold Glowing (Top 1 Effect)</option>
+        <option value="effect-top2">Silver Glowing (Top 2 Effect)</option>
+        <option value="effect-top3">Bronze Glowing (Top 3 Effect)</option>
+        <option value="effect-purple">Admin Purple Aura</option>
+        <option value="effect-cyan">Neon Cyan Aura</option>
+      </select>
+
+      <label style="font-size: 11px; color: #888; margin-top: 8px; display: block;">Joined Date:</label>
+      <input type="text" id="adm-edit-joined" class="input-field input-field-left">
+
+      <label style="font-size: 11px; color: #888; margin-top: 8px; display: block;">Current Fragment:</label>
+      <input type="number" id="adm-edit-fragment" class="input-field input-field-left">
+
+      <button class="btn" onclick="adminSavePlayerData()">UPDATE PLAYER DATA</button>
+      <button class="btn btn-danger" style="margin-top: 12px;" onclick="adminDeletePlayerAndReorder()">DELETE ACCOUNT & SHIFT NUMBERS</button>
+    </div>
+
+    <div class="admin-card">
+      <h3>3. CREATE NEW SECRET CODE</h3>
+      <input type="text" id="adm-code-name" class="input-field input-field-left" placeholder="Code String">
+      <input type="number" id="adm-code-frag" class="input-field input-field-left" placeholder="Fragment Reward" value="0">
+      <input type="text" id="adm-code-badge" class="input-field input-field-left" placeholder="Badge Reward Name">
+      <button class="btn" onclick="adminCreateSecretCode()">CREATE CODE</button>
+    </div>
+  </section>
+
+  <!-- FIREBASE SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      databaseURL: "https://blds-profile-default-rtdb.asia-southeast1.firebasedatabase.app/"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let currentUser = null;
+    let viewingUser = null; // Menyimpan data user yang sedang dilihat profilnya
+    let selectedAdminPlayer = null;
+    let activeSticker = null;
+    let stickersData = [];
+    let topRanksMap = {}; // Cache untuk top 1-3 ranking
+
+    function padFourDigits(num) { return String(num).padStart(4, '0'); }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.innerText = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 3000);
+    }
+
+    function navigateTo(viewId) {
+      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+      const target = document.getElementById(viewId);
+      if (target) target.classList.add('active');
+    }
+
+    function isStaffRole(roles) {
+      if (!roles || !Array.isArray(roles)) return false;
+      const lower = roles.map(r => r.toLowerCase());
+      return lower.includes('admin') || lower.includes('owner') || lower.includes('staff') || lower.includes('founder');
+    }
+
+    // UPDATE CACHE RANKING TOP 1 - 3
+    function fetchTopRanks() {
+      db.ref('members').orderByChild('fragment').once('value', snap => {
+        topRanksMap = {};
+        if (!snap.exists()) return;
+        let list = [];
+        snap.forEach(c => list.push(c.val()));
+        list.reverse();
+        
+        list.slice(0, 3).forEach((player, idx) => {
+          topRanksMap[player.dominionerId] = idx + 1;
+        });
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchTopRanks();
+      const savedDominionerId = localStorage.getItem('blds_dominioner_id');
+      if (savedDominionerId) {
+        db.ref('members/' + savedDominionerId).once('value').then(snap => {
+          if (snap.exists()) {
+            currentUser = snap.val();
+            document.getElementById('welcome-user-text').innerText = `Welcome, ${currentUser.dominionerId}`;
+            navigateTo('view-main-menu');
+          } else {
+            localStorage.removeItem('blds_dominioner_id');
+            navigateTo('view-enter-name');
+          }
+        });
+      } else {
+        navigateTo('view-enter-name');
+      }
+    });
+
+    // 1. REGISTER USER
+    function registerUser() {
+      const inputName = document.getElementById('user-name-input').value.trim();
+      if (!inputName) return showToast("Silakan masukkan nama Anda!");
+
+      const counterRef = db.ref('counters/lastDominionerNumber');
+      counterRef.transaction((currentVal) => {
+        return (currentVal || 0) + 1;
+      }, (error, committed, snapshot) => {
+        if (committed) {
+          const numberSeq = snapshot.val();
+          const formattedNumber = padFourDigits(numberSeq);
+          const fullDominionerId = `${inputName}-${formattedNumber}`;
+          const nowStr = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+          const userData = {
+            dominionerId: fullDominionerId,
+            name: inputName,
+            numberSeq: formattedNumber,
+            joinedDate: nowStr,
+            fragment: 0,
+            roles: ["Member"],
+            badges: { "Dominioner": true },
+            stickers: [],
+            likes: {}
+          };
+
+          db.ref('members/' + fullDominionerId).set(userData).then(() => {
+            currentUser = userData;
+            localStorage.setItem('blds_dominioner_id', fullDominionerId);
+            document.getElementById('welcome-user-text').innerText = `Welcome, ${fullDominionerId}`;
+            navigateTo('view-main-menu');
+          });
+        }
+      });
+    }
+
+    // 2. OPEN PROFILE (BISA PROFILE SENDIRI / ORANG LAIN)
+    function openProfileView(targetId = null) {
+      fetchTopRanks();
+      const targetDominionerId = targetId || (currentUser ? currentUser.dominionerId : null);
+      if (!targetDominionerId) return navigateTo('view-enter-name');
+
+      const isMyOwnProfile = currentUser && (targetDominionerId === currentUser.dominionerId);
+
+      db.ref('members/' + targetDominionerId).once('value').then(snap => {
+        if (!snap.exists()) return showToast("Profile tidak ditemukan!");
+        
+        viewingUser = snap.val();
+
+        const card = document.getElementById('profile-card-element');
+        card.className = 'profile-card';
+
+        // SET EFFECT BORDER (CUSTOM FROM ADMIN OR AUTO RANK TOP 1-3)
+        const rank = topRanksMap[viewingUser.dominionerId];
+        if (viewingUser.customEffect) {
+          card.classList.add(viewingUser.customEffect);
+        } else if (rank === 1) {
+          card.classList.add('effect-top1');
+        } else if (rank === 2) {
+          card.classList.add('effect-top2');
+        } else if (rank === 3) {
+          card.classList.add('effect-top3');
+        }
+
+        // PROFILE NAME & GLOW
+        const nameEl = document.getElementById('prof-name');
+        nameEl.innerText = viewingUser.name;
+        nameEl.className = 'profile-name';
+        
+        if (rank === 1) nameEl.classList.add('name-glow-1');
+        else if (rank === 2) nameEl.classList.add('name-glow-2');
+        else if (rank === 3) nameEl.classList.add('name-glow-3');
+        else if (isStaffRole(viewingUser.roles)) nameEl.classList.add('name-glow-admin');
+
+        document.getElementById('prof-id').innerText = `ID: ${viewingUser.dominionerId}`;
+        document.getElementById('prof-joined').innerText = viewingUser.joinedDate || '-';
+        document.getElementById('prof-fragment').innerText = (viewingUser.fragment || 0).toLocaleString();
+
+        // ROLES BADGES
+        const rolesContainer = document.getElementById('prof-roles');
+        rolesContainer.innerHTML = '';
+        
+        let displayRoles = [...(viewingUser.roles || [])];
+        if (rank === 1 && !displayRoles.includes('👑 Top 1 Dominion')) displayRoles.unshift('👑 Top 1 Dominion');
+
+        displayRoles.forEach(role => {
+          const span = document.createElement('span');
+          const rLower = role.toLowerCase();
+          const isAdmin = rLower.includes('admin') || rLower.includes('owner') || rLower.includes('staff');
+          const isTop1 = rLower.includes('top 1');
+          
+          span.className = `role-badge ${isAdmin ? 'admin-role' : ''} ${isTop1 ? 'top1-role' : ''}`;
+          span.innerText = role.toUpperCase();
+          rolesContainer.appendChild(span);
+        });
+
+        // BADGES
+        const badgesContainer = document.getElementById('prof-badges');
+        badgesContainer.innerHTML = '';
+        if (viewingUser.badges) {
+          Object.keys(viewingUser.badges).forEach(b => {
+            const div = document.createElement('div');
+            div.className = 'badge-item';
+            div.innerText = b.toUpperCase();
+            badgesContainer.appendChild(div);
+          });
+        }
+
+        // LIKES SYSTEM
+        const likes = viewingUser.likes || {};
+        const likeCount = Object.keys(likes).length;
+        document.getElementById('like-count').innerText = likeCount;
+
+        const likeBtn = document.getElementById('like-btn');
+        if (currentUser && likes[currentUser.dominionerId]) {
+          likeBtn.classList.add('liked');
+        } else {
+          likeBtn.classList.remove('liked');
+        }
+
+        // STICKERS
+        stickersData = viewingUser.stickers || [];
+        renderAllStickers(isMyOwnProfile);
+
+        // EDITOR CONTROL HANYA UNTUK PROFIL SENDIRI
+        document.getElementById('profile-editor-controls').style.display = isMyOwnProfile ? 'block' : 'none';
+
+        navigateTo('view-profile');
+      });
+    }
+
+    // 3. LIKE SYSTEM (1 ORANG 1 LIKE)
+    function toggleLikeCurrentProfile() {
+      if (!currentUser || !viewingUser) return showToast("Silakan login dahulu!");
+
+      const targetId = viewingUser.dominionerId;
+      const myId = currentUser.dominionerId;
+      const likeRef = db.ref(`members/${targetId}/likes/${myId}`);
+
+      likeRef.once('value').then(snap => {
+        if (snap.exists()) {
+          // UNLIKE
+          likeRef.remove().then(() => {
+            showToast("Like dibatalkan!");
+            openProfileView(targetId);
+          });
+        } else {
+          // LIKE
+          likeRef.set(true).then(() => {
+            showToast("Profile disukai! ❤️");
+            openProfileView(targetId);
+          });
+        }
+      });
+    }
+
+    // 4. STICKER SYSTEM
+    function renderAllStickers(isEditable) {
+      const card = document.getElementById('profile-card-element');
+      card.querySelectorAll('.sticker').forEach(st => st.remove());
+
+      stickersData.forEach((stData, index) => {
+        const el = document.createElement('div');
+        el.className = 'sticker';
+        el.innerText = stData.emoji;
+        el.style.left = stData.x + 'px';
+        el.style.top = stData.y + 'px';
+        el.style.fontSize = (stData.size || 32) + 'px';
+        el.style.transform = `rotate(${stData.rotation || 0}deg)`;
+        el.dataset.index = index;
+
+        if (isEditable) makeElementDraggable(el);
+        card.appendChild(el);
+      });
+    }
+
+    function addStickerFromInput() {
+      const input = document.getElementById('emoji-picker-input');
+      const emoji = input.value.trim();
+      if (!emoji) return;
+
+      stickersData.push({ emoji: emoji, x: 40, y: 60, size: 36, rotation: 0 });
+      input.value = '';
+      renderAllStickers(true);
+    }
+
+    function makeElementDraggable(elmnt) {
+      let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+      elmnt.onmousedown = dragMouseDown;
+      elmnt.ontouchstart = dragMouseDown;
+
+      function dragMouseDown(e) {
+        selectSticker(elmnt);
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        pos3 = clientX;
+        pos4 = clientY;
+        document.onmouseup = closeDragElement;
+        document.ontouchend = closeDragElement;
+        document.onmousemove = elementDrag;
+        document.ontouchmove = elementDrag;
+      }
+
+      function elementDrag(e) {
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        pos1 = pos3 - clientX;
+        pos2 = pos4 - clientY;
+        pos3 = clientX;
+        pos4 = clientY;
+
+        let newY = elmnt.offsetTop - pos2;
+        let newX = elmnt.offsetLeft - pos1;
+        elmnt.style.top = newY + "px";
+        elmnt.style.left = newX + "px";
+
+        const idx = elmnt.dataset.index;
+        if (stickersData[idx]) {
+          stickersData[idx].x = newX;
+          stickersData[idx].y = newY;
+        }
+      }
+
+      function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+        document.ontouchend = null;
+        document.ontouchmove = null;
+      }
+    }
+
+    function selectSticker(el) {
+      document.querySelectorAll('.sticker').forEach(s => s.classList.remove('selected'));
+      activeSticker = el;
+      el.classList.add('selected');
+      document.getElementById('sticker-control-panel').style.display = 'flex';
+    }
+
+    function adjustStickerSize(factor) {
+      if (!activeSticker) return;
+      const idx = activeSticker.dataset.index;
+      let curSize = stickersData[idx].size || 32;
+      curSize = Math.max(16, Math.min(100, curSize * factor));
+      stickersData[idx].size = curSize;
+      activeSticker.style.fontSize = curSize + 'px';
+    }
+
+    function rotateSticker(deg) {
+      if (!activeSticker) return;
+      const idx = activeSticker.dataset.index;
+      let curRot = (stickersData[idx].rotation || 0) + deg;
+      stickersData[idx].rotation = curRot;
+      activeSticker.style.transform = `rotate(${curRot}deg)`;
+    }
+
+    function removeSelectedSticker() {
+      if (!activeSticker) return;
+      const idx = activeSticker.dataset.index;
+      stickersData.splice(idx, 1);
+      activeSticker = null;
+      document.getElementById('sticker-control-panel').style.display = 'none';
+      renderAllStickers(true);
+    }
+
+    function saveStickersToDatabase() {
+      if (!currentUser) return;
+      db.ref(`members/${currentUser.dominionerId}/stickers`).set(stickersData).then(() => {
+        showToast("Hiasan profil disimpan!");
+      });
+    }
+
+    // 5. LEADERBOARD DISPLAY
+    function openLeaderboardView() {
+      navigateTo('view-leaderboard');
+      db.ref('members').orderByChild('fragment').on('value', snap => {
+        const lbContainer = document.getElementById('leaderboard-container');
+        lbContainer.innerHTML = '';
+        if (!snap.exists()) return lbContainer.innerHTML = '<div>Belum ada data.</div>';
+
+        let players = [];
+        snap.forEach(child => players.push(child.val()));
+        players.reverse();
+
+        players.forEach((player, index) => {
+          const rank = index + 1;
+          const card = document.createElement('div');
+          
+          let rankClass = '', badgeLabel = '', iconCrown = '', nameGlowClass = '';
+
+          if (rank === 1) {
+            rankClass = 'rank-1'; badgeLabel = '<span class="lb-top-badge">👑 TOP 1 DOMINION</span>';
+            iconCrown = '👑 '; nameGlowClass = 'name-glow-1';
+          } else if (rank === 2) {
+            rankClass = 'rank-2'; badgeLabel = '<span class="lb-top-badge">🥈 TOP 2 DOMINION</span>';
+            iconCrown = '🥈 '; nameGlowClass = 'name-glow-2';
+          } else if (rank === 3) {
+            rankClass = 'rank-3'; badgeLabel = '<span class="lb-top-badge">🥉 TOP 3 DOMINION</span>';
+            iconCrown = '🥉 '; nameGlowClass = 'name-glow-3';
+          }
+
+          if (isStaffRole(player.roles) && rank > 3) nameGlowClass = 'name-glow-admin';
+
+          card.className = `lb-card ${rankClass}`;
+          card.onclick = () => openProfileView(player.dominionerId); // BISA INSPECT PROFILE LAIN
+
+          card.innerHTML = `
+            <div class="lb-rank">${rank}</div>
+            <div class="lb-info">
+              <div class="lb-name ${nameGlowClass}">${iconCrown}${player.name}</div>
+              <div class="lb-id">${player.dominionerId}</div>
+              ${badgeLabel}
+            </div>
+            <div class="lb-fragment">
+              <span class="fragment-diamond">♦</span>
+              <span>${(player.fragment || 0).toLocaleString()}</span>
+            </div>
+          `;
+          lbContainer.appendChild(card);
+        });
+      });
+    }
+
+    // 6. GIFT & HISTORY
+    function sendGiftFragment() {
+      if (!currentUser) return showToast("Silakan daftar terlebih dahulu.");
+      const targetId = document.getElementById('gift-target-id').value.trim();
+      const amount = parseInt(document.getElementById('gift-amount').value);
+
+      if (!targetId || isNaN(amount) || amount <= 0) return showToast("Input tidak valid!");
+      if (targetId === currentUser.dominionerId) return showToast("Tidak bisa kirim ke diri sendiri!");
+
+      db.ref(`members/${currentUser.dominionerId}`).once('value').then(senderSnap => {
+        currentUser = senderSnap.val();
+        if ((currentUser.fragment || 0) < amount) return showToast("Fragment tidak cukup!");
+
+        db.ref(`members/${targetId}`).once('value').then(targetSnap => {
+          if (!targetSnap.exists()) return showToast("Target ID tidak ditemukan!");
+
+          const targetUser = targetSnap.val();
+          const updates = {};
+          updates[`members/${currentUser.dominionerId}/fragment`] = currentUser.fragment - amount;
+          updates[`members/${targetId}/fragment`] = (targetUser.fragment || 0) + amount;
+          
+          const giftKey = db.ref('giftHistory').push().key;
+          updates[`giftHistory/${giftKey}`] = {
+            from: currentUser.dominionerId,
+            to: targetId,
+            amount: amount,
+            timestamp: new Date().toLocaleString('en-GB')
+          };
+
+          db.ref().update(updates).then(() => {
+            showToast(`Terkirim ${amount} Fragment ke ${targetId}!`);
+            document.getElementById('gift-target-id').value = '';
+            document.getElementById('gift-amount').value = '';
+          });
+        });
+      });
+    }
+
+    function openGiftHistoryView() {
+      if (!currentUser) return navigateTo('view-enter-name');
+      navigateTo('view-gift-history');
+
+      db.ref('giftHistory').on('value', snap => {
+        const container = document.getElementById('gift-history-container');
+        container.innerHTML = '';
+        if (!snap.exists()) return container.innerHTML = '<div>Belum ada riwayat.</div>';
+
+        let historyArr = [];
+        snap.forEach(child => {
+          const item = child.val();
+          if (item.from === currentUser.dominionerId || item.to === currentUser.dominionerId) {
+            historyArr.push(item);
+          }
+        });
+
+        historyArr.reverse().forEach(h => {
+          const isSent = h.from === currentUser.dominionerId;
+          const card = document.createElement('div');
+          card.className = `history-card ${isSent ? 'history-type-sent' : 'history-type-received'}`;
+          card.innerHTML = `
+            <div>
+              <div class="history-user">${isSent ? 'Sent to ' + h.to : 'Received from ' + h.from}</div>
+              <div class="history-time">${h.timestamp}</div>
+            </div>
+            <div class="history-amount ${isSent ? 'sent' : 'received'}">${isSent ? '-' : '+'}${h.amount} ♦</div>
+          `;
+          container.appendChild(card);
+        });
+      });
+    }
+
+    // 7. SECRET CODE
+    function redeemCode() {
+      if (!currentUser) return;
+      const codeStr = document.getElementById('redeem-code-input').value.trim();
+      if (!codeStr) return;
+
+      db.ref('secretCodes/' + codeStr).once('value').then(cSnap => {
+        if (!cSnap.exists()) return showToast("Kode tidak valid!");
+
+        const codeData = cSnap.val();
+        db.ref('redemptions').orderByChild('dominionerId').equalTo(currentUser.dominionerId).once('value', rSnap => {
+          let claimed = false;
+          rSnap.forEach(r => { if (r.val().codeId === codeStr) claimed = true; });
+
+          if (claimed) return showToast("Kode sudah pernah diklaim!");
+
+          let newFrag = (currentUser.fragment || 0) + (codeData.fragmentReward || 0);
+          const updates = {};
+          updates[`members/${currentUser.dominionerId}/fragment`] = newFrag;
+          if (codeData.badgeReward) updates[`members/${currentUser.dominionerId}/badges/${codeData.badgeReward}`] = true;
+
+          const redKey = db.ref('redemptions').push().key;
+          updates[`redemptions/${redKey}`] = { dominionerId: currentUser.dominionerId, codeId: codeStr };
+
+          db.ref().update(updates).then(() => {
+            showToast("Berhasil redeem code!");
+            document.getElementById('redeem-code-input').value = '';
+          });
+        });
+      });
+    }
+
+    // 8. ADMIN PANEL
+    function verifyAdminPass() {
+      const pass = document.getElementById('admin-pass-input').value.trim();
+      if (pass === "BLDS-STAFF-ONLY-PANEL-0000") {
+        document.getElementById('admin-pass-input').value = '';
+        navigateTo('view-admin-panel');
+      } else showToast("Passcode Admin Salah!");
+    }
+
+    function adminSearchPlayer() {
+      let query = document.getElementById('adm-search-seq').value.trim().replace('#', '');
+      if (/^\d+$/.test(query)) query = padFourDigits(parseInt(query));
+
+      db.ref('members').once('value').then(snap => {
+        let found = null;
+        snap.forEach(child => {
+          const p = child.val();
+          if (p.numberSeq === query || p.dominionerId.endsWith(`-${query}`)) found = p;
+        });
+
+        if (found) {
+          selectedAdminPlayer = found;
+          document.getElementById('adm-target-id').innerText = found.dominionerId;
+          document.getElementById('adm-edit-roles').value = found.roles ? found.roles.join(', ') : '';
+          document.getElementById('adm-edit-effect').value = found.customEffect || '';
+          document.getElementById('adm-edit-joined').value = found.joinedDate || '';
+          document.getElementById('adm-edit-fragment').value = found.fragment || 0;
+          document.getElementById('adm-edit-section').style.display = 'block';
+          showToast("Player ditemukan!");
+        } else showToast("Player tidak ditemukan!");
+      });
+    }
+
+    function adminSavePlayerData() {
+      if (!selectedAdminPlayer) return;
+      const rolesInput = document.getElementById('adm-edit-roles').value.trim();
+      const effectInput = document.getElementById('adm-edit-effect').value;
+      const joinedInput = document.getElementById('adm-edit-joined').value.trim();
+      const fragInput = parseInt(document.getElementById('adm-edit-fragment').value) || 0;
+
+      const updates = {
+        roles: rolesInput ? rolesInput.split(',').map(r => r.trim()) : ["Member"],
+        customEffect: effectInput || null,
+        joinedDate: joinedInput,
+        fragment: fragInput
+      };
+
+      db.ref('members/' + selectedAdminPlayer.dominionerId).update(updates).then(() => {
+        showToast("Data & Efek Player Berhasil Diperbarui!");
+      });
+    }
+
+    function adminDeletePlayerAndReorder() {
+      if (!selectedAdminPlayer) return;
+      const deletedSeqNum = parseInt(selectedAdminPlayer.numberSeq);
+
+      if (!confirm(`Hapus ${selectedAdminPlayer.dominionerId}?`)) return;
+
+      db.ref('members').once('value').then(snap => {
+        const updates = {};
+        updates[`members/${selectedAdminPlayer.dominionerId}`] = null;
+
+        snap.forEach(child => {
+          const p = child.val();
+          const pSeq = parseInt(p.numberSeq);
+          if (pSeq > deletedSeqNum) {
+            const newSeqStr = padFourDigits(pSeq - 1);
+            const newDominionerId = `${p.name}-${newSeqStr}`;
+            updates[`members/${p.dominionerId}`] = null;
+            updates[`members/${newDominionerId}`] = { ...p, numberSeq: newSeqStr, dominionerId: newDominionerId };
+          }
+        });
+
+        db.ref('counters/lastDominionerNumber').transaction((val) => Math.max(0, (val || 1) - 1));
+        db.ref().update(updates).then(() => {
+          showToast("Player dihapus!");
+          document.getElementById('adm-edit-section').style.display = 'none';
+        });
+      });
+    }
+
+    function adminCreateSecretCode() {
+      const codeName = document.getElementById('adm-code-name').value.trim();
+      const fragReward = parseInt(document.getElementById('adm-code-frag').value) || 0;
+      const badgeReward = document.getElementById('adm-code-badge').value.trim();
+
+      if (!codeName) return showToast("Masukkan String Kode!");
+
+      db.ref('secretCodes/' + codeName).set({
+        code: codeName, fragmentReward: fragReward, badgeReward: badgeReward || null
+      }).then(() => {
+        showToast(`Secret Code Created!`);
+        document.getElementById('adm-code-name').value = '';
+      });
+    }
+  </script>
 </body>
 </html>
