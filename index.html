@@ -247,6 +247,13 @@
       color: #ddd;
     }
 
+    .role-badge.admin-role {
+      border-color: #a855f7;
+      background: rgba(168, 85, 247, 0.15);
+      color: #d8b4fe;
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+    }
+
     .profile-info {
       font-size: 12px;
       color: #666;
@@ -302,7 +309,6 @@
       z-index: 2;
     }
 
-    /* DIAMOND LOGO FRAGMENT BERSINAR & HIDUP */
     .fragment-diamond {
       font-size: 22px;
       color: #ffffff;
@@ -421,50 +427,136 @@
       display: inline-block;
     }
 
-    /* RANKING SPECIAL GLOWS & BADGES */
+    /* GLOW ANIMATIONS FOR TIER BORDERS */
+    @keyframes glowGold {
+      0% { border-color: rgba(255, 215, 0, 0.4); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
+      50% { border-color: rgba(255, 215, 0, 0.9); box-shadow: 0 0 22px rgba(255, 215, 0, 0.6); }
+      100% { border-color: rgba(255, 215, 0, 0.4); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
+    }
+
+    @keyframes glowSilver {
+      0% { border-color: rgba(192, 192, 192, 0.4); box-shadow: 0 0 10px rgba(192, 192, 192, 0.2); }
+      50% { border-color: rgba(220, 220, 220, 0.9); box-shadow: 0 0 20px rgba(220, 220, 220, 0.5); }
+      100% { border-color: rgba(192, 192, 192, 0.4); box-shadow: 0 0 10px rgba(192, 192, 192, 0.2); }
+    }
+
+    @keyframes glowBronze {
+      0% { border-color: rgba(205, 127, 50, 0.4); box-shadow: 0 0 10px rgba(205, 127, 50, 0.2); }
+      50% { border-color: rgba(235, 150, 70, 0.8); box-shadow: 0 0 18px rgba(205, 127, 50, 0.5); }
+      100% { border-color: rgba(205, 127, 50, 0.4); box-shadow: 0 0 10px rgba(205, 127, 50, 0.2); }
+    }
+
+    /* RANKING SPECIAL GLOWS & NAME EFFECTS */
     .lb-card.rank-1 {
-      border: 1px solid rgba(255, 215, 0, 0.4);
-      background: linear-gradient(90deg, rgba(255, 215, 0, 0.05) 0%, #0a0a0a 100%);
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+      animation: glowGold 3s infinite ease-in-out;
+      background: linear-gradient(90deg, rgba(255, 215, 0, 0.08) 0%, #0a0a0a 100%);
     }
     .lb-card.rank-1 .lb-rank {
       background: #ffd700;
       color: #000;
       border: none;
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
     }
     .lb-card.rank-1 .lb-top-badge {
       background: #ffd700;
       color: #000;
     }
+    .name-glow-1 {
+      color: #ffe600 !important;
+      text-shadow: 0 0 8px rgba(255, 215, 0, 0.8), 0 0 18px rgba(255, 215, 0, 0.4);
+    }
 
     .lb-card.rank-2 {
-      border: 1px solid rgba(192, 192, 192, 0.4);
-      background: linear-gradient(90deg, rgba(192, 192, 192, 0.05) 0%, #0a0a0a 100%);
+      animation: glowSilver 3s infinite ease-in-out;
+      background: linear-gradient(90deg, rgba(192, 192, 192, 0.08) 0%, #0a0a0a 100%);
     }
     .lb-card.rank-2 .lb-rank {
       background: #c0c0c0;
       color: #000;
       border: none;
+      box-shadow: 0 0 10px rgba(192, 192, 192, 0.6);
     }
     .lb-card.rank-2 .lb-top-badge {
       background: #c0c0c0;
       color: #000;
     }
+    .name-glow-2 {
+      color: #e2e8f0 !important;
+      text-shadow: 0 0 8px rgba(226, 232, 240, 0.8), 0 0 16px rgba(192, 192, 192, 0.4);
+    }
 
     .lb-card.rank-3 {
-      border: 1px solid rgba(205, 127, 50, 0.4);
-      background: linear-gradient(90deg, rgba(205, 127, 50, 0.05) 0%, #0a0a0a 100%);
+      animation: glowBronze 3s infinite ease-in-out;
+      background: linear-gradient(90deg, rgba(205, 127, 50, 0.08) 0%, #0a0a0a 100%);
     }
     .lb-card.rank-3 .lb-rank {
       background: #cd7f32;
       color: #000;
       border: none;
+      box-shadow: 0 0 10px rgba(205, 127, 50, 0.6);
     }
     .lb-card.rank-3 .lb-top-badge {
       background: #cd7f32;
       color: #000;
     }
+    .name-glow-3 {
+      color: #f97316 !important;
+      text-shadow: 0 0 8px rgba(249, 115, 22, 0.8), 0 0 16px rgba(205, 127, 50, 0.4);
+    }
+
+    /* SPECIAL ADMIN NAME GLOW EFFECT */
+    .name-glow-admin {
+      color: #c084fc !important;
+      text-shadow: 0 0 8px rgba(192, 132, 252, 0.9), 0 0 20px rgba(168, 85, 247, 0.6);
+    }
+
+    /* GIFT HISTORY LIST STYLING */
+    .history-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .history-card {
+      background: #0a0a0a;
+      border: 1px solid #1c1c1c;
+      border-radius: 6px;
+      padding: 12px 14px;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .history-type-sent {
+      border-left: 3px solid #ef4444;
+    }
+
+    .history-type-received {
+      border-left: 3px solid #22c55e;
+    }
+
+    .history-user {
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .history-time {
+      font-size: 10px;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .history-amount {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .history-amount.sent { color: #ef4444; }
+    .history-amount.received { color: #22c55e; }
 
     /* EMOJI DECORATOR STYLES */
     .sticker {
@@ -557,6 +649,8 @@
     
     <button class="btn" onclick="openProfileView()">PROFILE</button>
     <button class="btn" onclick="openLeaderboardView()">LEADERBOARD</button>
+    <button class="btn" onclick="navigateTo('view-send-gift')">GIFT FRAGMENT</button>
+    <button class="btn" onclick="openGiftHistoryView()">GIFT HISTORY</button>
     <button class="btn" onclick="navigateTo('view-secret-code')">SECRET CODE</button>
     <button class="btn btn-secondary" style="margin-top: 24px;" onclick="navigateTo('view-admin-login')">ADMIN PANEL</button>
   </section>
@@ -620,7 +714,29 @@
     </div>
   </section>
 
-  <!-- TAMPILAN 4: SECRET CODE REDEEM -->
+  <!-- TAMPILAN 4: SEND GIFT FRAGMENT -->
+  <section id="view-send-gift" class="view-section">
+    <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
+    <h2 class="title">GIFT FRAGMENT</h2>
+    <p class="subtitle">Send Fragments to Other Dominioners</p>
+    
+    <input type="text" id="gift-target-id" class="input-field" placeholder="Target Dominioner ID (e.g. Player-0001)">
+    <input type="number" id="gift-amount" class="input-field" placeholder="Fragment Amount">
+    <button class="btn" onclick="sendGiftFragment()">SEND GIFT</button>
+  </section>
+
+  <!-- TAMPILAN 5: GIFT HISTORY -->
+  <section id="view-gift-history" class="view-section">
+    <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
+    <h2 class="title">GIFT HISTORY</h2>
+    <p class="subtitle">Sent & Received Gift Transactions</p>
+
+    <div class="history-list" id="gift-history-container">
+      <div style="font-size: 12px; color: #666; margin-top: 20px;">Loading History...</div>
+    </div>
+  </section>
+
+  <!-- TAMPILAN 6: SECRET CODE REDEEM -->
   <section id="view-secret-code" class="view-section">
     <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
     <h2 class="title">SECRET CODE</h2>
@@ -630,7 +746,7 @@
     <button class="btn" onclick="redeemCode()">REDEEM</button>
   </section>
 
-  <!-- TAMPILAN 5: ADMIN LOGIN -->
+  <!-- TAMPILAN 7: ADMIN LOGIN -->
   <section id="view-admin-login" class="view-section">
     <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
     <h2 class="title">STAFF ACCESS</h2>
@@ -640,7 +756,7 @@
     <button class="btn" onclick="verifyAdminPass()">LOGIN</button>
   </section>
 
-  <!-- TAMPILAN 6: ADMIN PANEL MAIN -->
+  <!-- TAMPILAN 8: ADMIN PANEL MAIN -->
   <section id="view-admin-panel" class="view-section" style="max-width: 600px;">
     <button class="back-btn" onclick="navigateTo('view-main-menu')">← LOGOUT ADMIN</button>
     <h2 class="title" style="margin-bottom: 20px;">BLDS ADMIN PANEL</h2>
@@ -659,7 +775,7 @@
       <h3>2. EDIT PLAYER: <span id="adm-target-id" style="color: #66ff66;">-</span></h3>
       
       <label style="font-size: 11px; color: #888;">Title / Rank / Roles (Commas separated):</label>
-      <input type="text" id="adm-edit-roles" class="input-field input-field-left" placeholder="e.g. Owner, Founder, VIP">
+      <input type="text" id="adm-edit-roles" class="input-field input-field-left" placeholder="e.g. Owner, Admin, VIP">
 
       <label style="font-size: 11px; color: #888; margin-top: 8px; display: block;">Joined Date:</label>
       <input type="text" id="adm-edit-joined" class="input-field input-field-left" placeholder="e.g. 25 August 2026">
@@ -727,6 +843,13 @@
       if (target) target.classList.add('active');
     }
 
+    // Helper: Cek Role Staff/Admin
+    function isStaffRole(roles) {
+      if (!roles || !Array.isArray(roles)) return false;
+      const lower = roles.map(r => r.toLowerCase());
+      return lower.includes('admin') || lower.includes('owner') || lower.includes('staff') || lower.includes('founder');
+    }
+
     // ----------------------------------------------------
     // CHECK LOCAL STORAGE SAAT HALAMAN DIMUAT (REFRESH PROOF)
     // ----------------------------------------------------
@@ -750,7 +873,7 @@
     });
 
     // ----------------------------------------------------
-    // 1. REGISTRATION SYSTEM (Nama-0001 & BADGE "DOMINIONER")
+    // 1. REGISTRATION SYSTEM
     // ----------------------------------------------------
     function registerUser() {
       const inputName = document.getElementById('user-name-input').value.trim();
@@ -802,7 +925,16 @@
           currentUser = snap.val();
         }
 
-        document.getElementById('prof-name').innerText = currentUser.name;
+        const nameEl = document.getElementById('prof-name');
+        nameEl.innerText = currentUser.name;
+
+        // Visual Name Glow di Profile untuk Admin
+        if (isStaffRole(currentUser.roles)) {
+          nameEl.className = 'profile-name name-glow-admin';
+        } else {
+          nameEl.className = 'profile-name';
+        }
+
         document.getElementById('prof-id').innerText = `ID: ${currentUser.dominionerId}`;
         document.getElementById('prof-joined').innerText = currentUser.joinedDate || '-';
         document.getElementById('prof-fragment').innerText = (currentUser.fragment || 0).toLocaleString();
@@ -813,7 +945,10 @@
         if (currentUser.roles) {
           currentUser.roles.forEach(role => {
             const span = document.createElement('span');
-            span.className = 'role-badge';
+            const rLower = role.toLowerCase();
+            const isAdmin = rLower === 'admin' || rLower === 'owner' || rLower === 'staff' || rLower === 'founder';
+            
+            span.className = `role-badge ${isAdmin ? 'admin-role' : ''}`;
             span.innerText = role.toUpperCase();
             rolesContainer.appendChild(span);
           });
@@ -839,7 +974,7 @@
       });
     }
 
-    // STICKER MANIPULATION ENGINE (Drag, Resize, Rotate)
+    // STICKER ENGINE
     function renderAllStickers() {
       const card = document.getElementById('profile-card-element');
       card.querySelectorAll('.sticker').forEach(st => st.remove());
@@ -970,12 +1105,11 @@
     }
 
     // ----------------------------------------------------
-    // 3. REALTIME LEADERBOARD SYSTEM
+    // 3. REALTIME LEADERBOARD SYSTEM (GLOW BORDER & NAME EFFECT)
     // ----------------------------------------------------
     function openLeaderboardView() {
       navigateTo('view-leaderboard');
       
-      // Listen secara realtime ke node members
       db.ref('members').orderByChild('fragment').on('value', snap => {
         const lbContainer = document.getElementById('leaderboard-container');
         lbContainer.innerHTML = '';
@@ -990,7 +1124,6 @@
           players.push(child.val());
         });
 
-        // Firebase orderByChild mengurutkan ASCENDING (terkecil ke terbesar), jadi dibalik ke DESCENDING
         players.reverse();
 
         players.forEach((player, index) => {
@@ -1000,26 +1133,36 @@
           let rankClass = '';
           let badgeLabel = '';
           let iconCrown = '';
+          let nameGlowClass = '';
 
+          // Visual Glowing Name & Border Tier Logic
           if (rank === 1) {
             rankClass = 'rank-1';
             badgeLabel = '<span class="lb-top-badge">👑 TOP 1 DOMINION</span>';
             iconCrown = '👑 ';
+            nameGlowClass = 'name-glow-1';
           } else if (rank === 2) {
             rankClass = 'rank-2';
             badgeLabel = '<span class="lb-top-badge">🥈 TOP 2 DOMINION</span>';
             iconCrown = '🥈 ';
+            nameGlowClass = 'name-glow-2';
           } else if (rank === 3) {
             rankClass = 'rank-3';
             badgeLabel = '<span class="lb-top-badge">🥉 TOP 3 DOMINION</span>';
             iconCrown = '🥉 ';
+            nameGlowClass = 'name-glow-3';
+          }
+
+          // Override Glow Name untuk Admin/Staff jika bukan Top 3
+          if (isStaffRole(player.roles) && rank > 3) {
+            nameGlowClass = 'name-glow-admin';
           }
 
           card.className = `lb-card ${rankClass}`;
           card.innerHTML = `
             <div class="lb-rank">${rank}</div>
             <div class="lb-info">
-              <div class="lb-name">${iconCrown}${player.name}</div>
+              <div class="lb-name ${nameGlowClass}">${iconCrown}${player.name}</div>
               <div class="lb-id">${player.dominionerId}</div>
               ${badgeLabel}
             </div>
@@ -1035,7 +1178,109 @@
     }
 
     // ----------------------------------------------------
-    // 4. SECRET CODE REDEEM
+    // 4. GIFT FRAGMENT & HISTORY SYSTEM
+    // ----------------------------------------------------
+    function sendGiftFragment() {
+      if (!currentUser) return showToast("Silakan daftar terlebih dahulu.");
+
+      const targetId = document.getElementById('gift-target-id').value.trim();
+      const amount = parseInt(document.getElementById('gift-amount').value);
+
+      if (!targetId) return showToast("Masukkan ID Target!");
+      if (isNaN(amount) || amount <= 0) return showToast("Jumlah Fragment tidak valid!");
+      if (targetId === currentUser.dominionerId) return showToast("Tidak bisa mengirim ke diri sendiri!");
+
+      // Refresh current user fragment balance
+      db.ref(`members/${currentUser.dominionerId}`).once('value').then(senderSnap => {
+        if (!senderSnap.exists()) return;
+        currentUser = senderSnap.val();
+
+        if ((currentUser.fragment || 0) < amount) {
+          return showToast("Fragment Anda tidak cukup!");
+        }
+
+        db.ref(`members/${targetId}`).once('value').then(targetSnap => {
+          if (!targetSnap.exists()) return showToast("ID Target tidak ditemukan!");
+
+          const targetUser = targetSnap.val();
+          const newSenderFrag = currentUser.fragment - amount;
+          const newTargetFrag = (targetUser.fragment || 0) + amount;
+
+          const now = new Date().toLocaleString('en-GB');
+          const giftKey = db.ref('giftHistory').push().key;
+
+          const updates = {};
+          updates[`members/${currentUser.dominionerId}/fragment`] = newSenderFrag;
+          updates[`members/${targetId}/fragment`] = newTargetFrag;
+          updates[`giftHistory/${giftKey}`] = {
+            from: currentUser.dominionerId,
+            to: targetId,
+            amount: amount,
+            timestamp: now
+          };
+
+          db.ref().update(updates).then(() => {
+            currentUser.fragment = newSenderFrag;
+            showToast(`Berhasil mengirim ${amount} Fragment ke ${targetId}!`);
+            document.getElementById('gift-target-id').value = '';
+            document.getElementById('gift-amount').value = '';
+          });
+        });
+      });
+    }
+
+    function openGiftHistoryView() {
+      if (!currentUser) return navigateTo('view-enter-name');
+      navigateTo('view-gift-history');
+
+      db.ref('giftHistory').on('value', snap => {
+        const container = document.getElementById('gift-history-container');
+        container.innerHTML = '';
+
+        if (!snap.exists()) {
+          container.innerHTML = '<div style="font-size: 12px; color: #666;">Belum ada riwayat gift.</div>';
+          return;
+        }
+
+        let historyArr = [];
+        snap.forEach(child => {
+          const item = child.val();
+          if (item.from === currentUser.dominionerId || item.to === currentUser.dominionerId) {
+            historyArr.push(item);
+          }
+        });
+
+        if (historyArr.length === 0) {
+          container.innerHTML = '<div style="font-size: 12px; color: #666;">Belum ada riwayat gift Anda.</div>';
+          return;
+        }
+
+        historyArr.reverse(); // Terbaru di atas
+
+        historyArr.forEach(h => {
+          const isSent = h.from === currentUser.dominionerId;
+          const card = document.createElement('div');
+          card.className = `history-card ${isSent ? 'history-type-sent' : 'history-type-received'}`;
+
+          const typeTitle = isSent ? `Sent to ${h.to}` : `Received from ${h.from}`;
+          const sign = isSent ? '-' : '+';
+          const amountClass = isSent ? 'sent' : 'received';
+
+          card.innerHTML = `
+            <div>
+              <div class="history-user">${typeTitle}</div>
+              <div class="history-time">${h.timestamp}</div>
+            </div>
+            <div class="history-amount ${amountClass}">${sign}${h.amount} ♦</div>
+          `;
+
+          container.appendChild(card);
+        });
+      });
+    }
+
+    // ----------------------------------------------------
+    // 5. SECRET CODE REDEEM
     // ----------------------------------------------------
     function redeemCode() {
       if (!currentUser) return showToast("Silakan daftar terlebih dahulu.");
@@ -1082,7 +1327,7 @@
     }
 
     // ----------------------------------------------------
-    // 5. ADMIN PANEL & DYNAMIC SHIFT RE-ORDERING (#0000)
+    // 6. ADMIN PANEL & DYNAMIC SHIFT RE-ORDERING (#0000)
     // ----------------------------------------------------
     function verifyAdminPass() {
       const pass = document.getElementById('admin-pass-input').value.trim();
@@ -1158,10 +1403,8 @@
       db.ref('members').once('value').then(snap => {
         const updates = {};
         
-        // Remove target user
         updates[`members/${selectedAdminPlayer.dominionerId}`] = null;
 
-        // Shift lower priority users up by 1 step
         snap.forEach(child => {
           const p = child.val();
           const pSeq = parseInt(p.numberSeq);
@@ -1171,7 +1414,6 @@
             const newSeqStr = padFourDigits(newSeqNum);
             const newDominionerId = `${p.name}-${newSeqStr}`;
 
-            // Hapus data lama, masukkan data baru dengan ID & nomor urut baru
             updates[`members/${p.dominionerId}`] = null;
 
             const updatedProfile = {
@@ -1181,7 +1423,6 @@
             };
             updates[`members/${newDominionerId}`] = updatedProfile;
 
-            // Jika player yang tergeser sedang login di device ini, perbarui localStorage
             if (currentUser && currentUser.dominionerId === p.dominionerId) {
               localStorage.setItem('blds_dominioner_id', newDominionerId);
               currentUser = updatedProfile;
@@ -1189,12 +1430,10 @@
           }
         });
 
-        // Kurangi counter global di Firebase
         db.ref('counters/lastDominionerNumber').transaction((val) => {
           return Math.max(0, (val || 1) - 1);
         });
 
-        // Eksekusi Atomic Update
         db.ref().update(updates).then(() => {
           showToast("Player dihapus & Nomor Urut Berhasil Diurutkan Kembali!");
 
