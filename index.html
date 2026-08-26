@@ -18,6 +18,7 @@
       padding: 0;
       font-family: 'Inter', sans-serif;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
 
     body {
@@ -31,7 +32,6 @@
       overflow-x: hidden;
     }
 
-    /* TYPOGRAPHY & BUTTONS */
     h1, h2, h3 {
       text-transform: uppercase;
       letter-spacing: 2px;
@@ -98,6 +98,7 @@
       border-radius: 4px;
       outline: none;
       transition: all 0.3s;
+      user-select: text;
     }
 
     .input-field:focus {
@@ -143,20 +144,6 @@
       filter: 
         drop-shadow(0 0 8px rgba(255, 255, 255, 0.25))
         drop-shadow(0 0 18px rgba(255, 255, 255, 0.10));
-      animation: logoBreathingGlow 5s ease-in-out infinite alternate;
-    }
-
-    @keyframes logoBreathingGlow {
-      0% {
-        filter: 
-          drop-shadow(0 0 6px rgba(255, 255, 255, 0.20))
-          drop-shadow(0 0 14px rgba(255, 255, 255, 0.08));
-      }
-      100% {
-        filter: 
-          drop-shadow(0 0 10px rgba(255, 255, 255, 0.30))
-          drop-shadow(0 0 22px rgba(255, 255, 255, 0.14));
-      }
     }
 
     .title {
@@ -194,12 +181,14 @@
       width: 100%;
       background: linear-gradient(145deg, #0d0d0d 0%, #050505 100%);
       border: 1px solid #222222;
-      border-radius: 8px;
+      border-radius: 12px;
       padding: 28px 20px;
       margin: 16px 0;
       text-align: left;
       position: relative;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      overflow: hidden;
+      min-height: 380px;
     }
 
     .profile-card::before {
@@ -209,16 +198,18 @@
       left: 0;
       right: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
     }
 
     .profile-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       border-bottom: 1px solid #1a1a1a;
-      padding-bottom: 16px;
+      padding-bottom: 14px;
+      position: relative;
+      z-index: 2;
     }
 
     .profile-name {
@@ -241,10 +232,12 @@
       gap: 8px;
       margin: 16px 0;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
     }
 
     .role-badge {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid #333;
       font-size: 10px;
       padding: 5px 12px;
@@ -259,22 +252,28 @@
       color: #666;
       margin: 16px 0;
       line-height: 1.6;
+      position: relative;
+      z-index: 2;
     }
 
     .section-title {
       font-size: 10px;
-      color: #444;
+      color: #555;
       letter-spacing: 2px;
-      margin-top: 24px;
-      margin-bottom: 12px;
+      margin-top: 20px;
+      margin-bottom: 10px;
       font-weight: 700;
       text-transform: uppercase;
+      position: relative;
+      z-index: 2;
     }
 
     .badges-grid {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
+      position: relative;
+      z-index: 2;
     }
 
     .badge-item {
@@ -286,15 +285,70 @@
       font-weight: 600;
       border-radius: 4px;
       color: #fff;
-      box-shadow: inset 0 0 10px rgba(255,255,255,0.02);
+    }
+
+    /* KARTU FRAGMENT KREATIF MONOKROM */
+    .fragment-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid #222;
+      padding: 10px 16px;
+      border-radius: 8px;
+      width: fit-content;
+      margin-top: 8px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .fragment-diamond {
+      font-size: 22px;
+      color: #ffffff;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.8), 0 0 24px rgba(255, 255, 255, 0.4);
+      animation: pulseDiamond 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseDiamond {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      100% { transform: scale(1.1); opacity: 1; }
     }
 
     .fragment-box {
-      font-size: 26px;
+      font-size: 22px;
       font-weight: 800;
-      margin-top: 4px;
       color: #ffffff;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      letter-spacing: 1px;
+    }
+
+    /* EMOJI DECORATOR STYLES */
+    .sticker {
+      position: absolute;
+      font-size: 32px;
+      cursor: move;
+      touch-action: none;
+      z-index: 10;
+      display: inline-block;
+      transform-origin: center center;
+    }
+
+    .sticker.selected {
+      outline: 1px dashed rgba(255, 255, 255, 0.5);
+    }
+
+    .sticker-controls {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-mini {
+      padding: 6px 12px;
+      font-size: 10px;
+      width: auto;
+      margin: 0;
     }
 
     /* ADMIN PANEL STYLING */
@@ -361,11 +415,11 @@
     <button class="btn btn-secondary" style="margin-top: 24px;" onclick="navigateTo('view-admin-login')">ADMIN PANEL</button>
   </section>
 
-  <!-- TAMPILAN 3: PROFILE DISPLAY -->
+  <!-- TAMPILAN 3: PROFILE DISPLAY & CUSTOMIZER -->
   <section id="view-profile" class="view-section">
     <button class="back-btn" onclick="navigateTo('view-main-menu')">← BACK TO MENU</button>
     
-    <div class="profile-card">
+    <div class="profile-card" id="profile-card-element">
       <div class="profile-header">
         <div>
           <div class="profile-name" id="prof-name">-</div>
@@ -384,7 +438,28 @@
       <div class="badges-grid" id="prof-badges"></div>
 
       <div class="section-title">FRAGMENT</div>
-      <div class="fragment-box" id="prof-fragment">0</div>
+      <div class="fragment-container">
+        <span class="fragment-diamond">♦</span>
+        <div class="fragment-box" id="prof-fragment">0</div>
+      </div>
+    </div>
+
+    <!-- EMOJI STICKER CUSTOMIZER -->
+    <div style="width: 100%; margin-top: 10px;">
+      <div class="section-title" style="text-align: center;">DECORATE PROFILE (EMOJI)</div>
+      <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 10px;">
+        <input type="text" id="emoji-picker-input" class="input-field" placeholder="Paste Emoji (e.g. 👑🔥⚔️)" style="width: 200px; padding: 8px;">
+        <button class="btn btn-mini" style="margin-top: 8px;" onclick="addStickerFromInput()">ADD EMOJI</button>
+      </div>
+
+      <div class="sticker-controls" id="sticker-control-panel" style="display: none;">
+        <button class="btn btn-mini" onclick="adjustStickerSize(1.2)">➕ Size</button>
+        <button class="btn btn-mini" onclick="adjustStickerSize(0.8)">➖ Size</button>
+        <button class="btn btn-mini" onclick="rotateSticker(15)">↻ Rotate</button>
+        <button class="btn btn-mini btn-danger" onclick="removeSelectedSticker()">🗑️ Delete</button>
+      </div>
+
+      <button class="btn btn-secondary" style="margin-top: 12px;" onclick="saveStickersToDatabase()">SAVE PROFILE DECORATION</button>
     </div>
   </section>
 
@@ -436,7 +511,7 @@
       <input type="number" id="adm-edit-fragment" class="input-field input-field-left" placeholder="Fragment amount">
 
       <button class="btn" onclick="adminSavePlayerData()">UPDATE PLAYER DATA</button>
-      <button class="btn btn-danger" style="margin-top: 12px;" onclick="adminDeletePlayer()">DELETE ACCOUNT</button>
+      <button class="btn btn-danger" style="margin-top: 12px;" onclick="adminDeletePlayerAndReorder()">DELETE ACCOUNT & SHIFT NUMBERS</button>
     </div>
 
     <!-- ADMIN 3: BUAT SECRET CODE BARU -->
@@ -472,6 +547,8 @@
     // STATE MANAGEMENT
     let currentUser = null;
     let selectedAdminPlayer = null;
+    let activeSticker = null;
+    let stickersData = [];
 
     // Helper: Formatter Angka ke 4 Digit (1 -> 0001)
     function padFourDigits(num) {
@@ -543,7 +620,8 @@
             joinedDate: nowStr,
             fragment: 0,
             roles: ["Member"],
-            badges: { "Dominioner": true }
+            badges: { "Dominioner": true },
+            stickers: []
           };
 
           db.ref('members/' + fullDominionerId).set(userData).then(() => {
@@ -557,7 +635,7 @@
     }
 
     // ----------------------------------------------------
-    // 2. PROFILE VIEW
+    // 2. PROFILE VIEW & STICKER SYSTEM
     // ----------------------------------------------------
     function openProfileView() {
       if (!currentUser) return navigateTo('view-enter-name');
@@ -596,7 +674,141 @@
           });
         }
 
+        // Render Stickers
+        stickersData = currentUser.stickers || [];
+        renderAllStickers();
+
         navigateTo('view-profile');
+      });
+    }
+
+    // STICKER MANIPULATION ENGINE (Drag, Resize, Rotate)
+    function renderAllStickers() {
+      const card = document.getElementById('profile-card-element');
+      card.querySelectorAll('.sticker').forEach(st => st.remove());
+
+      stickersData.forEach((stData, index) => {
+        const el = document.createElement('div');
+        el.className = 'sticker';
+        el.innerText = stData.emoji;
+        el.style.left = stData.x + 'px';
+        el.style.top = stData.y + 'px';
+        el.style.fontSize = (stData.size || 32) + 'px';
+        el.style.transform = `rotate(${stData.rotation || 0}deg)`;
+        el.dataset.index = index;
+
+        makeElementDraggable(el);
+        card.appendChild(el);
+      });
+    }
+
+    function addStickerFromInput() {
+      const input = document.getElementById('emoji-picker-input');
+      const emoji = input.value.trim();
+      if (!emoji) return;
+
+      stickersData.push({
+        emoji: emoji,
+        x: 40,
+        y: 60,
+        size: 36,
+        rotation: 0
+      });
+
+      input.value = '';
+      renderAllStickers();
+    }
+
+    function makeElementDraggable(elmnt) {
+      let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+      
+      elmnt.onmousedown = dragMouseDown;
+      elmnt.ontouchstart = dragMouseDown;
+
+      function dragMouseDown(e) {
+        e = e || window.event;
+        selectSticker(elmnt);
+        
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+        pos3 = clientX;
+        pos4 = clientY;
+
+        document.onmouseup = closeDragElement;
+        document.ontouchend = closeDragElement;
+        document.onmousemove = elementDrag;
+        document.ontouchmove = elementDrag;
+      }
+
+      function elementDrag(e) {
+        e = e || window.event;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+        pos1 = pos3 - clientX;
+        pos2 = pos4 - clientY;
+        pos3 = clientX;
+        pos4 = clientY;
+
+        let newY = elmnt.offsetTop - pos2;
+        let newX = elmnt.offsetLeft - pos1;
+
+        elmnt.style.top = newY + "px";
+        elmnt.style.left = newX + "px";
+
+        const idx = elmnt.dataset.index;
+        if (stickersData[idx]) {
+          stickersData[idx].x = newX;
+          stickersData[idx].y = newY;
+        }
+      }
+
+      function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+        document.ontouchend = null;
+        document.ontouchmove = null;
+      }
+    }
+
+    function selectSticker(el) {
+      document.querySelectorAll('.sticker').forEach(s => s.classList.remove('selected'));
+      activeSticker = el;
+      el.classList.add('selected');
+      document.getElementById('sticker-control-panel').style.display = 'flex';
+    }
+
+    function adjustStickerSize(factor) {
+      if (!activeSticker) return;
+      const idx = activeSticker.dataset.index;
+      let curSize = stickersData[idx].size || 32;
+      curSize = Math.max(16, Math.min(100, curSize * factor));
+      stickersData[idx].size = curSize;
+      activeSticker.style.fontSize = curSize + 'px';
+    }
+
+    function rotateSticker(deg) {
+      if (!activeSticker) return;
+      const idx = activeSticker.dataset.index;
+      let curRot = (stickersData[idx].rotation || 0) + deg;
+      stickersData[idx].rotation = curRot;
+      activeSticker.style.transform = `rotate(${curRot}deg)`;
+    }
+
+    function removeSelectedSticker() {
+      if (!activeSticker) return;
+      const idx = activeSticker.dataset.index;
+      stickersData.splice(idx, 1);
+      activeSticker = null;
+      document.getElementById('sticker-control-panel').style.display = 'none';
+      renderAllStickers();
+    }
+
+    function saveStickersToDatabase() {
+      if (!currentUser) return;
+      db.ref(`members/${currentUser.dominionerId}/stickers`).set(stickersData).then(() => {
+        showToast("Hiasan profil berhasil disimpan!");
       });
     }
 
@@ -648,7 +860,7 @@
     }
 
     // ----------------------------------------------------
-    // 4. ADMIN PANEL FUNCTIONS (EDIT & DELETE PLAYER)
+    // 4. ADMIN PANEL & DYNAMIC SHIFT RE-ORDERING (#0000)
     // ----------------------------------------------------
     function verifyAdminPass() {
       const pass = document.getElementById('admin-pass-input').value.trim();
@@ -712,24 +924,66 @@
       });
     }
 
-    // Hapus Akun Player oleh Admin
-    function adminDeletePlayer() {
+    // HAPUS PLAYER + AUTOMATIC SHIFT/RE-ORDER SYSTEM
+    function adminDeletePlayerAndReorder() {
       if (!selectedAdminPlayer) return;
 
-      const confirmDelete = confirm(`Apakah Anda yakin ingin menghapus akun '${selectedAdminPlayer.dominionerId}' secara permanen?`);
+      const deletedSeqNum = parseInt(selectedAdminPlayer.numberSeq);
+      const confirmDelete = confirm(`Hapus permanently '${selectedAdminPlayer.dominionerId}'? Nomor urut di atasnya akan diturunkan 1 level secara otomatis.`);
+      
       if (!confirmDelete) return;
 
-      db.ref('members/' + selectedAdminPlayer.dominionerId).remove().then(() => {
-        showToast("Akun Player Berhasil Dihapus!");
+      db.ref('members').once('value').then(snap => {
+        const updates = {};
         
-        // Jika player yang dihapus adalah akun yang sedang login di HP ini, hapus sesi lokal
-        if (currentUser && currentUser.dominionerId === selectedAdminPlayer.dominionerId) {
-          localStorage.removeItem('blds_dominioner_id');
-          currentUser = null;
-        }
+        // Remove target user
+        updates[`members/${selectedAdminPlayer.dominionerId}`] = null;
 
-        selectedAdminPlayer = null;
-        document.getElementById('adm-edit-section').style.display = 'none';
+        // Shift lower priority users up by 1 step
+        snap.forEach(child => {
+          const p = child.val();
+          const pSeq = parseInt(p.numberSeq);
+
+          if (pSeq > deletedSeqNum) {
+            const newSeqNum = pSeq - 1;
+            const newSeqStr = padFourDigits(newSeqNum);
+            const newDominionerId = `${p.name}-${newSeqStr}`;
+
+            // Hapus data lama, masukkan data baru dengan ID & nomor urut baru
+            updates[`members/${p.dominionerId}`] = null;
+
+            const updatedProfile = {
+              ...p,
+              numberSeq: newSeqStr,
+              dominionerId: newDominionerId
+            };
+            updates[`members/${newDominionerId}`] = updatedProfile;
+
+            // Jika player yang tergeser sedang login di device ini, perbarui localStorage
+            if (currentUser && currentUser.dominionerId === p.dominionerId) {
+              localStorage.setItem('blds_dominioner_id', newDominionerId);
+              currentUser = updatedProfile;
+            }
+          }
+        });
+
+        // Kurangi counter global di Firebase
+        db.ref('counters/lastDominionerNumber').transaction((val) => {
+          return Math.max(0, (val || 1) - 1);
+        });
+
+        // Eksekusi Atomic Update
+        db.ref().update(updates).then(() => {
+          showToast("Player dihapus & Nomor Urut Berhasil Diurutkan Kembali!");
+
+          if (currentUser && currentUser.dominionerId === selectedAdminPlayer.dominionerId) {
+            localStorage.removeItem('blds_dominioner_id');
+            currentUser = null;
+          }
+
+          selectedAdminPlayer = null;
+          document.getElementById('adm-edit-section').style.display = 'none';
+        });
       });
     }
 
